@@ -3,20 +3,13 @@
 namespace Illuminate\Foundation\Http\Middleware;
 
 use Closure;
-use Illuminate\Foundation\Application;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Session\TokenMismatchException;
 
 class VerifyCsrfToken
 {
-    /**
-     * The application instance.
-     *
-     * @var \Illuminate\Foundation\Application
-     */
-    protected $app;
-
     /**
      * The encrypter implementation.
      *
@@ -34,13 +27,11 @@ class VerifyCsrfToken
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
      */
-    public function __construct(Application $app, Encrypter $encrypter)
+    public function __construct(Encrypter $encrypter)
     {
-        $this->app = $app;
         $this->encrypter = $encrypter;
     }
 
@@ -55,12 +46,7 @@ class VerifyCsrfToken
      */
     public function handle($request, Closure $next)
     {
-        if (
-            $this->isReading($request) ||
-            $this->runningUnitTests() ||
-            $this->shouldPassThrough($request) ||
-            $this->tokensMatch($request)
-        ) {
+        if ($this->isReading($request) || $this->shouldPassThrough($request) || $this->tokensMatch($request)) {
             return $this->addCookieToResponse($request, $next($request));
         }
 
@@ -76,26 +62,12 @@ class VerifyCsrfToken
     protected function shouldPassThrough($request)
     {
         foreach ($this->except as $except) {
-            if ($except !== '/') {
-                $except = trim($except, '/');
-            }
-
             if ($request->is($except)) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Determine if the application is running unit tests.
-     *
-     * @return bool
-     */
-    protected function runningUnitTests()
-    {
-        return $this->app->runningInConsole() && $this->app->runningUnitTests();
     }
 
     /**
@@ -106,19 +78,13 @@ class VerifyCsrfToken
      */
     protected function tokensMatch($request)
     {
-        $sessionToken = $request->session()->token();
-
         $token = $request->input('_token') ?: $request->header('X-CSRF-TOKEN');
 
-        if (! $token && $header = $request->header('X-XSRF-TOKEN')) {
+        if (!$token && $header = $request->header('X-XSRF-TOKEN')) {
             $token = $this->encrypter->decrypt($header);
         }
 
-        if (! is_string($sessionToken) || ! is_string($token)) {
-            return false;
-        }
-
-        return hash_equals($sessionToken, $token);
+        return Str::equals($request->session()->token(), $token);
     }
 
     /**
@@ -134,8 +100,8 @@ class VerifyCsrfToken
 
         $response->headers->setCookie(
             new Cookie(
-                'XSRF-TOKEN', $request->session()->token(), time() + 60 * $config['lifetime'],
-                $config['path'], $config['domain'], $config['secure'], false
+                'XSRF-TOKEN', $request->session()->token(), time() + 60 * 120,
+                $config['path'], $config['domain'], false, false
             )
         );
 

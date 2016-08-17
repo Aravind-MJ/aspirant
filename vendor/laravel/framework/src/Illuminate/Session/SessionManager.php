@@ -59,9 +59,7 @@ class SessionManager extends Manager
     {
         $path = $this->app['config']['session.files'];
 
-        $lifetime = $this->app['config']['session.lifetime'];
-
-        return $this->buildSession(new FileSessionHandler($this->app['files'], $path, $lifetime));
+        return $this->buildSession(new FileSessionHandler($this->app['files'], $path));
     }
 
     /**
@@ -75,27 +73,7 @@ class SessionManager extends Manager
 
         $table = $this->app['config']['session.table'];
 
-        $lifetime = $this->app['config']['session.lifetime'];
-
-        return $this->buildSession(new DatabaseSessionHandler($connection, $table, $lifetime, $this->app));
-    }
-
-    /**
-     * Create an instance of the legacy database session driver.
-     *
-     * @return \Illuminate\Session\Store
-     *
-     * @deprecated since version 5.2.
-     */
-    protected function createLegacyDatabaseDriver()
-    {
-        $connection = $this->getDatabaseConnection();
-
-        $table = $this->app['config']['session.table'];
-
-        $lifetime = $this->app['config']['session.lifetime'];
-
-        return $this->buildSession(new LegacyDatabaseSessionHandler($connection, $table, $lifetime));
+        return $this->buildSession(new DatabaseSessionHandler($connection, $table));
     }
 
     /**
@@ -175,7 +153,7 @@ class SessionManager extends Manager
     {
         $minutes = $this->app['config']['session.lifetime'];
 
-        return new CacheBasedSessionHandler(clone $this->app['cache']->driver($driver), $minutes);
+        return new CacheBasedSessionHandler($this->app['cache']->driver($driver), $minutes);
     }
 
     /**

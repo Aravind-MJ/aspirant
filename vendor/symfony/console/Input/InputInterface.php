@@ -11,9 +11,6 @@
 
 namespace Symfony\Component\Console\Input;
 
-use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Exception\RuntimeException;
-
 /**
  * InputInterface is the interface implemented by all input classes.
  *
@@ -34,12 +31,11 @@ interface InputInterface
      * This method is to be used to introspect the input parameters
      * before they have been validated. It must be used carefully.
      *
-     * @param string|array $values     The values to look for in the raw parameters (can be an array)
-     * @param bool         $onlyParams Only check real parameters, skip those following an end of options (--) signal
+     * @param string|array $values The values to look for in the raw parameters (can be an array)
      *
      * @return bool true if the value is contained in the raw parameters
      */
-    public function hasParameterOption($values, $onlyParams = false);
+    public function hasParameterOption($values);
 
     /**
      * Returns the value of a raw option (not parsed).
@@ -47,13 +43,12 @@ interface InputInterface
      * This method is to be used to introspect the input parameters
      * before they have been validated. It must be used carefully.
      *
-     * @param string|array $values     The value(s) to look for in the raw parameters (can be an array)
-     * @param mixed        $default    The default value to return if no result is found
-     * @param bool         $onlyParams Only check real parameters, skip those following an end of options (--) signal
+     * @param string|array $values  The value(s) to look for in the raw parameters (can be an array)
+     * @param mixed        $default The default value to return if no result is found
      *
      * @return mixed The option value
      */
-    public function getParameterOption($values, $default = false, $onlyParams = false);
+    public function getParameterOption($values, $default = false);
 
     /**
      * Binds the current Input instance with the given arguments and options.
@@ -63,9 +58,11 @@ interface InputInterface
     public function bind(InputDefinition $definition);
 
     /**
-     * Validates the input.
+     * Validates if arguments given are correct.
      *
-     * @throws RuntimeException When not enough arguments are given
+     * Throws an exception when not enough arguments are given.
+     *
+     * @throws \RuntimeException
      */
     public function validate();
 
@@ -77,13 +74,11 @@ interface InputInterface
     public function getArguments();
 
     /**
-     * Returns the argument value for a given argument name.
+     * Gets argument by name.
      *
-     * @param string $name The argument name
+     * @param string $name The name of the argument
      *
-     * @return mixed The argument value
-     *
-     * @throws InvalidArgumentException When argument given doesn't exist
+     * @return mixed
      */
     public function getArgument($name);
 
@@ -93,7 +88,7 @@ interface InputInterface
      * @param string $name  The argument name
      * @param string $value The argument value
      *
-     * @throws InvalidArgumentException When argument given doesn't exist
+     * @throws \InvalidArgumentException When argument given doesn't exist
      */
     public function setArgument($name, $value);
 
@@ -114,13 +109,11 @@ interface InputInterface
     public function getOptions();
 
     /**
-     * Returns the option value for a given option name.
+     * Gets an option by name.
      *
-     * @param string $name The option name
+     * @param string $name The name of the option
      *
-     * @return mixed The option value
-     *
-     * @throws InvalidArgumentException When option given doesn't exist
+     * @return mixed
      */
     public function getOption($name);
 
@@ -130,7 +123,7 @@ interface InputInterface
      * @param string      $name  The option name
      * @param string|bool $value The option value
      *
-     * @throws InvalidArgumentException When option given doesn't exist
+     * @throws \InvalidArgumentException When option given doesn't exist
      */
     public function setOption($name, $value);
 

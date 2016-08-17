@@ -2,10 +2,7 @@
 
 namespace Illuminate\Auth;
 
-use Illuminate\Auth\Access\Gate;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -19,8 +16,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerAuthenticator();
 
         $this->registerUserResolver();
-
-        $this->registerAccessGate();
 
         $this->registerRequestRebindHandler();
     }
@@ -42,7 +37,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('auth.driver', function ($app) {
-            return $app['auth']->guard();
+            return $app['auth']->driver();
         });
     }
 
@@ -53,24 +48,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerUserResolver()
     {
-        $this->app->bind(
-            AuthenticatableContract::class, function ($app) {
-                return call_user_func($app['auth']->userResolver());
-            }
-        );
-    }
-
-    /**
-     * Register the access gate service.
-     *
-     * @return void
-     */
-    protected function registerAccessGate()
-    {
-        $this->app->singleton(GateContract::class, function ($app) {
-            return new Gate($app, function () use ($app) {
-                return call_user_func($app['auth']->userResolver());
-            });
+        $this->app->bind('Illuminate\Contracts\Auth\Authenticatable', function ($app) {
+            return $app['auth']->user();
         });
     }
 
@@ -82,8 +61,8 @@ class AuthServiceProvider extends ServiceProvider
     protected function registerRequestRebindHandler()
     {
         $this->app->rebinding('request', function ($app, $request) {
-            $request->setUserResolver(function ($guard = null) use ($app) {
-                return call_user_func($app['auth']->userResolver(), $guard);
+            $request->setUserResolver(function () use ($app) {
+                return $app['auth']->user();
             });
         });
     }

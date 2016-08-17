@@ -7,28 +7,14 @@ use PHPUnit_Framework_TestCase;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
-    use Concerns\InteractsWithContainer,
-        Concerns\MakesHttpRequests,
-        Concerns\ImpersonatesUsers,
-        Concerns\InteractsWithAuthentication,
-        Concerns\InteractsWithConsole,
-        Concerns\InteractsWithDatabase,
-        Concerns\InteractsWithSession,
-        Concerns\MocksApplicationServices;
+    use ApplicationTrait, AssertionsTrait, CrawlerTrait;
 
     /**
-     * The Illuminate application instance.
+     * The Eloquent factory instance.
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Database\Eloquent\Factory
      */
-    protected $app;
-
-    /**
-     * The callbacks that should be run after the application is created.
-     *
-     * @var array
-     */
-    protected $afterApplicationCreatedCallbacks = [];
+    protected $factory;
 
     /**
      * The callbacks that should be run before the application is destroyed.
@@ -36,13 +22,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      * @var array
      */
     protected $beforeApplicationDestroyedCallbacks = [];
-
-    /**
-     * Indicates if we have made it through the base setUp function.
-     *
-     * @var bool
-     */
-    protected $setUpHasRun = false;
 
     /**
      * Creates the application.
@@ -58,56 +37,14 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    protected function setUp()
+    public function setUp()
     {
-        if (! $this->app) {
+        if (!$this->app) {
             $this->refreshApplication();
         }
 
-        $this->setUpTraits();
-
-        foreach ($this->afterApplicationCreatedCallbacks as $callback) {
-            call_user_func($callback);
-        }
-
-        $this->setUpHasRun = true;
-    }
-
-    /**
-     * Refresh the application instance.
-     *
-     * @return void
-     */
-    protected function refreshApplication()
-    {
-        putenv('APP_ENV=testing');
-
-        $this->app = $this->createApplication();
-    }
-
-    /**
-     * Boot the testing helper traits.
-     *
-     * @return void
-     */
-    protected function setUpTraits()
-    {
-        $uses = array_flip(class_uses_recursive(static::class));
-
-        if (isset($uses[DatabaseMigrations::class])) {
-            $this->runDatabaseMigrations();
-        }
-
-        if (isset($uses[DatabaseTransactions::class])) {
-            $this->beginDatabaseTransaction();
-        }
-
-        if (isset($uses[WithoutMiddleware::class])) {
-            $this->disableMiddlewareForAllTests();
-        }
-
-        if (isset($uses[WithoutEvents::class])) {
-            $this->disableEventsForAllTests();
+        if (!$this->factory) {
+            $this->factory = $this->app->make('Illuminate\Database\Eloquent\Factory');
         }
     }
 
@@ -116,8 +53,12 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    protected function tearDown()
+    public function tearDown()
     {
+        if (class_exists('Mockery')) {
+            Mockery::close();
+        }
+
         if ($this->app) {
             foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
                 call_user_func($callback);
@@ -126,34 +67,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
             $this->app->flush();
 
             $this->app = null;
-        }
-
-        $this->setUpHasRun = false;
-
-        if (property_exists($this, 'serverVariables')) {
-            $this->serverVariables = [];
-        }
-
-        if (class_exists('Mockery')) {
-            Mockery::close();
-        }
-
-        $this->afterApplicationCreatedCallbacks = [];
-        $this->beforeApplicationDestroyedCallbacks = [];
-    }
-
-    /**
-     * Register a callback to be run after the application is created.
-     *
-     * @param  callable  $callback
-     * @return void
-     */
-    protected function afterApplicationCreated(callable $callback)
-    {
-        $this->afterApplicationCreatedCallbacks[] = $callback;
-
-        if ($this->setUpHasRun) {
-            call_user_func($callback);
         }
     }
 

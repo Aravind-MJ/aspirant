@@ -28,6 +28,13 @@ class ConfigureLogging
         } else {
             $this->configureHandlers($app, $log);
         }
+
+        // Next, we will bind a Closure that resolves the PSR logger implementation
+        // as this will grant us the ability to be interoperable with many other
+        // libraries which are able to utilize the PSR standardized interface.
+        $app->bind('Psr\Log\LoggerInterface', function ($app) {
+            return $app['log']->getMonolog();
+        });
     }
 
     /**
@@ -68,10 +75,7 @@ class ConfigureLogging
      */
     protected function configureSingleHandler(Application $app, Writer $log)
     {
-        $log->useFiles(
-            $app->storagePath().'/logs/laravel.log',
-            $app->make('config')->get('app.log_level', 'debug')
-        );
+        $log->useFiles($app->storagePath().'/logs/laravel.log');
     }
 
     /**
@@ -83,13 +87,9 @@ class ConfigureLogging
      */
     protected function configureDailyHandler(Application $app, Writer $log)
     {
-        $config = $app->make('config');
-
-        $maxFiles = $config->get('app.log_max_files');
-
         $log->useDailyFiles(
-            $app->storagePath().'/logs/laravel.log', is_null($maxFiles) ? 5 : $maxFiles,
-            $config->get('app.log_level', 'debug')
+            $app->storagePath().'/logs/laravel.log',
+            $app->make('config')->get('app.log_max_files', 5)
         );
     }
 
@@ -102,10 +102,7 @@ class ConfigureLogging
      */
     protected function configureSyslogHandler(Application $app, Writer $log)
     {
-        $log->useSyslog(
-            'laravel',
-            $app->make('config')->get('app.log_level', 'debug')
-        );
+        $log->useSyslog('laravel');
     }
 
     /**
@@ -117,6 +114,6 @@ class ConfigureLogging
      */
     protected function configureErrorlogHandler(Application $app, Writer $log)
     {
-        $log->useErrorLog($app->make('config')->get('app.log_level', 'debug'));
+        $log->useErrorLog();
     }
 }

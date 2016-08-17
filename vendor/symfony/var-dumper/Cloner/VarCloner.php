@@ -28,7 +28,7 @@ class VarCloner extends AbstractCloner
         $i = 0;                         // Current iteration position in $queue
         $len = 1;                       // Length of $queue
         $pos = 0;                       // Number of cloned items past the first level
-        $refsCounter = 0;               // Hard references counter
+        $refs = 0;                      // Hard references counter
         $queue = array(array($var));    // This breadth-first queue is the return value
         $arrayRefs = array();           // Map of queue indexes to stub array objects
         $hardRefs = array();            // Map of original zval hashes to stub objects
@@ -60,32 +60,27 @@ class VarCloner extends AbstractCloner
         for ($i = 0; $i < $len; ++$i) {
             $indexed = true;            // Whether the currently iterated array is numerically indexed or not
             $j = -1;                    // Position in the currently iterated array
-            $fromObjCast = array_keys($queue[$i]);
-            $fromObjCast = array_keys(array_flip($fromObjCast)) !== $fromObjCast;
-            $refs = $vals = $fromObjCast ? array_values($queue[$i]) : $queue[$i];
-            foreach ($queue[$i] as $k => $v) {
+            $step = $queue[$i];         // Copy of the currently iterated array used for hard references detection
+            foreach ($step as $k => $v) {
                 // $k is the original key
                 // $v is the original value or a stub object in case of hard references
-                if ($k !== ++$j) {
+                if ($indexed && $k !== ++$j) {
                     $indexed = false;
                 }
-                if ($fromObjCast) {
-                    $k = $j;
-                }
                 if ($useExt) {
-                    $zval = symfony_zval_info($k, $refs);
+                    $zval = symfony_zval_info($k, $step);
                 } else {
-                    $refs[$k] = $cookie;
-                    if ($zval['zval_isref'] = $vals[$k] === $cookie) {
+                    $step[$k] = $cookie;
+                    if ($zval['zval_isref'] = $queue[$i][$k] === $cookie) {
                         $zval['zval_hash'] = $v instanceof Stub ? spl_object_hash($v) : null;
                     }
                     $zval['type'] = gettype($v);
                 }
                 if ($zval['zval_isref']) {
-                    $vals[$k] = &$stub;         // Break hard references to make $queue completely
+                    $queue[$i][$k] =& $stub;    // Break hard references to make $queue completely
                     unset($stub);               // independent from the original structure
                     if (isset($hardRefs[$zval['zval_hash']])) {
-                        $vals[$k] = $useExt ? ($v = $hardRefs[$zval['zval_hash']]) : ($refs[$k] = $v);
+                        $queue[$i][$k] = $useExt ? ($v = $hardRefs[$zval['zval_hash']]) : ($step[$k] = $v);
                         if ($v->value instanceof Stub && (Stub::TYPE_OBJECT === $v->value->type || Stub::TYPE_RESOURCE === $v->value->type)) {
                             ++$v->value->refCount;
                         }
@@ -107,12 +102,12 @@ class VarCloner extends AbstractCloner
                             } else {
                                 $stub->value = $v;
                             }
-                        } elseif (0 <= $maxString && isset($v[1 + ($maxString >> 2)]) && 0 < $cut = mb_strlen($v, 'UTF-8') - $maxString) {
+                        } elseif (0 <= $maxString && isset($v[1 + ($maxString >> 2)]) && 0 < $cut = iconv_strlen($v, 'UTF-8') - $maxString) {
                             $stub = new Stub();
                             $stub->type = Stub::TYPE_STRING;
                             $stub->class = Stub::STRING_UTF8;
                             $stub->cut = $cut;
-                            $stub->value = mb_substr($v, 0, $maxString, 'UTF-8');
+                            $stub->value = iconv_substr($v, 0, $maxString, 'UTF-8');
                         }
                         break;
 
@@ -135,7 +130,7 @@ class VarCloner extends AbstractCloner
                                 unset($v[$gid]);
                                 $a = array();
                                 foreach ($v as $gk => &$gv) {
-                                    $a[$gk] = &$gv;
+                                    $a[$gk] =& $gv;
                                 }
                             } else {
                                 $a = $v;
@@ -154,7 +149,7 @@ class VarCloner extends AbstractCloner
                             $stub->handle = $h;
                             $a = $this->castObject($stub, 0 < $i);
                             if ($v !== $stub->value) {
-                                if (Stub::TYPE_OBJECT !== $stub->type || null === $stub->value) {
+                                if (Stub::TYPE_OBJECT !== $stub->type) {
                                     break;
                                 }
                                 if ($useExt) {
@@ -209,18 +204,18 @@ class VarCloner extends AbstractCloner
                 if (isset($stub)) {
                     if ($zval['zval_isref']) {
                         if ($useExt) {
-                            $vals[$k] = $hardRefs[$zval['zval_hash']] = $v = new Stub();
+                            $queue[$i][$k] = $hardRefs[$zval['zval_hash']] = $v = new Stub();
                             $v->value = $stub;
                         } else {
-                            $refs[$k] = new Stub();
-                            $refs[$k]->value = $stub;
-                            $h = spl_object_hash($refs[$k]);
-                            $vals[$k] = $hardRefs[$h] = &$refs[$k];
+                            $step[$k] = new Stub();
+                            $step[$k]->value = $stub;
+                            $h = spl_object_hash($step[$k]);
+                            $queue[$i][$k] = $hardRefs[$h] =& $step[$k];
                             $values[$h] = $v;
                         }
-                        $vals[$k]->handle = ++$refsCounter;
+                        $queue[$i][$k]->handle = ++$refs;
                     } else {
-                        $vals[$k] = $stub;
+                        $queue[$i][$k] = $stub;
                     }
 
                     if ($a) {
@@ -248,37 +243,18 @@ class VarCloner extends AbstractCloner
                     $stub = $a = null;
                 } elseif ($zval['zval_isref']) {
                     if ($useExt) {
-                        $vals[$k] = $hardRefs[$zval['zval_hash']] = new Stub();
-                        $vals[$k]->value = $v;
+                        $queue[$i][$k] = $hardRefs[$zval['zval_hash']] = new Stub();
+                        $queue[$i][$k]->value = $v;
                     } else {
-                        $refs[$k] = $vals[$k] = new Stub();
-                        $refs[$k]->value = $v;
-                        $h = spl_object_hash($refs[$k]);
-                        $hardRefs[$h] = &$refs[$k];
+                        $step[$k] = $queue[$i][$k] = new Stub();
+                        $step[$k]->value = $v;
+                        $h = spl_object_hash($step[$k]);
+                        $hardRefs[$h] =& $step[$k];
                         $values[$h] = $v;
                     }
-                    $vals[$k]->handle = ++$refsCounter;
+                    $queue[$i][$k]->handle = ++$refs;
                 }
             }
-
-            if ($fromObjCast) {
-                $refs = $vals;
-                $vals = array();
-                $j = -1;
-                foreach ($queue[$i] as $k => $v) {
-                    foreach (array($k => $v) as $a => $v) {
-                    }
-                    if ($a !== $k) {
-                        $vals = (object) $vals;
-                        $vals->{$k} = $refs[++$j];
-                        $vals = (array) $vals;
-                    } else {
-                        $vals[$k] = $refs[++$j];
-                    }
-                }
-            }
-
-            $queue[$i] = $vals;
 
             if (isset($arrayRefs[$i])) {
                 if ($indexed) {
@@ -306,7 +282,7 @@ class VarCloner extends AbstractCloner
         } else {
             // check if we are nested in an output buffering handler to prevent a fatal error with ob_start() below
             $obFuncs = array('ob_clean', 'ob_end_clean', 'ob_flush', 'ob_end_flush', 'ob_get_contents', 'ob_get_flush');
-            foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $frame) {
+            foreach (debug_backtrace(PHP_VERSION_ID >= 50400 ? DEBUG_BACKTRACE_IGNORE_ARGS : false) as $frame) {
                 if (isset($frame['function'][0]) && !isset($frame['class']) && 'o' === $frame['function'][0] && in_array($frame['function'], $obFuncs)) {
                     $frame['line'] = 0;
                     break;
@@ -315,7 +291,7 @@ class VarCloner extends AbstractCloner
             if (!empty($frame['line'])) {
                 ob_start();
                 debug_zval_dump($obj);
-                self::$hashMask = (int) substr(ob_get_clean(), 17);
+                self::$hashMask = substr(ob_get_clean(), 17);
             }
         }
 

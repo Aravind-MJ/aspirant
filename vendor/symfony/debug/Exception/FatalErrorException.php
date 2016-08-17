@@ -9,28 +9,37 @@
  * file that was distributed with this source code.
  */
 
+namespace Symfony\Component\HttpKernel\Exception;
+
+/**
+ * Fatal Error Exception.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @author Konstanton Myakshin <koc-dp@yandex.ru>
+ * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @deprecated Deprecated in 2.3, to be removed in 3.0. Use the same class from the Debug component instead.
+ */
+class FatalErrorException extends \ErrorException
+{
+}
+
 namespace Symfony\Component\Debug\Exception;
+
+use Symfony\Component\HttpKernel\Exception\FatalErrorException as LegacyFatalErrorException;
 
 /**
  * Fatal Error Exception.
  *
  * @author Konstanton Myakshin <koc-dp@yandex.ru>
  */
-class FatalErrorException extends \ErrorException
+class FatalErrorException extends LegacyFatalErrorException
 {
-    public function __construct($message, $code, $severity, $filename, $lineno, $traceOffset = null, $traceArgs = true, array $trace = null)
+    public function __construct($message, $code, $severity, $filename, $lineno, $traceOffset = null, $traceArgs = true)
     {
         parent::__construct($message, $code, $severity, $filename, $lineno);
 
-        if (null !== $trace) {
-            if (!$traceArgs) {
-                foreach ($trace as &$frame) {
-                    unset($frame['args'], $frame['this'], $frame);
-                }
-            }
-
-            $this->setTrace($trace);
-        } elseif (null !== $traceOffset) {
+        if (null !== $traceOffset) {
             if (function_exists('xdebug_get_function_stack')) {
                 $trace = xdebug_get_function_stack();
                 if (0 < $traceOffset) {
@@ -39,7 +48,7 @@ class FatalErrorException extends \ErrorException
 
                 foreach ($trace as &$frame) {
                     if (!isset($frame['type'])) {
-                        // XDebug pre 2.1.1 doesn't currently set the call type key http://bugs.xdebug.org/view.php?id=695
+                        //  XDebug pre 2.1.1 doesn't currently set the call type key http://bugs.xdebug.org/view.php?id=695
                         if (isset($frame['class'])) {
                             $frame['type'] = '::';
                         }

@@ -23,6 +23,8 @@ namespace Symfony\Component\HttpFoundation;
  * @see flush()
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @api
  */
 class StreamedResponse extends Response
 {
@@ -35,8 +37,10 @@ class StreamedResponse extends Response
      * @param callable|null $callback A valid PHP callback or null to set it later
      * @param int           $status   The response status code
      * @param array         $headers  An array of response headers
+     *
+     * @api
      */
-    public function __construct(callable $callback = null, $status = 200, $headers = array())
+    public function __construct($callback = null, $status = 200, $headers = array())
     {
         parent::__construct(null, $status, $headers);
 
@@ -47,7 +51,7 @@ class StreamedResponse extends Response
     }
 
     /**
-     * Factory method for chainability.
+     * Factory method for chainability
      *
      * @param callable|null $callback A valid PHP callback or null to set it later
      * @param int           $status   The response status code
@@ -64,9 +68,14 @@ class StreamedResponse extends Response
      * Sets the PHP callback associated with this Response.
      *
      * @param callable $callback A valid PHP callback
+     *
+     * @throws \LogicException
      */
-    public function setCallback(callable $callback)
+    public function setCallback($callback)
     {
+        if (!is_callable($callback)) {
+            throw new \LogicException('The Response callback must be a valid PHP callable.');
+        }
         $this->callback = $callback;
     }
 

@@ -25,7 +25,6 @@ class MethodNode
     private $visibility = 'public';
     private $static = false;
     private $returnsReference = false;
-    private $returnType;
 
     /**
      * @var ArgumentNode[]
@@ -101,53 +100,6 @@ class MethodNode
         return $this->arguments;
     }
 
-    public function hasReturnType()
-    {
-        return null !== $this->returnType;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setReturnType($type = null)
-    {
-        switch ($type) {
-            case '':
-                $this->returnType = null;
-                break;
-
-            case 'string';
-            case 'float':
-            case 'int':
-            case 'bool':
-            case 'array':
-            case 'callable':
-                $this->returnType = $type;
-                break;
-
-            case 'double':
-            case 'real':
-                $this->returnType = 'float';
-                break;
-
-            case 'boolean':
-                $this->returnType = 'bool';
-                break;
-
-            case 'integer':
-                $this->returnType = 'int';
-                break;
-
-            default:
-                $this->returnType = '\\' . ltrim($type, '\\');
-        }
-    }
-
-    public function getReturnType()
-    {
-        return $this->returnType;
-    }
-
     /**
      * @param string $code
      */
@@ -170,19 +122,8 @@ class MethodNode
     {
         $this->code = sprintf(
             'return parent::%s(%s);', $this->getName(), implode(', ',
-                array_map(array($this, 'generateArgument'), $this->arguments)
+                array_map(function (ArgumentNode $arg) { return '$'.$arg->getName(); }, $this->arguments)
             )
         );
-    }
-
-    private function generateArgument(ArgumentNode $arg)
-    {
-        $argument = '$'.$arg->getName();
-
-        if ($arg->isVariadic()) {
-            $argument = '...'.$argument;
-        }
-
-        return $argument;
     }
 }

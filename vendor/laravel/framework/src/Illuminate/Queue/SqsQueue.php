@@ -23,31 +23,15 @@ class SqsQueue extends Queue implements QueueContract
     protected $default;
 
     /**
-     * The sqs prefix url.
-     *
-     * @var string
-     */
-    protected $prefix;
-
-    /**
-     * The job creator callback.
-     *
-     * @var callable|null
-     */
-    protected $jobCreator;
-
-    /**
      * Create a new Amazon SQS queue instance.
      *
      * @param  \Aws\Sqs\SqsClient  $sqs
      * @param  string  $default
-     * @param  string  $prefix
      * @return void
      */
-    public function __construct(SqsClient $sqs, $default, $prefix = '')
+    public function __construct(SqsClient $sqs, $default)
     {
         $this->sqs = $sqs;
-        $this->prefix = $prefix;
         $this->default = $default;
     }
 
@@ -95,6 +79,7 @@ class SqsQueue extends Queue implements QueueContract
         $delay = $this->getSeconds($delay);
 
         return $this->sqs->sendMessage([
+
             'QueueUrl' => $this->getQueue($queue), 'MessageBody' => $payload, 'DelaySeconds' => $delay,
 
         ])->get('MessageId');
@@ -115,25 +100,8 @@ class SqsQueue extends Queue implements QueueContract
         );
 
         if (count($response['Messages']) > 0) {
-            if ($this->jobCreator) {
-                return call_user_func($this->jobCreator, $this->container, $this->sqs, $queue, $response);
-            } else {
-                return new SqsJob($this->container, $this->sqs, $queue, $response['Messages'][0]);
-            }
+            return new SqsJob($this->container, $this->sqs, $queue, $response['Messages'][0]);
         }
-    }
-
-    /**
-     * Define the job creator callback for the connection.
-     *
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function createJobsUsing(callable $callback)
-    {
-        $this->jobCreator = $callback;
-
-        return $this;
     }
 
     /**
@@ -144,13 +112,7 @@ class SqsQueue extends Queue implements QueueContract
      */
     public function getQueue($queue)
     {
-        $queue = $queue ?: $this->default;
-
-        if (filter_var($queue, FILTER_VALIDATE_URL) !== false) {
-            return $queue;
-        }
-
-        return rtrim($this->prefix, '/').'/'.($queue);
+        return $queue ?: $this->default;
     }
 
     /**

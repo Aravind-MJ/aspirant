@@ -25,6 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Client simulates a browser and makes requests to a Kernel object.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @api
  */
 class Client extends BaseClient
 {
@@ -99,13 +101,13 @@ class Client extends BaseClient
 
         $r = new \ReflectionClass('\\Symfony\\Component\\ClassLoader\\ClassLoader');
         $requirePath = str_replace("'", "\\'", $r->getFileName());
-        $symfonyPath = str_replace("'", "\\'", dirname(dirname(dirname(__DIR__))));
+        $symfonyPath = str_replace("'", "\\'", realpath(__DIR__.'/../../..'));
         $errorReporting = error_reporting();
 
         $code = <<<EOF
 <?php
 
-error_reporting($errorReporting);
+error_reporting($errorReporting & ~E_USER_DEPRECATED);
 
 require_once '$requirePath';
 

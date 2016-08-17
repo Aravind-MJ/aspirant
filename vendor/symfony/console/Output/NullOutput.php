@@ -21,6 +21,8 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
+ *
+ * @api
  */
 class NullOutput implements OutputInterface
 {
@@ -73,33 +75,21 @@ class NullOutput implements OutputInterface
         return self::VERBOSITY_QUIET;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isQuiet()
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isVerbose()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isVeryVerbose()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDebug()
     {
         return false;
@@ -108,7 +98,7 @@ class NullOutput implements OutputInterface
     /**
      * {@inheritdoc}
      */
-    public function writeln($messages, $options = self::OUTPUT_NORMAL)
+    public function writeln($messages, $type = self::OUTPUT_NORMAL)
     {
         // do nothing
     }
@@ -116,7 +106,7 @@ class NullOutput implements OutputInterface
     /**
      * {@inheritdoc}
      */
-    public function write($messages, $newline = false, $options = self::OUTPUT_NORMAL)
+    public function write($messages, $newline = false, $type = self::OUTPUT_NORMAL)
     {
         // do nothing
     }

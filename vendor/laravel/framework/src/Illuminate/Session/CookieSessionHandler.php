@@ -2,7 +2,6 @@
 
 namespace Illuminate\Session;
 
-use Carbon\Carbon;
 use SessionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
@@ -37,7 +36,7 @@ class CookieSessionHandler implements SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function open($savePath, $sessionName)
     {
@@ -45,7 +44,7 @@ class CookieSessionHandler implements SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close()
     {
@@ -53,34 +52,23 @@ class CookieSessionHandler implements SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read($sessionId)
     {
-        $value = $this->request->cookies->get($sessionId) ?: '';
-
-        if (! is_null($decoded = json_decode($value, true)) && is_array($decoded)) {
-            if (isset($decoded['expires']) && time() <= $decoded['expires']) {
-                return $decoded['data'];
-            }
-        }
-
-        return '';
+        return $this->request->cookies->get($sessionId) ?: '';
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write($sessionId, $data)
     {
-        $this->cookie->queue($sessionId, json_encode([
-            'data' => $data,
-            'expires' => Carbon::now()->addMinutes($this->minutes)->getTimestamp(),
-        ]), $this->minutes);
+        $this->cookie->queue($sessionId, $data, $this->minutes);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function destroy($sessionId)
     {
@@ -88,7 +76,7 @@ class CookieSessionHandler implements SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function gc($lifetime)
     {

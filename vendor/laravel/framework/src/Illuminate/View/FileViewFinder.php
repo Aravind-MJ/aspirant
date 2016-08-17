@@ -108,7 +108,7 @@ class FileViewFinder implements ViewFinderInterface
             throw new InvalidArgumentException("View [$name] has an invalid name.");
         }
 
-        if (! isset($this->hints[$segments[0]])) {
+        if (!isset($this->hints[$segments[0]])) {
             throw new InvalidArgumentException("No hint path defined for [{$segments[0]}].");
         }
 
@@ -147,6 +147,7 @@ class FileViewFinder implements ViewFinderInterface
     {
         return array_map(function ($extension) use ($name) {
             return str_replace('.', '/', $name).'.'.$extension;
+
         }, $this->extensions);
     }
 

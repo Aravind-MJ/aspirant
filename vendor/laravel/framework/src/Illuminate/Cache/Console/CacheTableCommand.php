@@ -3,7 +3,7 @@
 namespace Illuminate\Cache\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Composer;
+use Illuminate\Foundation\Composer;
 use Illuminate\Filesystem\Filesystem;
 
 class CacheTableCommand extends Command
@@ -30,15 +30,15 @@ class CacheTableCommand extends Command
     protected $files;
 
     /**
-     * @var \Illuminate\Support\Composer
+     * @var \Illuminate\Foundation\Composer
      */
     protected $composer;
 
     /**
-     * Create a new cache table command instance.
+     * Create a new session table command instance.
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  \Illuminate\Support\Composer  $composer
+     * @param  \Illuminate\Foundation\Composer  $composer
      * @return void
      */
     public function __construct(Filesystem $files, Composer $composer)

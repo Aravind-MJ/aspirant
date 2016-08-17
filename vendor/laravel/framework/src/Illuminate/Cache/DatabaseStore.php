@@ -10,8 +10,6 @@ use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;
 
 class DatabaseStore implements Store
 {
-    use RetrievesMultipleKeys;
-
     /**
      * The database connection instance.
      *
@@ -60,7 +58,7 @@ class DatabaseStore implements Store
     /**
      * Retrieve an item from the cache by key.
      *
-     * @param  string|array  $key
+     * @param  string  $key
      * @return mixed
      */
     public function get($key)
@@ -72,7 +70,7 @@ class DatabaseStore implements Store
         // If we have a cache record we will check the expiration time against current
         // time on the system and see if the record has expired. If it has, we will
         // remove the records from the database table so it isn't returned again.
-        if (! is_null($cache)) {
+        if (!is_null($cache)) {
             if (is_array($cache)) {
                 $cache = (object) $cache;
             }
@@ -118,26 +116,30 @@ class DatabaseStore implements Store
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @return int|bool
+     * @return void
      */
     public function increment($key, $value = 1)
     {
-        return $this->incrementOrDecrement($key, $value, function ($current, $value) {
-            return $current + $value;
+        $this->connection->transaction(function () use ($key, $value) {
+            return $this->incrementOrDecrement($key, $value, function ($current) use ($value) {
+                return $current + $value;
+            });
         });
     }
 
     /**
-     * Decrement the value of an item in the cache.
+     * Increment the value of an item in the cache.
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @return int|bool
+     * @return void
      */
     public function decrement($key, $value = 1)
     {
-        return $this->incrementOrDecrement($key, $value, function ($current, $value) {
-            return $current - $value;
+        $this->connection->transaction(function () use ($key, $value) {
+            return $this->incrementOrDecrement($key, $value, function ($current) use ($value) {
+                return $current - $value;
+            });
         });
     }
 
@@ -147,36 +149,23 @@ class DatabaseStore implements Store
      * @param  string  $key
      * @param  mixed  $value
      * @param  \Closure  $callback
-     * @return int|bool
+     * @return void
      */
     protected function incrementOrDecrement($key, $value, Closure $callback)
     {
-        return $this->connection->transaction(function () use ($key, $value, $callback) {
-            $prefixed = $this->prefix.$key;
+        $prefixed = $this->prefix.$key;
 
-            $cache = $this->table()->where('key', $prefixed)->lockForUpdate()->first();
+        $cache = $this->table()->where('key', $prefixed)->lockForUpdate()->first();
 
-            if (is_null($cache)) {
-                return false;
-            }
-
-            if (is_array($cache)) {
-                $cache = (object) $cache;
-            }
-
+        if (!is_null($cache)) {
             $current = $this->encrypter->decrypt($cache->value);
-            $new = $callback((int) $current, $value);
 
-            if (! is_numeric($current)) {
-                return false;
+            if (is_numeric($current)) {
+                $this->table()->where('key', $prefixed)->update([
+                    'value' => $this->encrypter->encrypt($callback($current)),
+                ]);
             }
-
-            $this->table()->where('key', $prefixed)->update([
-                'value' => $this->encrypter->encrypt($new),
-            ]);
-
-            return $new;
-        });
+        }
     }
 
     /**

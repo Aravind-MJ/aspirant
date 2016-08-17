@@ -3,14 +3,12 @@
 namespace Illuminate\Foundation\Http;
 
 use Exception;
-use Throwable;
+use RuntimeException;
 use Illuminate\Routing\Router;
-use Illuminate\Routing\Pipeline;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class Kernel implements KernelContract
 {
@@ -51,13 +49,6 @@ class Kernel implements KernelContract
     protected $middleware = [];
 
     /**
-     * The application's route middleware groups.
-     *
-     * @var array
-     */
-    protected $middlewareGroups = [];
-
-    /**
      * The application's route middleware.
      *
      * @var array
@@ -75,10 +66,6 @@ class Kernel implements KernelContract
     {
         $this->app = $app;
         $this->router = $router;
-
-        foreach ($this->middlewareGroups as $key => $middleware) {
-            $router->middlewareGroup($key, $middleware);
-        }
 
         foreach ($this->routeMiddleware as $key => $middleware) {
             $router->middleware($key, $middleware);
@@ -99,10 +86,6 @@ class Kernel implements KernelContract
             $response = $this->sendRequestThroughRouter($request);
         } catch (Exception $e) {
             $this->reportException($e);
-
-            $response = $this->renderException($request, $e);
-        } catch (Throwable $e) {
-            $this->reportException($e = new FatalThrowableError($e));
 
             $response = $this->renderException($request, $e);
         }
@@ -126,9 +109,12 @@ class Kernel implements KernelContract
 
         $this->bootstrap();
 
+        $shouldSkipMiddleware = $this->app->bound('middleware.disable') &&
+                                $this->app->make('middleware.disable') === true;
+
         return (new Pipeline($this->app))
                     ->send($request)
-                    ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
+                    ->through($shouldSkipMiddleware ? [] : $this->middleware)
                     ->then($this->dispatchToRouter());
     }
 
@@ -141,12 +127,9 @@ class Kernel implements KernelContract
      */
     public function terminate($request, $response)
     {
-        $middlewares = $this->app->shouldSkipMiddleware() ? [] : array_merge(
-            $this->gatherRouteMiddlewares($request),
-            $this->middleware
-        );
+        $routeMiddlewares = $this->gatherRouteMiddlewares($request);
 
-        foreach ($middlewares as $middleware) {
+        foreach (array_merge($routeMiddlewares, $this->middleware) as $middleware) {
             list($name, $parameters) = $this->parseMiddleware($middleware);
 
             $instance = $this->app->make($name);
@@ -167,8 +150,8 @@ class Kernel implements KernelContract
      */
     protected function gatherRouteMiddlewares($request)
     {
-        if ($route = $request->route()) {
-            return $this->router->gatherRouteMiddlewares($route);
+        if ($request->route()) {
+            return $this->router->gatherRouteMiddlewares($request->route());
         }
 
         return [];
@@ -228,7 +211,7 @@ class Kernel implements KernelContract
      */
     public function bootstrap()
     {
-        if (! $this->app->hasBeenBootstrapped()) {
+        if (!$this->app->hasBeenBootstrapped()) {
             $this->app->bootstrapWith($this->bootstrappers());
         }
     }
@@ -255,7 +238,7 @@ class Kernel implements KernelContract
      */
     public function hasMiddleware($middleware)
     {
-        return in_array($middleware, $this->middleware);
+        return array_key_exists($middleware, array_flip($this->middleware));
     }
 
     /**
@@ -276,7 +259,7 @@ class Kernel implements KernelContract
      */
     protected function reportException(Exception $e)
     {
-        $this->app[ExceptionHandler::class]->report($e);
+        $this->app['Illuminate\Contracts\Debug\ExceptionHandler']->report($e);
     }
 
     /**
@@ -288,7 +271,7 @@ class Kernel implements KernelContract
      */
     protected function renderException($request, Exception $e)
     {
-        return $this->app[ExceptionHandler::class]->render($request, $e);
+        return $this->app['Illuminate\Contracts\Debug\ExceptionHandler']->render($request, $e);
     }
 
     /**

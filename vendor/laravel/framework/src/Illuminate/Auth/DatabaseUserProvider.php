@@ -86,8 +86,8 @@ class DatabaseUserProvider implements UserProvider
     public function updateRememberToken(UserContract $user, $token)
     {
         $this->conn->table($this->table)
-                ->where('id', $user->getAuthIdentifier())
-                ->update(['remember_token' => $token]);
+            ->where('id', $user->getAuthIdentifier())
+            ->update(['remember_token' => $token]);
     }
 
     /**
@@ -104,7 +104,7 @@ class DatabaseUserProvider implements UserProvider
         $query = $this->conn->table($this->table);
 
         foreach ($credentials as $key => $value) {
-            if (! Str::contains($key, 'password')) {
+            if (!Str::contains($key, 'password')) {
                 $query->where($key, $value);
             }
         }

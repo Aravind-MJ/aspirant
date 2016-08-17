@@ -57,8 +57,6 @@ class StartSession
             $session = $this->startSession($request);
 
             $request->setSession($session);
-
-            $this->collectGarbage($session);
         }
 
         $response = $next($request);
@@ -68,6 +66,8 @@ class StartSession
         // add the session identifier cookie to the application response headers now.
         if ($this->sessionConfigured()) {
             $this->storeCurrentUrl($request, $session);
+
+            $this->collectGarbage($session);
 
             $this->addCookieToResponse($response, $session);
         }
@@ -84,7 +84,7 @@ class StartSession
      */
     public function terminate($request, $response)
     {
-        if ($this->sessionHandled && $this->sessionConfigured() && ! $this->usingCookieSessions()) {
+        if ($this->sessionHandled && $this->sessionConfigured() && !$this->usingCookieSessions()) {
             $this->manager->driver()->save();
         }
     }
@@ -97,9 +97,7 @@ class StartSession
      */
     protected function startSession(Request $request)
     {
-        $session = $this->getSession($request);
-
-        $session->setRequestOnHandler($request);
+        with($session = $this->getSession($request))->setRequestOnHandler($request);
 
         $session->start();
 
@@ -130,7 +128,7 @@ class StartSession
      */
     protected function storeCurrentUrl(Request $request, $session)
     {
-        if ($request->method() === 'GET' && $request->route() && ! $request->ajax()) {
+        if ($request->method() === 'GET' && $request->route() && !$request->ajax()) {
             $session->setPreviousUrl($request->fullUrl());
         }
     }
@@ -161,7 +159,7 @@ class StartSession
      */
     protected function configHitsLottery(array $config)
     {
-        return random_int(1, $config['lottery'][1]) <= $config['lottery'][0];
+        return mt_rand(1, $config['lottery'][1]) <= $config['lottery'][0];
     }
 
     /**
@@ -180,8 +178,7 @@ class StartSession
         if ($this->sessionIsPersistent($config = $this->manager->getSessionConfig())) {
             $response->headers->setCookie(new Cookie(
                 $session->getName(), $session->getId(), $this->getCookieExpirationDate(),
-                $config['path'], $config['domain'], Arr::get($config, 'secure', false),
-                Arr::get($config, 'http_only', true)
+                $config['path'], $config['domain'], Arr::get($config, 'secure', false)
             ));
         }
     }
@@ -215,7 +212,7 @@ class StartSession
      */
     protected function sessionConfigured()
     {
-        return ! is_null(Arr::get($this->manager->getSessionConfig(), 'driver'));
+        return !is_null(Arr::get($this->manager->getSessionConfig(), 'driver'));
     }
 
     /**
@@ -228,7 +225,7 @@ class StartSession
     {
         $config = $config ?: $this->manager->getSessionConfig();
 
-        return ! in_array($config['driver'], [null, 'array']);
+        return !in_array($config['driver'], [null, 'array']);
     }
 
     /**
@@ -238,7 +235,7 @@ class StartSession
      */
     protected function usingCookieSessions()
     {
-        if (! $this->sessionConfigured()) {
+        if (!$this->sessionConfigured()) {
             return false;
         }
 

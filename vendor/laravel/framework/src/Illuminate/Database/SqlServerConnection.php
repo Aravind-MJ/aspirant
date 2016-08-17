@@ -4,7 +4,6 @@ namespace Illuminate\Database;
 
 use Closure;
 use Exception;
-use Throwable;
 use Doctrine\DBAL\Driver\PDOSqlsrv\Driver as DoctrineDriver;
 use Illuminate\Database\Query\Processors\SqlServerProcessor;
 use Illuminate\Database\Query\Grammars\SqlServerGrammar as QueryGrammar;
@@ -18,7 +17,7 @@ class SqlServerConnection extends Connection
      * @param  \Closure  $callback
      * @return mixed
      *
-     * @throws \Exception|\Throwable
+     * @throws \Exception
      */
     public function transaction(Closure $callback)
     {
@@ -26,7 +25,7 @@ class SqlServerConnection extends Connection
             return parent::transaction($callback);
         }
 
-        $this->getPdo()->exec('BEGIN TRAN');
+        $this->pdo->exec('BEGIN TRAN');
 
         // We'll simply execute the given callback within a try / catch block
         // and if we catch any exception we can rollback the transaction
@@ -34,18 +33,14 @@ class SqlServerConnection extends Connection
         try {
             $result = $callback($this);
 
-            $this->getPdo()->exec('COMMIT TRAN');
+            $this->pdo->exec('COMMIT TRAN');
         }
 
         // If we catch an exception, we will roll back so nothing gets messed
         // up in the database. Then we'll re-throw the exception so it can
         // be handled how the developer sees fit for their applications.
         catch (Exception $e) {
-            $this->getPdo()->exec('ROLLBACK TRAN');
-
-            throw $e;
-        } catch (Throwable $e) {
-            $this->getPdo()->exec('ROLLBACK TRAN');
+            $this->pdo->exec('ROLLBACK TRAN');
 
             throw $e;
         }
@@ -76,7 +71,7 @@ class SqlServerConnection extends Connection
     /**
      * Get the default post processor instance.
      *
-     * @return \Illuminate\Database\Query\Processors\SqlServerProcessor
+     * @return \Illuminate\Database\Query\Processors\Processor
      */
     protected function getDefaultPostProcessor()
     {
@@ -84,7 +79,7 @@ class SqlServerConnection extends Connection
     }
 
     /**
-     * Get the Doctrine DBAL driver.
+     * Get the Doctrine DBAL Driver.
      *
      * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
      */

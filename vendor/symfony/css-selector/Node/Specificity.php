@@ -20,8 +20,6 @@ namespace Symfony\Component\CssSelector\Node;
  * @see http://www.w3.org/TR/selectors/#specificity
  *
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
- *
- * @internal
  */
 class Specificity
 {
@@ -80,7 +78,7 @@ class Specificity
 
     /**
      * Returns -1 if the object specificity is lower than the argument,
-     * 0 if they are equal, and 1 if the argument is lower.
+     * 0 if they are equal, and 1 if the argument is lower
      *
      * @param Specificity $specificity
      *

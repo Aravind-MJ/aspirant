@@ -2,11 +2,17 @@
 
 namespace Illuminate\Foundation\Console;
 
-use ClassPreloader\Factory;
+use PhpParser\Lexer;
+use PhpParser\Parser;
 use Illuminate\Console\Command;
-use Illuminate\Support\Composer;
+use ClassPreloader\ClassPreloader;
+use Illuminate\Foundation\Composer;
+use ClassPreloader\Parser\DirVisitor;
+use ClassPreloader\Parser\FileVisitor;
+use ClassPreloader\Parser\NodeTraverser;
+use ClassPreloader\Exceptions\SkipFileException;
 use Symfony\Component\Console\Input\InputOption;
-use ClassPreloader\Exceptions\VisitorExceptionInterface;
+use PhpParser\PrettyPrinter\Standard as PrettyPrinter;
 
 class OptimizeCommand extends Command
 {
@@ -27,14 +33,14 @@ class OptimizeCommand extends Command
     /**
      * The composer instance.
      *
-     * @var \Illuminate\Support\Composer
+     * @var \Illuminate\Foundation\Composer
      */
     protected $composer;
 
     /**
      * Create a new optimize command instance.
      *
-     * @param  \Illuminate\Support\Composer  $composer
+     * @param  \Illuminate\Foundation\Composer  $composer
      * @return void
      */
     public function __construct(Composer $composer)
@@ -59,7 +65,7 @@ class OptimizeCommand extends Command
             $this->composer->dumpOptimized();
         }
 
-        if ($this->option('force') || ! $this->laravel['config']['app.debug']) {
+        if ($this->option('force') || !$this->laravel['config']['app.debug']) {
             $this->info('Compiling common classes');
             $this->compileClasses();
         } else {
@@ -74,19 +80,35 @@ class OptimizeCommand extends Command
      */
     protected function compileClasses()
     {
-        $preloader = (new Factory)->create(['skip' => true]);
+        $preloader = new ClassPreloader(new PrettyPrinter, new Parser(new Lexer), $this->getTraverser());
 
         $handle = $preloader->prepareOutput($this->laravel->getCachedCompilePath());
 
         foreach ($this->getClassFiles() as $file) {
             try {
                 fwrite($handle, $preloader->getCode($file, false)."\n");
-            } catch (VisitorExceptionInterface $e) {
+            } catch (SkipFileException $ex) {
                 //
             }
         }
 
         fclose($handle);
+    }
+
+    /**
+     * Get the node traverser used by the command.
+     *
+     * @return \ClassPreloader\Parser\NodeTraverser
+     */
+    protected function getTraverser()
+    {
+        $traverser = new NodeTraverser();
+
+        $traverser->addVisitor(new DirVisitor(true));
+
+        $traverser->addVisitor(new FileVisitor(true));
+
+        return $traverser;
     }
 
     /**
@@ -100,13 +122,13 @@ class OptimizeCommand extends Command
 
         $core = require __DIR__.'/Optimize/config.php';
 
-        $files = array_merge($core, $app['config']->get('compile.files', []));
+        $files = array_merge($core, $this->laravel['config']->get('compile.files', []));
 
-        foreach ($app['config']->get('compile.providers', []) as $provider) {
+        foreach ($this->laravel['config']->get('compile.providers', []) as $provider) {
             $files = array_merge($files, forward_static_call([$provider, 'compiles']));
         }
 
-        return array_map('realpath', $files);
+        return $files;
     }
 
     /**

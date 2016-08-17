@@ -17,7 +17,7 @@ class PusherBroadcaster implements Broadcaster
     /**
      * Create a new broadcaster instance.
      *
-     * @param  \Pusher  $pusher
+     * @param  Pusher  $pusher
      * @return void
      */
     public function __construct(Pusher $pusher)
@@ -31,15 +31,5 @@ class PusherBroadcaster implements Broadcaster
     public function broadcast(array $channels, $event, array $payload = [])
     {
         $this->pusher->trigger($channels, $event, $payload);
-    }
-
-    /**
-     * Get the Pusher SDK instance.
-     *
-     * @return \Pusher
-     */
-    public function getPusher()
-    {
-        return $this->pusher;
     }
 }

@@ -2,177 +2,98 @@
 
 namespace Illuminate\Auth;
 
-use Closure;
-use InvalidArgumentException;
-use Illuminate\Contracts\Auth\Factory as FactoryContract;
+use Illuminate\Support\Manager;
 
-class AuthManager implements FactoryContract
+class AuthManager extends Manager
 {
-    use CreatesUserProviders;
-
     /**
-     * The application instance.
+     * Create a new driver instance.
      *
-     * @var \Illuminate\Foundation\Application
+     * @param  string  $driver
+     * @return mixed
      */
-    protected $app;
-
-    /**
-     * The registered custom driver creators.
-     *
-     * @var array
-     */
-    protected $customCreators = [];
-
-    /**
-     * The array of created "drivers".
-     *
-     * @var array
-     */
-    protected $guards = [];
-
-    /**
-     * The user resolver shared by various services.
-     *
-     * Determines the default user for Gate, Request, and the Authenticatable contract.
-     *
-     * @var \Closure
-     */
-    protected $userResolver;
-
-    /**
-     * Create a new Auth manager instance.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    public function __construct($app)
+    protected function createDriver($driver)
     {
-        $this->app = $app;
+        $guard = parent::createDriver($driver);
 
-        $this->userResolver = function ($guard = null) {
-            return $this->guard($guard)->user();
-        };
-    }
+        // When using the remember me functionality of the authentication services we
+        // will need to be set the encryption instance of the guard, which allows
+        // secure, encrypted cookie values to get generated for those cookies.
+        $guard->setCookieJar($this->app['cookie']);
 
-    /**
-     * Attempt to get the guard from the local cache.
-     *
-     * @param  string  $name
-     * @return \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
-     */
-    public function guard($name = null)
-    {
-        $name = $name ?: $this->getDefaultDriver();
+        $guard->setDispatcher($this->app['events']);
 
-        return isset($this->guards[$name])
-                    ? $this->guards[$name]
-                    : $this->guards[$name] = $this->resolve($name);
-    }
-
-    /**
-     * Resolve the given guard.
-     *
-     * @param  string  $name
-     * @return \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function resolve($name)
-    {
-        $config = $this->getConfig($name);
-
-        if (is_null($config)) {
-            throw new InvalidArgumentException("Auth guard [{$name}] is not defined.");
-        }
-
-        if (isset($this->customCreators[$config['driver']])) {
-            return $this->callCustomCreator($name, $config);
-        } else {
-            $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
-
-            if (method_exists($this, $driverMethod)) {
-                return $this->{$driverMethod}($name, $config);
-            } else {
-                throw new InvalidArgumentException("Auth guard driver [{$name}] is not defined.");
-            }
-        }
+        return $guard->setRequest($this->app->refresh('request', $guard, 'setRequest'));
     }
 
     /**
      * Call a custom driver creator.
      *
-     * @param  string  $name
-     * @param  array  $config
-     * @return mixed
+     * @param  string  $driver
+     * @return \Illuminate\Auth\Guard
      */
-    protected function callCustomCreator($name, array $config)
+    protected function callCustomCreator($driver)
     {
-        return $this->customCreators[$config['driver']]($this->app, $name, $config);
+        $custom = parent::callCustomCreator($driver);
+
+        if ($custom instanceof Guard) {
+            return $custom;
+        }
+
+        return new Guard($custom, $this->app['session.store']);
     }
 
     /**
-     * Create a session based authentication guard.
+     * Create an instance of the database driver.
      *
-     * @param  string  $name
-     * @param  array  $config
-     * @return \Illuminate\Auth\SessionGuard
+     * @return \Illuminate\Auth\Guard
      */
-    public function createSessionDriver($name, $config)
+    public function createDatabaseDriver()
     {
-        $provider = $this->createUserProvider($config['provider']);
+        $provider = $this->createDatabaseProvider();
 
-        $guard = new SessionGuard($name, $provider, $this->app['session.store']);
-
-        // When using the remember me functionality of the authentication services we
-        // will need to be set the encryption instance of the guard, which allows
-        // secure, encrypted cookie values to get generated for those cookies.
-        if (method_exists($guard, 'setCookieJar')) {
-            $guard->setCookieJar($this->app['cookie']);
-        }
-
-        if (method_exists($guard, 'setDispatcher')) {
-            $guard->setDispatcher($this->app['events']);
-        }
-
-        if (method_exists($guard, 'setRequest')) {
-            $guard->setRequest($this->app->refresh('request', $guard, 'setRequest'));
-        }
-
-        return $guard;
+        return new Guard($provider, $this->app['session.store']);
     }
 
     /**
-     * Create a token based authentication guard.
+     * Create an instance of the database user provider.
      *
-     * @param  string  $name
-     * @param  array  $config
-     * @return \Illuminate\Auth\TokenGuard
+     * @return \Illuminate\Auth\DatabaseUserProvider
      */
-    public function createTokenDriver($name, $config)
+    protected function createDatabaseProvider()
     {
-        // The token guard implements a basic API token based guard implementation
-        // that takes an API token field from the request and matches it to the
-        // user in the database or another persistence layer where users are.
-        $guard = new TokenGuard(
-            $this->createUserProvider($config['provider']),
-            $this->app['request']
-        );
+        $connection = $this->app['db']->connection();
 
-        $this->app->refresh('request', $guard, 'setRequest');
+        // When using the basic database user provider, we need to inject the table we
+        // want to use, since this is not an Eloquent model we will have no way to
+        // know without telling the provider, so we'll inject the config value.
+        $table = $this->app['config']['auth.table'];
 
-        return $guard;
+        return new DatabaseUserProvider($connection, $this->app['hash'], $table);
     }
 
     /**
-     * Get the guard configuration.
+     * Create an instance of the Eloquent driver.
      *
-     * @param  string  $name
-     * @return array
+     * @return \Illuminate\Auth\Guard
      */
-    protected function getConfig($name)
+    public function createEloquentDriver()
     {
-        return $this->app['config']["auth.guards.{$name}"];
+        $provider = $this->createEloquentProvider();
+
+        return new Guard($provider, $this->app['session.store']);
+    }
+
+    /**
+     * Create an instance of the Eloquent user provider.
+     *
+     * @return \Illuminate\Auth\EloquentUserProvider
+     */
+    protected function createEloquentProvider()
+    {
+        $model = $this->app['config']['auth.model'];
+
+        return new EloquentUserProvider($this->app['hash'], $model);
     }
 
     /**
@@ -182,22 +103,7 @@ class AuthManager implements FactoryContract
      */
     public function getDefaultDriver()
     {
-        return $this->app['config']['auth.defaults.guard'];
-    }
-
-    /**
-     * Set the default guard driver the factory should serve.
-     *
-     * @param  string  $name
-     * @return void
-     */
-    public function shouldUse($name)
-    {
-        $this->setDefaultDriver($name);
-
-        $this->userResolver = function ($name = null) {
-            return $this->guard($name)->user();
-        };
+        return $this->app['config']['auth.driver'];
     }
 
     /**
@@ -208,87 +114,6 @@ class AuthManager implements FactoryContract
      */
     public function setDefaultDriver($name)
     {
-        $this->app['config']['auth.defaults.guard'] = $name;
-    }
-
-    /**
-     * Register a new callback based request guard.
-     *
-     * @param  string  $driver
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function viaRequest($driver, callable $callback)
-    {
-        return $this->extend($driver, function () use ($callback) {
-            $guard = new RequestGuard($callback, $this->app['request']);
-
-            $this->app->refresh('request', $guard, 'setRequest');
-
-            return $guard;
-        });
-    }
-
-    /**
-     * Get the user resolver callback.
-     *
-     * @return \Closure
-     */
-    public function userResolver()
-    {
-        return $this->userResolver;
-    }
-
-    /**
-     * Set the callback to be used to resolve users.
-     *
-     * @param  \Closure  $userResolver
-     * @return $this
-     */
-    public function resolveUsersUsing(Closure $userResolver)
-    {
-        $this->userResolver = $userResolver;
-
-        return $this;
-    }
-
-    /**
-     * Register a custom driver creator Closure.
-     *
-     * @param  string  $driver
-     * @param  \Closure  $callback
-     * @return $this
-     */
-    public function extend($driver, Closure $callback)
-    {
-        $this->customCreators[$driver] = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Register a custom provider creator Closure.
-     *
-     * @param  string  $name
-     * @param  \Closure  $callback
-     * @return $this
-     */
-    public function provider($name, Closure $callback)
-    {
-        $this->customProviderCreators[$name] = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Dynamically call the default driver instance.
-     *
-     * @param  string  $method
-     * @param  array  $parameters
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        return call_user_func_array([$this->guard(), $method], $parameters);
+        $this->app['config']['auth.driver'] = $name;
     }
 }

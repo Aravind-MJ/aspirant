@@ -13,7 +13,7 @@ class Filesystem
     use Macroable;
 
     /**
-     * Determine if a file or directory exists.
+     * Determine if a file exists.
      *
      * @param  string  $path
      * @return bool
@@ -27,47 +27,17 @@ class Filesystem
      * Get the contents of a file.
      *
      * @param  string  $path
-     * @param  bool  $lock
      * @return string
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function get($path, $lock = false)
+    public function get($path)
     {
         if ($this->isFile($path)) {
-            return $lock ? $this->sharedGet($path) : file_get_contents($path);
+            return file_get_contents($path);
         }
 
         throw new FileNotFoundException("File does not exist at path {$path}");
-    }
-
-    /**
-     * Get contents of a file with shared access.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    public function sharedGet($path)
-    {
-        $contents = '';
-
-        $handle = fopen($path, 'rb');
-
-        if ($handle) {
-            try {
-                if (flock($handle, LOCK_SH)) {
-                    clearstatcache(true, $path);
-
-                    $contents = fread($handle, $this->size($path) ?: 1);
-
-                    flock($handle, LOCK_UN);
-                }
-            } finally {
-                fclose($handle);
-            }
-        }
-
-        return $contents;
     }
 
     /**
@@ -153,7 +123,7 @@ class Filesystem
 
         foreach ($paths as $path) {
             try {
-                if (! @unlink($path)) {
+                if (!@unlink($path)) {
                     $success = false;
                 }
             } catch (ErrorException $e) {
@@ -197,28 +167,6 @@ class Filesystem
     public function name($path)
     {
         return pathinfo($path, PATHINFO_FILENAME);
-    }
-
-    /**
-     * Extract the trailing name component from a file path.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    public function basename($path)
-    {
-        return pathinfo($path, PATHINFO_BASENAME);
-    }
-
-    /**
-     * Extract the parent directory from a file path.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    public function dirname($path)
-    {
-        return pathinfo($path, PATHINFO_DIRNAME);
     }
 
     /**
@@ -347,12 +295,11 @@ class Filesystem
      * Get all of the files from the given directory (recursive).
      *
      * @param  string  $directory
-     * @param  bool  $hidden
      * @return array
      */
-    public function allFiles($directory, $hidden = false)
+    public function allFiles($directory)
     {
-        return iterator_to_array(Finder::create()->files()->ignoreDotFiles(! $hidden)->in($directory), false);
+        return iterator_to_array(Finder::create()->files()->in($directory), false);
     }
 
     /**
@@ -391,25 +338,6 @@ class Filesystem
     }
 
     /**
-     * Move a directory.
-     *
-     * @param  string  $from
-     * @param  string  $to
-     * @param  bool  $overwrite
-     * @return bool
-     */
-    public function moveDirectory($from, $to, $overwrite = false)
-    {
-        if ($overwrite && $this->isDirectory($to)) {
-            if (! $this->deleteDirectory($to)) {
-                return false;
-            }
-        }
-
-        return @rename($from, $to) === true;
-    }
-
-    /**
      * Copy a directory from one location to another.
      *
      * @param  string  $directory
@@ -419,7 +347,7 @@ class Filesystem
      */
     public function copyDirectory($directory, $destination, $options = null)
     {
-        if (! $this->isDirectory($directory)) {
+        if (!$this->isDirectory($directory)) {
             return false;
         }
 
@@ -428,7 +356,7 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
-        if (! $this->isDirectory($destination)) {
+        if (!$this->isDirectory($destination)) {
             $this->makeDirectory($destination, 0777, true);
         }
 
@@ -443,7 +371,7 @@ class Filesystem
             if ($item->isDir()) {
                 $path = $item->getPathname();
 
-                if (! $this->copyDirectory($path, $target, $options)) {
+                if (!$this->copyDirectory($path, $target, $options)) {
                     return false;
                 }
             }
@@ -452,7 +380,7 @@ class Filesystem
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
             else {
-                if (! $this->copy($item->getPathname(), $target)) {
+                if (!$this->copy($item->getPathname(), $target)) {
                     return false;
                 }
             }
@@ -472,7 +400,7 @@ class Filesystem
      */
     public function deleteDirectory($directory, $preserve = false)
     {
-        if (! $this->isDirectory($directory)) {
+        if (!$this->isDirectory($directory)) {
             return false;
         }
 
@@ -482,7 +410,7 @@ class Filesystem
             // If the item is a directory, we can just recurse into the function and
             // delete that sub-directory otherwise we'll just delete the file and
             // keep iterating through each file until the directory is cleaned.
-            if ($item->isDir() && ! $item->isLink()) {
+            if ($item->isDir() && !$item->isLink()) {
                 $this->deleteDirectory($item->getPathname());
             }
 
@@ -494,7 +422,7 @@ class Filesystem
             }
         }
 
-        if (! $preserve) {
+        if (!$preserve) {
             @rmdir($directory);
         }
 

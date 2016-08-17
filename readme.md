@@ -1,28 +1,20 @@
-# Laravel PHP Framework
+# Basic Authentication with Sentinel
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+Based on my [other repo](https://github.com/drehimself/basic-auth-sentry) that used Sentry. My personal starting point for any Laravel app that requires standard users and admin users. Also has editable profiles (standard users can edit their own profile, admin users can edit all profiles).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+[See demo here](http://authdemo.andremadarang.com/) (demo is Laravel 4 version of Sentry package. However, it works exactly the same) or install locally with instructions below.
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Installation
 
-## Official Documentation
+This is just local installation using something like MAMP/WAMP or xampp. Of course you are free to use homestead if you like.
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
-'# aspirant' 
+1. clone the repo and cd into it
+2. `composer install`
+3. make sure db is running and credentials are setup in `config\database.php` (or in your `.env` file).
+4. If you have no `.env` file you can use the example one. Just rename `.env.example` to `.env`. Enter your db credentials here.
+5. `php artisan key:generate`
+6. `php artisan migrate`
+7. `php artisan db:seed`
+8. (Optional) Run `vendor/bin/phpunit` to run some functional tests I have written. Have a look at them in the `tests/functional` folder.
+9. `php artisan serve`
+10. Visit [localhost:8000](http://localhost:8000) in your browser

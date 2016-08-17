@@ -24,20 +24,16 @@ class YamlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The indentation must be greater than zero
+     * @group legacy
      */
-    public function testZeroIndentationThrowsException()
+    public function testLegacyParseFromFile()
     {
-        Yaml::dump(array('lorem' => 'ipsum', 'dolor' => 'sit'), 2, 0);
-    }
+        $this->iniSet('error_reporting', -1 & ~E_USER_DEPRECATED);
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The indentation must be greater than zero
-     */
-    public function testNegativeIndentationThrowsException()
-    {
-        Yaml::dump(array('lorem' => 'ipsum', 'dolor' => 'sit'), 2, -4);
+        $filename = __DIR__.'/Fixtures/index.yml';
+        $contents = file_get_contents($filename);
+        $parsedByFilename = Yaml::parse($filename);
+        $parsedByContents = Yaml::parse($contents);
+        $this->assertEquals($parsedByFilename, $parsedByContents);
     }
 }

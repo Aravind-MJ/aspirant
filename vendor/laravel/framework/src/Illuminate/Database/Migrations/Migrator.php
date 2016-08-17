@@ -2,7 +2,6 @@
 
 namespace Illuminate\Database\Migrations;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
@@ -65,10 +64,10 @@ class Migrator
      * Run the outstanding migrations at a given path.
      *
      * @param  string  $path
-     * @param  array  $options
+     * @param  bool    $pretend
      * @return void
      */
-    public function run($path, array $options = [])
+    public function run($path, $pretend = false)
     {
         $this->notes = [];
 
@@ -83,17 +82,17 @@ class Migrator
 
         $this->requireFiles($path, $migrations);
 
-        $this->runMigrationList($migrations, $options);
+        $this->runMigrationList($migrations, $pretend);
     }
 
     /**
      * Run an array of migrations.
      *
      * @param  array  $migrations
-     * @param  array  $options
+     * @param  bool   $pretend
      * @return void
      */
-    public function runMigrationList($migrations, array $options = [])
+    public function runMigrationList($migrations, $pretend = false)
     {
         // First we will just make sure that there are any migrations to run. If there
         // aren't, we will just make a note of it to the developer so they're aware
@@ -106,22 +105,11 @@ class Migrator
 
         $batch = $this->repository->getNextBatchNumber();
 
-        $pretend = Arr::get($options, 'pretend', false);
-
-        $step = Arr::get($options, 'step', false);
-
         // Once we have the array of migrations, we will spin through them and run the
         // migrations "up" so the changes are made to the databases. We'll then log
         // that the migration was run so we don't repeat it next time we execute.
         foreach ($migrations as $file) {
             $this->runUp($file, $batch, $pretend);
-
-            // If we are stepping through the migrations, then we will increment the
-            // batch value for each individual migration that is run. That way we
-            // can run "artisan migrate:rollback" and undo them one at a time.
-            if ($step) {
-                $batch++;
-            }
         }
     }
 
@@ -169,20 +157,20 @@ class Migrator
         // of them "down" to reverse the last migration "operation" which ran.
         $migrations = $this->repository->getLast();
 
-        $count = count($migrations);
-
-        if ($count === 0) {
+        if (count($migrations) == 0) {
             $this->note('<info>Nothing to rollback.</info>');
-        } else {
-            // We need to reverse these migrations so that they are "downed" in reverse
-            // to what they run on "up". It lets us backtrack through the migrations
-            // and properly reverse the entire database schema operation that ran.
-            foreach ($migrations as $migration) {
-                $this->runDown((object) $migration, $pretend);
-            }
+
+            return count($migrations);
         }
 
-        return $count;
+        // We need to reverse these migrations so that they are "downed" in reverse
+        // to what they run on "up". It lets us backtrack through the migrations
+        // and properly reverse the entire database schema operation that ran.
+        foreach ($migrations as $migration) {
+            $this->runDown((object) $migration, $pretend);
+        }
+
+        return count($migrations);
     }
 
     /**
@@ -197,17 +185,17 @@ class Migrator
 
         $migrations = array_reverse($this->repository->getRan());
 
-        $count = count($migrations);
-
-        if ($count === 0) {
+        if (count($migrations) == 0) {
             $this->note('<info>Nothing to rollback.</info>');
-        } else {
-            foreach ($migrations as $migration) {
-                $this->runDown((object) ['migration' => $migration], $pretend);
-            }
+
+            return count($migrations);
         }
 
-        return $count;
+        foreach ($migrations as $migration) {
+            $this->runDown((object) ['migration' => $migration], $pretend);
+        }
+
+        return count($migrations);
     }
 
     /**
@@ -259,6 +247,7 @@ class Migrator
 
         $files = array_map(function ($file) {
             return str_replace('.php', '', basename($file));
+
         }, $files);
 
         // Once we have all of the formatted file names we will sort them and since
@@ -375,7 +364,7 @@ class Migrator
      */
     public function setConnection($name)
     {
-        if (! is_null($name)) {
+        if (!is_null($name)) {
             $this->resolver->setDefaultConnection($name);
         }
 
