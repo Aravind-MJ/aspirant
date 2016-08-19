@@ -1,6 +1,6 @@
 <?php
 
-# Static Pages. Redirecting admin an standard user so they cannot access these pages.
+#Redirecting all registered users so they cannot access these pages.
 Route::group(['middleware' => ['redirectAdmin', 'redirectStandardUser','redirectSuperAdmin','redirectFaculty']], function() {
     Route::get('/', ['as' => 'login', 'uses' => 'SessionsController@create']);
     Route::get('/login', ['as' => 'login', 'middleware' => 'guest', 'uses' => 'SessionsController@create']);

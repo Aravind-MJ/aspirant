@@ -58,12 +58,18 @@
                 </div>
                 <div style="text-align:center">
                     <p><a href="{{ url('forgot_password') }}">Forgot Password?</a></p>
-
-                    <p><strong>Standard User:</strong> user@user.com<br>
-                    <strong>Standard User Password:</strong> sentineluser</p>
+                    
+                    <p><strong>Super Admin User:</strong> superadmin@superadmin.com<br>
+                    <strong>Super Admin Password:</strong> sentinelsuperadmin</p>
 
                     <p><strong>Admin User:</strong> admin@admin.com<br>
                     <strong>Admin Password:</strong> sentineladmin</p>
+
+                    <p><strong>Standard User:</strong> user@user.com<br>
+                    <strong>Standard User Password:</strong> sentineluser</p>
+                    
+                    <p><strong>Faculty User:</strong> faculty@faculty.com<br>
+                    <strong>Faculty Password:</strong> sentinelfaculty</p>
                 </div>
 
 
