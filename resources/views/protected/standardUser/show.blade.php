@@ -1,8 +1,8 @@
-@extends('master')
+@extends('layout.layout')
 
 @section('title', 'View Profile')
 
-@section('content')
+@section('body')
 
 	<h1>{{ $user->first_name }}'s Profile</h1>
 	<ul>

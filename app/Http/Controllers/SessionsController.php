@@ -51,11 +51,17 @@ class SessionsController extends Controller
         $user = Sentinel::getUser();
         $admin = Sentinel::findRoleByName('Admins');
         $users = Sentinel::findRoleByName('Users');
+        $superadmin = Sentinel::findRoleByName('SuperAdmin');
+        $faculty = Sentinel::findRoleByName('Faculty');
 
         if ($user->inRole($admin)) {
             return redirect()->intended('admin');
         } elseif ($user->inRole($users)) {
             return redirect()->intended('/');
+        } else if($user->inRole($superadmin)){
+            return redirect()->intended('sadmin');
+        } else if($user->inRole($faculty)){
+            return redirect()->intended('faculty');
         }
     }
 
@@ -69,6 +75,6 @@ class SessionsController extends Controller
     {
         Sentinel::logout();
 
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 }

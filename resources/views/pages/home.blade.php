@@ -1,8 +1,10 @@
-@extends('master')
+@extends('layouts.layout')
 
-@section('title', 'Home')
+@section('title')
+    Home
+@stop
 
-@section('content')
+@section('body')
 
     <div class="jumbotron">
         <h1>Landing Page</h1>
@@ -15,4 +17,4 @@
         @endif
     </div>
 
-@endsection
+@stop

@@ -11,7 +11,7 @@
 
     <div class="jumbotron">
         <h1>Admin Page</h1>
-        <p>This page is for admins only!</p>
+        <p>This page is for Super admins only!</p>
     </div>
 
 

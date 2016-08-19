@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Registered Users')
+@section('title', 'Faculty | Home')
 
 @section('body')
 
@@ -12,6 +12,6 @@
         <p>{{ "Welcome, " . Sentinel::getUser()->first_name }}</p>
     @endif
 
-    <p>This is for standard users only!</p>
+    <p>This is for Fcaulty only!</p>
 
 @endsection

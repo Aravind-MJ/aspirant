@@ -23,6 +23,16 @@ class SentinelRoleSeeder extends Seeder
             'name' => 'Admins',
             'slug' => 'admins',
         ]);
+        
+        Sentinel::getRoleRepository()->createModel()->create([
+            'name' => 'SuperAdmin',
+            'slug' => 'superadmin',
+        ]);
+        
+        Sentinel::getRoleRepository()->createModel()->create([
+            'name' => 'Faculty',
+            'slug' => 'faculty',
+        ]);
 
         $this->command->info('Roles seeded!');
     }

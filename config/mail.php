@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'no-reply@yourwebsite.com', 'name' => 'Andre Madarang'],
+    'from' => ['address' => 'blank.the.king@gmail.com', 'name' => 'Aravind M J'],
 
     /*
     |--------------------------------------------------------------------------

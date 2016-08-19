@@ -56,10 +56,11 @@ class PasswordController extends Controller
     public function postEmail(Request $request)
     {
         $this->validate($request, ['email' => 'required|email']);
-
-        $response = Password::sendResetLink($request->only('email'), function (Message $message) {
+        
+        $response = '';
+        /*$response = Password::sendResetLink($request->only('email'), function (Message $message) {
             $message->subject($this->getEmailSubject());
-        });
+        });*/
 
         switch ($response) {
             case Password::RESET_LINK_SENT:
@@ -67,6 +68,9 @@ class PasswordController extends Controller
 
             case Password::INVALID_USER:
                 return redirect()->back()->withErrors(['email' => trans($response)]);
+                
+            default : return redirect($this->redirectPath())
+                            ->withFlashMessage('Token Generated!!');
         }
     }
 
