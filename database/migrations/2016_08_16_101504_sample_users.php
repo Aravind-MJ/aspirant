@@ -13,7 +13,7 @@ class SampleUsers extends Migration {
     public function up() {
         DB::table('users')->insert(
                 array(
-                    'name' => 'Aravind M J',
+                    'email' => 'Aravind M J',
                     'email' => 'aravind@imrokraft.com',
                     'password' => '$2y$10$dykfBf7baUmOEknZtkWTKOqrKvDzUYblm32bA/ZkdyNOYdbw2IxAu', //By default, uses bcrypt algo
                     'created_at' => date('Y-m-d H:m:s'),
