@@ -13,10 +13,10 @@
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+        <link rel="stylesheet" href="{{ URL::asset('dist/css/AdminLTE.min.css') }}">
         <!-- AdminLTE Skins. Choose a skin from the css/skins
              folder instead of downloading all of them to reduce the load. -->
-        <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+        <link rel="stylesheet" href="{{ URL::asset('dist/css/skins/_all-skins.min.css') }}">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -91,8 +91,7 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Home page
-                        <small>Dashboard</small>
+                        @yield('title')
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -124,12 +123,12 @@
         <!-- Bootstrap 3.3.6 -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <!-- SlimScroll -->
-        <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+        <script src="{{ URL::asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
         <!-- FastClick -->
-        <script src="plugins/fastclick/fastclick.js"></script>
+        <script src="{{ URL::asset('plugins/fastclick/fastclick.js') }}"></script>
         <!-- AdminLTE App -->
-        <script src="dist/js/app.min.js"></script>
+        <script src="{{ URL::asset('dist/js/app.min.js') }}"></script>
         <!-- AdminLTE for demo purposes -->
-        <script src="dist/js/demo.js"></script>
+        <script src="{{ URL::asset('dist/js/demo.js') }}"></script>
     </body>
 </html>

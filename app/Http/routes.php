@@ -40,5 +40,6 @@ Route::group(['middleware' => ['auth', 'superadmin']], function() {
 # Faculty Routes
 Route::group(['middleware' => ['auth', 'faculty']], function() {
     Route::get('faculty', ['as' => 'home', 'uses' => 'Faculty\FacultyController@getHome']);
+    Route::resource('faculty/attendance', 'AttendanceController', ['only' => ['index','show']]);
 });
 
