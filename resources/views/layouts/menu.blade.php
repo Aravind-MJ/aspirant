@@ -18,7 +18,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview active">
+            <li class="treeview {{ set_active('faculty') }}{{ set_active('admin') }}{{ set_active('sadmin') }}">
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
@@ -26,8 +26,19 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                    <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                    <li><a href="/"><i class="fa fa-circle-o"></i> Dashboard</a></li>
+                </ul>
+            </li>
+            <li class="treeview {{ set_active('create/admin') }}{{ set_active('list/admins') }}">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Admin</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ url('create/admin') }}"><i class="fa fa-circle-o"></i>Add admin</a></li>
+                    <li><a href="{{ url('list/admins') }}"><i class="fa fa-circle-o"></i>List admin</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -45,6 +56,22 @@
                     <li><a href="../layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
                 </ul>
             </li>
+                <li class="treeview {{ set_active('attendance') }}">
+                    <a href="#">
+                    <i class="fa fa-files-o"></i>
+                    <span>Attendance</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        @if($user->inRole('faculty'))
+                            <li><a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
+                        @endif
+                        <li><a href="{{ url('attendance/batch') }}"><i class="fa fa-circle-o"></i> Attendance By Batch</a></li>
+                        <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>
+                    </ul>
+                </li>
             <li class="header">Settings</li>
             <li><a href="#"><i class="fa fa-circle-o text-orange"></i> <span>Change Password</span></a></li>
         </ul>

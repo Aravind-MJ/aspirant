@@ -1,25 +1,20 @@
-@extends('layouts.app')
+@extends('layouts.layout')
 
-@section('title', 'Register')
+@section('title', 'Create Admin')
 
-@section('content')
-
-
-        <div class="container">
+@section('body')
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Register</h3>
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title">Register</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="box-body">
                         {!! Form::open(['route' => 'registration.store']) !!}
                         <fieldset>
 
                             @if (session()->has('flash_message'))
-                                <div class="form-group">
-                                    <p>{{ session()->get('flash_message') }}</p>
-                                </div>
+                                @include('session_flash')
                             @endif
 
                             <!-- Email field -->
@@ -54,21 +49,15 @@
 
                             <!-- Submit field -->
                             <div class="form-group">
-                                {!! Form::submit('Create Account', ['class' => 'btn btn-lg btn-primary btn-block']) !!}
+                                {!! Form::submit('Create Admin', ['class' => 'btn btn-lg btn-primary btn-block']) !!}
                             </div>
-
-
-
 
                         </fieldset>
                         {!! Form::close() !!}
                     </div>
                 </div>
 
-                <p style="text-align:center">Already have an account? <a href="{{ url('login') }}">Login</a></p>
-
             </div>
         </div>
-    </div>
 
 @endsection

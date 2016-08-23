@@ -10,35 +10,29 @@ use App\Http\Controllers\Controller;
 use App\Attendance;
 use App\Batch;
 use Illuminate\Database;
+use App\Encrypt;
 
 class AttendanceController extends Controller
 {
 
-    protected $attendance,$batch;
+    protected $attendance, $batch;
 
-    public function __construct(Attendance $attendance,Batch $batch)
+    public function __construct(Attendance $attendance, Batch $batch)
     {
+        $this->middleware('redirectStandardUser', ['except' => ['show']]);
+        $this->middleware('redirectFaculty', ['only' => ['edit', 'update', 'destroy']]);
         $this->attendance = $attendance;
         $this->batch = $batch;
     }
 
     /**
-     * Display a listing of the resource.
+     * Show Page to Mark attendance
      *
      * @return Response
      */
     public function index()
     {
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
+        return view('attendance.attendance_create');
     }
 
     /**
@@ -52,55 +46,82 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display attendance.
      *
-     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        $mode = explode('-', $id);
+        //
+    }
 
-        $data = array();
+    /**
+     * Batch wise attendance
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function ofBatch($id)
+    {
         $i = 0;
+        $data = array();
+        $id = Encrypt::decrypt($id);
+        if (!is_numeric($id)) {
+            return view('attendance.attendance_batch', ['flash_message' => 'Invalid Token!', 'type' => 'danger']);
+        }
 
-        switch ($mode[0]) {
-            case 'batch':
-                if(!is_numeric($mode[1])){
-                    return view('attendance.attendance_batch',['flash_message'=>'Invalid Request!','type'=>'danger']);
-                }
+        $batches = $this->batch
+            ->where('id', $id)
+            ->get();
 
-                $batch = $this->batch
-                    ->where('id',$mode[1])
-                    ->get();
-
-                $data['batch'] = $batch;
-
-
-                $attendance = $this->attendance
-                    ->where('batch_id', $mode[1])
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+        foreach ($batches as $batch) {
+            $data['batch']['batch'] = $batch['batch'];
+            $data['batch']['time_shift'] = $batch['time_shift'];
+            $data['batch']['year'] = $batch['year'];
+            $data['batch']['in_charge'] = $batch['in_charge'];
+        }
 
 
-                foreach ($attendance as $adata) {
-                    $data['attendance'][$i]['id'] = $adata['id'];
-                    $data['attendance'][$i]['batch_id'] = $adata['batch_id'];
-                    $data['attendance'][$i]['attendance'] = json_decode($adata['attendance']);
-                    $data['attendance'][$i]['absent_count'] = $adata['absent_count'];
-                    $data['attendance'][$i]['date'] = $adata['created_at'];
-                    $i++;
-                }
+        $attendance = $this->attendance
+            ->where('batch_id', $id)
+            ->get();
 
-                return view('attendance.attendance_batch', ['data' => $data]);
 
-            default:
-                return view('attendance.attendance_batch',['flash_message'=>'Invalid Request!','type'=>'danger']);
+        foreach ($attendance as $attendance_data) {
+            $data['attendance'][$i]['id'] = $attendance_data['id'];
+            $data['attendance'][$i]['batch_id'] = $attendance_data['batch_id'];
+            $data['attendance'][$i]['attendance'] = json_decode($attendance_data['attendance']);
+            $data['attendance'][$i]['absent_count'] = $attendance_data['absent_count'];
+            $data['attendance'][$i]['date'] = $attendance_data['created_at'];
+            $i++;
+        }
+
+        return view('attendance.attendance_batch', ['data' => $data]);
+    }
+
+    /**
+     * Student wise Attendance
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function ofStudent($id)
+    {
+        $id = Encrypt::decrypt($id);
+
+        if (!is_numeric($id)) {
+            return view('attendance.attendance_student', ['flash_message' => 'Invalid Token!', 'type' => 'danger']);
+        }
+
+        $user = Sentinel::findById($id);
+
+        if ($user->roles()->get() != 'users') {
+            return view('attendance.attendance_student', ['flash_message' => 'Invalid Reference Token!', 'type' => 'danger']);
         }
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Page to edit Attendance
      *
      * @param  int $id
      * @return Response
@@ -111,7 +132,7 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update attendance.
      *
      * @param  int $id
      * @return Response
@@ -122,7 +143,7 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove attendance.
      *
      * @param  int $id
      * @return Response

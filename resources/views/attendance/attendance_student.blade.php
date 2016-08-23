@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Attendance by Batch')
+@section('title', 'Attendance by Student')
 
 @section('body')
 
@@ -17,7 +17,6 @@
         </thead>
     </table>
 
-    {{dd($data)}}
     @endif
 @endsection
 

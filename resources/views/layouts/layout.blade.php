@@ -85,7 +85,12 @@
                 </nav>
 
             </header>
-            @include('layouts.menu')
+            @if(Sentinel::check())
+                <?php
+                    $user = Sentinel::getUser();
+                ?>
+                @include('layouts.menu')
+            @endif
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
