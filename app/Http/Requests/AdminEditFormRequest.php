@@ -25,7 +25,6 @@ class AdminEditFormRequest extends Request
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users,email,'. $this->route('registration.update'),
             'first_name' => 'required',
             'last_name' => 'required',
         ];

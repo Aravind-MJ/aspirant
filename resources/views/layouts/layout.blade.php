@@ -8,6 +8,8 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.6 -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- DATA TABLES -->
+        <link href="{{ URL::asset('plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
         <!-- Ionicons -->
@@ -127,6 +129,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <!-- Bootstrap 3.3.6 -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- DATA TABES SCRIPT -->
+        <script src="{{ URL::asset('plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('plugins/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
         <!-- SlimScroll -->
         <script src="{{ URL::asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
         <!-- FastClick -->
@@ -135,5 +140,9 @@
         <script src="{{ URL::asset('dist/js/app.min.js') }}"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="{{ URL::asset('dist/js/demo.js') }}"></script>
+        <script>
+            @yield('pagescript')
+        </script>
+
     </body>
 </html>

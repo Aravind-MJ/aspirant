@@ -29,6 +29,7 @@
                     <li><a href="/"><i class="fa fa-circle-o"></i> Dashboard</a></li>
                 </ul>
             </li>
+            @if($user->inRole('superadmin'))
             <li class="treeview {{ set_active('create/admin') }}{{ set_active('list/admins') }}">
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Admin</span>
@@ -41,6 +42,7 @@
                     <li><a href="{{ url('list/admins') }}"><i class="fa fa-circle-o"></i>List admin</a></li>
                 </ul>
             </li>
+            @endif
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-files-o"></i>

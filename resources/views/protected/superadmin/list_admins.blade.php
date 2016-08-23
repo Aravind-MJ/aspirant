@@ -6,7 +6,9 @@
     @if (session()->has('flash_message'))
         @include('session_flash')
     @endif
-    <table class="table table-striped table-bordered table-hover">
+    <div class="box box-primary">
+    <div class="box-body">
+    <table id="admins" class="table table-stripped table-hover text-center">
         <thead>
             <tr>
               <th>Sl no.</th>
@@ -22,16 +24,16 @@
         <?php $i=1; ?>
             @foreach ($users as $user)
             <tr>
-                <td>{{$i}}</td>
+                <td class="col-lg-1">{{$i}}</td>
                 <td><a href="{{url('admin/'.$user->id)}}">{{ $user->email }}</a> <br>
                 </td>
                 <td>{{ $user->first_name}}</td>
                 <td>{{ $user->last_name}}</td>
-                <td><a href="{{ url('edit/admin/'.$user->enc_id) }}" class="btn btn-warning">Edit</a> </td>
-                <td>
+                <td class="col-lg-1"><a href="{{ url('edit/admin/'.$user->enc_id) }}" class="btn btn-warning btn-block">Edit</a> </td>
+                <td class="col-lg-1">
                     {!! Form::open(array('url' => 'admin/' . $user->enc_id,)) !!}
                     {!! Form::hidden('_method', 'DELETE') !!}
-                    {!! Form::submit('DELETE', array('class' => 'btn btn-danger')) !!}
+                    {!! Form::submit('DELETE', array('class' => 'btn btn-danger btn-block')) !!}
                     {!! Form::close() !!}
                 </td>
              </tr>
@@ -40,5 +42,18 @@
 
         </tbody>
     </table>
+    </div>
+    </div>
 
+@stop
+
+@section('pagescript')
+    $('#admins').dataTable({
+        "bPaginate": true,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bSort": true,
+        "bInfo": true,
+        "bAutoWidth": false
+    });
 @stop

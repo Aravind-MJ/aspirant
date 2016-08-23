@@ -5,7 +5,7 @@
 @section('body')
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <div class="box box-default">
+                <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">Register</h3>
                     </div>

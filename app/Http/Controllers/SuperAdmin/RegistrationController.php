@@ -107,9 +107,11 @@ class RegistrationController extends Controller
             return redirect('list/admin')->withFlashMessage('Admin Edit Failed!')->withType('danger');
         }
 
-        $input = $request->only('email', 'first_name', 'last_name');
+        $input = $request->only('first_name', 'last_name');
 
-        $user->where('id',$id)->fill($input);
+        $user->where('id',$id);
+        $user->first_name = $input['first_name'];
+        $user->last_name = $input['last_name'];
         $user->save();
 
         return redirect()->route('registration.edit', $enc_id)
