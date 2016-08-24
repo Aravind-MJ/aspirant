@@ -22,12 +22,16 @@ class PublishFacultyRequest extends Request {
      */
     public function rules() {
         return [
-            'name' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
             'qualification' => 'required',
             'subject' => 'required',
             'subject' => 'required',
             'phone' => 'required',
             'address' => 'required',
+            'email' => 'required',
+            'password' => 'required|confirmed|min:6',
+            'password_confirmation' => 'required',
             'photo' => 'required'
         ];
     }

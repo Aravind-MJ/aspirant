@@ -10,8 +10,7 @@
 
 @section('body')
 
-<!--{!! Form::open(['action' => 'FacultyController@update','url' => 'update']) !!}-->
-{!! Form::open(['route' => ['update', $faculty->id], 'method' => 'POST']) !!}
+{!! Form::model($faculty, ['method' => 'POST', 'route' => ['update', $faculty->id]]) !!}
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">

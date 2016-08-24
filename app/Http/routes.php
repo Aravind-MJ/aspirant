@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('admin/profiles', 'Admin\AdminUsersController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
     Route::get('register', 'RegistrationController@create');
     Route::post('register', ['as' => 'registration.store', 'uses' => 'RegistrationController@store']);
+    Route::resource('admin/faculty', 'FacultyController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
     Route::get('addFaculty', ['as' => 'addFaculty', 'uses' => 'FacultyController@create'], ['only' => ['index','create','store']]);
     Route::post('newFaculty', ['as' => 'newFaculty', 'uses' => 'FacultyController@store'], ['only' => ['index','create','store']]);
     Route::get('listFaculty', ['as' => 'listFaculty', 'uses' => 'FacultyController@index'], ['only' => ['index','create','store','show']]);

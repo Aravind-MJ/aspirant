@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Faculty;
+use APP\User;
+use Input;
+use Validator;
+use Sentinel;
+Use Auth;
 
 class FacultyController extends Controller {
 
@@ -39,15 +44,60 @@ class FacultyController extends Controller {
      */
     public function store(Requests\PublishFacultyRequest $requestData) {
         //Insert Query
+        $user = new \App\User;
+        $user->first_name = $requestData['firstname'];
+        $user->last_name = $requestData['lastname'];
+        $user->email = $requestData['email'];
+        $user->password = \Hash::make($requestData['password']);
+
+        $input = $requestData->only('email', 'password', 'first_name', 'last_name');
+        $user = Sentinel::registerAndActivate($input);
+
+        // Find the role using the role name
+        $usersRole = Sentinel::findRoleByName('Faculty');
+
+        // Assign the role to the users
+        $usersRole->users()->attach($user);
+
         $faculty = new \App\Faculty;
+        $faculty->user_id = $user['id'];
         $faculty->qualification = $requestData['qualification'];
         $faculty->subject = $requestData['subject'];
         $faculty->phone = $requestData['phone'];
         $faculty->address = $requestData['address'];
-        $faculty->photo = $requestData['photo'];
-        $faculty->save();
 
-        //Send control to index() method
+
+        $input = Input::all();
+
+//        $this->validate($requestData['photo'], [
+//
+//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//        ]);
+
+        if (Input::hasFile('photo')) {
+
+            $file = Input::file('photo');
+
+            $name = time() . '-' . $file->getClientOriginalName();
+
+            $file = $file->move(public_path() . '\images', $name);
+
+//        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
+
+            $faculty->photo = $name;
+
+            $faculty->save();
+
+//         if ($faculty->save()) 
+//         {
+//            return Redirect::back()->with(['global' => 'New faculty added successfully.', 'type' => 'success']);
+//         }else
+//         {
+//            return Redirect::back()->with(['global'=> 'New faculty registration could not be succeeded.' , 'type' => 'danger']);
+//         }
+        }
+
+        //redirect to addFaculty
         return redirect()->route('addFaculty');
     }
 
@@ -88,7 +138,7 @@ class FacultyController extends Controller {
      * @return Response
      */
     public function update($id, Requests\PublishFacultyRequest $requestData) {
-        
+
         //Update Query
         $faculty = \App\Faculty::find($id);
         $faculty->qualification = $requestData['qualification'];
