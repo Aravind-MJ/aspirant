@@ -46,16 +46,14 @@
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-files-o"></i>
-                    <span>Layout Options</span>
+                    <span>Faculty</span>
                     <span class="pull-right-container">
-                        <span class="label label-primary pull-right">4</span>
+                        <span class="label label-primary pull-right">2</span>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="../layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                    <li><a href="../layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                    <li><a href="../layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                    <li><a href="../layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+                    <li><a href="{{URL::route('addFaculty')}}"><i class="fa fa-circle-o"></i> Add Faculty</a></li>
+                    <li><a href="{{URL::route('listFaculty')}}"><i class="fa fa-circle-o"></i> List Faculty</a></li>
                 </ul>
             </li>
                 <li class="treeview {{ set_active('attendance') }}">
