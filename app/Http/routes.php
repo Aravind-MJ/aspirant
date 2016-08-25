@@ -37,6 +37,13 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::delete('destroy/{id}', ['as' => 'destroy', 'uses' => 'FacultyController@destroy']);
     Route::get('{id}/edit', ['as' => 'edit', 'uses' => 'FacultyController@edit']);
     Route::post('update{id}', ['as' => 'update', 'uses' => 'FacultyController@update']);
+    Route::resource('admin/Examtype', 'Admin\ExamtypeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
+    Route::get('addExamtype', ['as' => 'addExamtype', 'uses' => 'ExamtypeController@create']);
+    Route::post('newExamtype', ['as' => 'newExamtype', 'uses' => 'ExamtypeController@store']);
+    Route::get('listExamtype', ['as' => 'listExamtype', 'uses' => 'ExamtypeController@index']);
+    Route::delete('destroy{id}', ['as' => 'destroy', 'uses' => 'ExamtypeController@destroy']);
+    Route::get('edit{id}', ['as' => 'edit', 'uses' => 'ExamtypeController@edit']);
+    Route::post('update{id}', ['as' => 'update', 'uses' => 'ExamtypeController@update']);
 });
 
 # Super Admin Routes

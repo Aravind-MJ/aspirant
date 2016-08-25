@@ -12,11 +12,12 @@ class CreateExamTypeTable extends Migration
      */
     public function up()
     {
-         Schema::create('exam_type', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->index();
-            $table->timestamps();
-        });
+       Schema::create('exam_type', function (Blueprint $table) { 
+        $table->increments('id');
+         $table->String('name');
+         $table->timestamps();
+    
+    });
     }
 
     /**
@@ -26,6 +27,6 @@ class CreateExamTypeTable extends Migration
      */
     public function down()
     {
-        //
+      Schema::dropIfExists('exam_type');   //
     }
 }

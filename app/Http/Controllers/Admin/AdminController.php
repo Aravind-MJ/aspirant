@@ -11,5 +11,6 @@ class AdminController extends Controller {
     public function getHome() {
         return view('protected.admin.admin_dashboard');
     }
+    
 
 }
