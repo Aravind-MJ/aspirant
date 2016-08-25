@@ -17,17 +17,16 @@
 
         <!-- first_name Field -->
         <div class="form-group">
-            {!! Form::label('firstname', 'First Name') !!}
-            {!! Form::text('firstname', null, ['class' => 'form-control', 'placeholder'=>'Enter First Name']) !!}
+            {!! Form::label('first_name', 'First Name') !!}
+            {!! Form::text('first_name', null, ['class' => 'form-control', 'placeholder'=>'Enter First Name']) !!}
             <!--{!! errors_for('first_name', $errors) !!}-->
         </div>
 
         <!-- last_name Field -->
         <div class="form-group">
-            {!! Form::label('lastname', 'Last Name') !!}
-            {!! Form::text('lastname', null, ['class' => 'form-control', 'placeholder'=>'Enter Last Name']) !!}
+            {!! Form::label('last_name', 'Last Name') !!}
+            {!! Form::text('last_name', null, ['class' => 'form-control', 'placeholder'=>'Enter Last Name']) !!}
             <!--{!! errors_for('last_name', $errors) !!}-->
-
         </div>
 
         <div class="form-group">

@@ -11,6 +11,7 @@ use Input;
 use Validator;
 use Sentinel;
 Use Auth;
+use DB;
 
 class FacultyController extends Controller {
 
@@ -22,7 +23,11 @@ class FacultyController extends Controller {
     public function index() {
 
         //Select all records from faculty_details table 
-        $allFaculties = \App\Faculty::all();    //Eloquent ORM method to return all matching results
+//        $allFaculties = \App\Faculty::all();    //Eloquent ORM method to return all matching results
+        $allFaculties = DB::table('faculty_details')
+                ->join('users', 'users.id', '=', 'faculty_details.user_id')
+                ->select('users.*', 'faculty_details.*')
+                ->get();
         //Redirecting to list_faculty.blade.php with $allFaculties       
         return View('protected.admin.list_faculty', compact('allFaculties'));
     }
@@ -110,7 +115,11 @@ class FacultyController extends Controller {
     public function show($id) {
 
         //Get results by targeting id
-        $faculty = Faculty::find($id);
+//        $faculty = Faculty::find($id);
+        $faculty = DB::table('faculty_details')
+                ->join('users', 'users.id', '=', 'faculty_details.user_id')
+                ->select('users.*', 'faculty_details.*')
+                ->get();
 
         //Redirecting to showBook.blade.php with $book variable
         return view('protected.admin.list_faculty')->with('faculty', $faculty);
@@ -125,7 +134,11 @@ class FacultyController extends Controller {
     public function edit($id) {
 
         //Get Result by targeting id
-        $faculty = \App\Faculty::find($id);
+        $faculty = DB::table('faculty_details')
+                ->join('users', 'users.id', '=', 'faculty_details.user_id')
+                ->where('faculty_details.id', $id)
+                ->select('users.*', 'faculty_details.*')
+                ->first();
 
         //Redirecting to edit_faculty.blade.php 
         return view('protected.admin.edit_faculty')->with('faculty', $faculty);
@@ -139,14 +152,43 @@ class FacultyController extends Controller {
      */
     public function update($id, Requests\PublishFacultyRequest $requestData) {
 
-        //Update Query
+        //Update Query       
         $faculty = \App\Faculty::find($id);
+//        $faculty->user_id = $user['id'];
         $faculty->qualification = $requestData['qualification'];
         $faculty->subject = $requestData['subject'];
         $faculty->phone = $requestData['phone'];
         $faculty->address = $requestData['address'];
         $faculty->photo = $requestData['photo'];
-        $faculty->save();
+        $input = Input::all();
+
+//        $this->validate($requestData['photo'], [
+//
+//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//        ]);
+
+        if (Input::hasFile('photo')) {
+
+            $file = Input::file('photo');
+
+            $name = time() . '-' . $file->getClientOriginalName();
+
+            $file = $file->move(public_path() . '\images', $name);
+
+//        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
+
+            $faculty->photo = $name;
+
+            $faculty->save();
+
+//         if ($faculty->save()) 
+//         {
+//            return Redirect::back()->with(['global' => 'New faculty added successfully.', 'type' => 'success']);
+//         }else
+//         {
+//            return Redirect::back()->with(['global'=> 'New faculty registration could not be succeeded.' , 'type' => 'danger']);
+//         }
+        }
 
         //Send control to index() method
         return redirect()->route('listFaculty');
@@ -161,8 +203,9 @@ class FacultyController extends Controller {
     public function destroy($id) {
 
         //find result by id and delete 
-        \App\Faculty::find($id)->delete();
-
+//        \App\Faculty::find($id)->delete();
+        $id =  \App\Faculty::find($id);
+        $id->delete();
         //Redirecting to index() method
         return redirect()->route('listFaculty');
     }

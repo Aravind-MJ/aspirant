@@ -31,12 +31,12 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('register', 'RegistrationController@create');
     Route::post('register', ['as' => 'registration.store', 'uses' => 'RegistrationController@store']);
     Route::resource('admin/faculty', 'FacultyController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
-    Route::get('addFaculty', ['as' => 'addFaculty', 'uses' => 'FacultyController@create'], ['only' => ['index','create','store']]);
-    Route::post('newFaculty', ['as' => 'newFaculty', 'uses' => 'FacultyController@store'], ['only' => ['index','create','store']]);
-    Route::get('listFaculty', ['as' => 'listFaculty', 'uses' => 'FacultyController@index'], ['only' => ['index','create','store','show']]);
-    Route::delete('destroy{id}', ['as' => 'destroy', 'uses' => 'FacultyController@destroy'], ['only' => ['index','create','store','show','destroy']]);
-    Route::get('edit{id}', ['as' => 'edit', 'uses' => 'FacultyController@edit'], ['only' => ['index','create','store','show','destroy','edit']]);
-    Route::post('update{id}', ['as' => 'update', 'uses' => 'FacultyController@update'], ['only' => ['index','create','store','show','destroy','edit','update']]);
+    Route::get('addFaculty', ['as' => 'addFaculty', 'uses' => 'FacultyController@create']);
+    Route::post('newFaculty', ['as' => 'newFaculty', 'uses' => 'FacultyController@store']);
+    Route::get('listFaculty', ['as' => 'listFaculty', 'uses' => 'FacultyController@index']);
+    Route::delete('destroy/{id}', ['as' => 'destroy', 'uses' => 'FacultyController@destroy']);
+    Route::get('{id}/edit', ['as' => 'edit', 'uses' => 'FacultyController@edit']);
+    Route::post('update{id}', ['as' => 'update', 'uses' => 'FacultyController@update']);
 });
 
 # Super Admin Routes

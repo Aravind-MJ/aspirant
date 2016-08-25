@@ -18,11 +18,13 @@
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
                     <th>Qualification</th>
                     <th>Subject</th>
                     <th>Phone</th>
                     <th>Address</th>
-                    <!--<th>Photo</th>-->
+                    <th>Photo</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -30,18 +32,16 @@
             <tbody>
                 @foreach( $allFaculties as $faculty )
                 <tr>
+                    <td>{{ $faculty->first_name }}</td>
+                    <td>{{ $faculty->last_name}}</td>
                     <td>{{ $faculty->qualification }}</td>
                     <td>{{ $faculty->subject}}</td>
                     <td>{{ $faculty->phone }}</td>
                     <td>{{ $faculty->address }}</td>
-
+                    <td><img src="{{ asset('images/'. $faculty->photo) }}"  alt="photo" width="50" height="50"/></td>
                     <td class=center>
-                        {!! Form::open(['route' => ['edit', $faculty->id], 'method' => 'POST']) !!}
-                        {!! csrf_field() !!}
-                        <input type="hidden" name="_method" value="Edit">
-                        <input type="hidden" name="id" value="{{$faculty->id}}">
-                        <button type="submit" class="btn btn-social">Edit</button>
-                        {!! Form::close() !!}
+                       
+                        <a href='{{ $faculty->id }}/edit' class='btn btn-primary'>Edit</a>
                     </td>
                     
                     <td class=center>
