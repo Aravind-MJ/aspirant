@@ -12,29 +12,7 @@
                 margin-top: 50px;
                 padding: 30px;
             }
-            .selector-present{
-                height:60px;
-                border: 1px solid green;
-                padding-top:10px;
-                margin:10px;
-                display : inline-block;
-                background-color: lightgreen;
-                cursor: pointer;
-            }
-            .selector-absent{
-                height:60px;
-                border: 1px solid red;
-                padding-top:10px;
-                margin:10px;
-                display : inline-block;
-                background-color: lightcoral;
-                color:white;
-                cursor: pointer;
-            }
-            #mark{
-                width:300px;
-                margin-top: 40px;
-            }
+            
         </style>
                 <br>
                 <div class="row">
@@ -58,7 +36,7 @@
                     </div>
                         <div class="box box-warning">
                             <div>
-                                <div class="box-title text-center"><h2>MARK ATTENDANCE</h2></div>
+                                <div class="box-title text-center"><h2> Mark Attendance</h2></div>
                                  </div>
                             <div class="box-body">
                                 <div class="row">
@@ -73,7 +51,7 @@
                                         <div class="selector box box-success selector-present text-center" value="<?php echo $student; ?>">
                                             <strong>
                                                 <?php echo $i; ?>
-                                                <br>
+                                                <br><i class="fa student_icon fa-user"></i> &nbsp;
                                                 <?php echo $student; ?>
                                             </strong>
                                         </div>
@@ -84,7 +62,7 @@
                                     ?>
                                 </div>
                                 <center>
-                                    <a class="btn btn-lg btn-warning" id="mark">Submit</a>
+                                    <a class="btn btn-lg btn-warning" id="mark">Submit &nbsp;<i class="fa fa-paper-plane" style="font-size:14px"></i> </a>
                                 </center>
                             </div><!-- /.box-body -->
                         </div><!-- /.box -->

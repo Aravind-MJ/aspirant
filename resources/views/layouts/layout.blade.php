@@ -28,7 +28,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="hold-transition skin-yellow sidebar-mini">
+    <body class="hold-transition skin-purple sidebar-mini">
         <!-- Site wrapper -->
         <div class="wrapper">
             <header class="main-header">
@@ -69,16 +69,16 @@
                                     <li class="user-header">
 
                                         <p>
-                                            Admin Profile
+                                           <i class="fa fa-users" style="font-size:14px"></i> &nbsp;Admin Profile
                                         </p>
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
                                         <div class="pull-left">
-                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                            <a href="#" class="btn btn-default profile_new btn-flat">Profile</a>
                                         </div>
                                         <div class="pull-right">
-                                            <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Sign out</a>
+                                            <a href="{{ url('/logout') }}" class="btn btn-default sign_new btn-flat">Sign out</a>
                                         </div>
                                     </li>
                                 </ul>
