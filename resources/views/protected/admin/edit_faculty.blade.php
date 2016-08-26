@@ -10,7 +10,7 @@
 
 @section('body')
 
-{!! Form::model($faculty, ['method' => 'POST', 'route' => ['update', $faculty->id],'enctype' => 'multipart/form-data']) !!}
+{!! Form::model($faculty, ['method' => 'PATCH', 'route' => ['update', $faculty->id],'enctype' => 'multipart/form-data']) !!}
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">

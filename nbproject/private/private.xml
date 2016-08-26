@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/add_faculty.blade.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Controllers/Admin/AdminUsersController.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Requests/AdminUsersEditFormRequest.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Controllers/FacultyController.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/routes.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Requests/AdminEditFormRequest.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/edit_faculty.blade.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Requests/PublishFacultyRequest.php</file>
+        </group>
     </open-files>
 </project-private>

@@ -21,7 +21,16 @@ class PublishFacultyRequest extends Request {
      * @return array
      */
     public function rules() {
-        return [
+        switch($this->method())
+    {
+        case 'GET':
+        case 'DELETE':
+        {
+            return [];
+        }
+        case 'POST':
+        {
+            return [
             'first_name' => 'required',
             'last_name' => 'required',
             'qualification' => 'required',
@@ -29,11 +38,28 @@ class PublishFacultyRequest extends Request {
             'subject' => 'required',
             'phone' => 'required',
             'address' => 'required',
-//            'email' => 'required',
-//            'password' => 'required|confirmed|min:6',
-//            'password_confirmation' => 'required',
+            'email' => 'required|email|unique',
+            'password' => 'required|confirmed|min:6',
+            'password_confirmation' => 'required',
             'photo' => 'required'
         ];
+        }
+        case 'PUT':
+        case 'PATCH':
+        {
+            return [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'qualification' => 'required',
+            'subject' => 'required',
+            'subject' => 'required',
+            'phone' => 'required',
+            'address' => 'required'
+        ];
+        }
+        default:break;
+    }
+        
     }
 
 }

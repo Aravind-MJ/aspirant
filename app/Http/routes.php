@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('listFaculty', ['as' => 'listFaculty', 'uses' => 'FacultyController@index']);
     Route::delete('destroy/{id}', ['as' => 'destroy', 'uses' => 'FacultyController@destroy']);
     Route::get('{id}/edit', ['as' => 'edit', 'uses' => 'FacultyController@edit']);
-    Route::post('update{id}', ['as' => 'update', 'uses' => 'FacultyController@update']);
+    Route::patch('update{id}', ['as' => 'update', 'uses' => 'FacultyController@update']);
     Route::resource('admin/Examtype', 'Admin\ExamtypeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
     Route::get('addExamtype', ['as' => 'addExamtype', 'uses' => 'ExamtypeController@create']);
     Route::post('newExamtype', ['as' => 'newExamtype', 'uses' => 'ExamtypeController@store']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Http\Requests\PublishFacultyEditRequest;
 use App\Http\Controllers\Controller;
 use App\Faculty;
 use APP\User;
@@ -203,9 +204,8 @@ class FacultyController extends Controller {
     public function destroy($id) {
 
         //find result by id and delete 
-//        \App\Faculty::find($id)->delete();
-        $id =  \App\Faculty::find($id);
-        $id->delete();
+        \App\Faculty::find($id)->delete();
+
         //Redirecting to index() method
         return redirect()->route('listFaculty');
     }
