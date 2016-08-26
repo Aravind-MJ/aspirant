@@ -66,6 +66,15 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
     Route::get('faculty', ['as' => 'home', 'uses' => 'Faculty\FacultyController@getHome']);
 });
 
-Route::resource('attendance', 'AttendanceController');
+#Routes to Attendance Section
+Route::get('attendance', ['uses' => 'AttendanceController@index']);
+Route::get('attendance/batch', ['uses' => 'AttendanceController@selectBatch']);
+Route::get('attendance/batch/{id}', ['uses' => 'AttendanceController@ofBatch']);
+Route::get('attendance/student', ['uses' => 'AttendanceController@selectStudent']);
+Route::get('attendance/student/{id}', ['uses' => 'AttendanceController@ofStudent']);
 
+Route::group(['middleware' => ['auth', 'notCurrentUser']], function () {
+    Route::get('changePassword/{id}', ['uses' => 'ChangePasswordController@edit']);
+    Route::post('changePassword/{id}', ['as'=>'password.change','uses' => 'ChangePasswordController@update']);
+});
 

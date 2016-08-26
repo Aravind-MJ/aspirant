@@ -11,6 +11,8 @@ use App\Attendance;
 use App\Batch;
 use Illuminate\Database;
 use App\Encrypt;
+use App\Cons;
+use Mockery\CountValidator\Exception;
 
 class AttendanceController extends Controller
 {
@@ -56,6 +58,66 @@ class AttendanceController extends Controller
     }
 
     /**
+     * Display Batch to select.
+     *
+     * @return Response
+     */
+    public function selectBatch()
+    {
+        $year = Cons::$year;
+
+        try {
+            $time_shift = array('morning','afternoon','evening');
+
+            $batch = $this->batch
+                ->select('id', 'batch', 'time_shift')
+                ->where('year', $year)
+                ->get();
+
+        } catch(Exception $e){
+            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('error');
+        }
+
+        foreach($batch as $each_batch){
+            $each_batch['enc_id'] = Encrypt::encrypt($each_batch['id']);
+        }
+
+        $batch = $batch->toArray();
+
+        return view('attendance.attendance_select_batch',['time_shift'=>$time_shift,'batch'=>$batch]);
+    }
+
+    /**
+     * Display Students to select.
+     *
+     * @return Response
+     */
+    public function selectStudent()
+    {
+        $year = Cons::$year;
+
+        try {
+            $time_shift = array('morning','afternoon','evening');
+
+            $batch = $this->batch
+                ->select('id', 'batch', 'time_shift')
+                ->where('year', $year)
+                ->get();
+
+        } catch(Exception $e){
+            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('error');
+        }
+
+        foreach($batch as $each_batch){
+            $each_batch['enc_id'] = Encrypt::encrypt($each_batch['id']);
+        }
+
+        $batch = $batch->toArray();
+
+        return view('attendance.attendance_select_student',['time_shift'=>$time_shift,'batch'=>$batch]);
+    }
+
+    /**
      * Batch wise attendance
      *
      * @param  int $id
@@ -66,13 +128,19 @@ class AttendanceController extends Controller
         $i = 0;
         $data = array();
         $id = Encrypt::decrypt($id);
+
         if (!is_numeric($id)) {
             return view('attendance.attendance_batch', ['flash_message' => 'Invalid Token!', 'type' => 'danger']);
         }
 
-        $batches = $this->batch
-            ->where('id', $id)
-            ->get();
+        try{
+            $batches = $this->batch
+                ->where('id', $id)
+                ->get();
+        }catch(Exception $e){
+            return view('attendance.attendance_batch', ['flash_message' => 'Database Error!', 'type' => 'danger']);
+        }
+
 
         foreach ($batches as $batch) {
             $data['batch']['batch'] = $batch['batch'];
@@ -81,10 +149,14 @@ class AttendanceController extends Controller
             $data['batch']['in_charge'] = $batch['in_charge'];
         }
 
+        try{
+            $attendance = $this->attendance
+                ->where('batch_id', $id)
+                ->get();
+        }catch(Exception $e){
+            return view('attendance.attendance_batch', ['flash_message' => 'Database Error!', 'type' => 'danger']);
+        }
 
-        $attendance = $this->attendance
-            ->where('batch_id', $id)
-            ->get();
 
 
         foreach ($attendance as $attendance_data) {
@@ -108,16 +180,23 @@ class AttendanceController extends Controller
     public function ofStudent($id)
     {
         $id = Encrypt::decrypt($id);
+        $data = array();
 
         if (!is_numeric($id)) {
             return view('attendance.attendance_student', ['flash_message' => 'Invalid Token!', 'type' => 'danger']);
         }
 
-        $user = Sentinel::findById($id);
+        try{
+            $user = Sentinel::findById($id);
+        }catch(Exception $e){
+            return view('attendance.attendance_student', ['flash_message' => 'Database Error!', 'type' => 'danger']);
+        }
 
         if ($user->roles()->get() != 'users') {
             return view('attendance.attendance_student', ['flash_message' => 'Invalid Reference Token!', 'type' => 'danger']);
         }
+
+        return view('attendance.attendance_student',['data'=>$data]);
     }
 
     /**

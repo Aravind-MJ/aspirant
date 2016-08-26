@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Encrypt;
 use Sentinel;
 use Closure;
 
@@ -17,9 +18,9 @@ class SentinelNotCurrentUser
     public function handle($request, Closure $next)
     {
         $user = Sentinel::getUser();
-        $routeID = $request->route()->parameters()['profiles'];
+        $routeID = $request->route()->parameters()['id'];
 
-        if ($user->id != $routeID) {
+        if ($user->id != (int)Encrypt::decrypt($routeID)) {
             return redirect()->back();
         }
 

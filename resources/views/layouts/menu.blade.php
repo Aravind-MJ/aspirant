@@ -89,7 +89,7 @@
                     </ul>
                 </li>
             <li class="header">Settings</li>
-            <li><a href="#"><i class="fa fa-circle-o text-orange"></i> <span>Change Password</span></a></li>
+            <li><a href="{{url('changePassword/'. \App\Encrypt::encrypt($user->id))}}"><i class="fa fa-circle-o text-orange"></i> <span>Change Password</span></a></li>
         </ul>
     </section>
     <!-- /.sidebar -->
