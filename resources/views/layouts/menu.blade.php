@@ -82,7 +82,7 @@
                     </a>
                     <ul class="treeview-menu">
                         @if($user->inRole('faculty'))
-                            <li><a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
+                            <li><a href="{{ url('mark/attendance') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
                         @endif
                         <li><a href="{{ url('attendance/batch') }}"><i class="fa fa-circle-o"></i> Attendance By Batch</a></li>
                         <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>

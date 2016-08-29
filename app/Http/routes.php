@@ -67,9 +67,9 @@ Route::group(['middleware' => ['auth', 'superadmin']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
     #Routes to Attendance Section
-    Route::get('attendance', ['uses' => 'AttendanceController@index']);
-    Route::get('attendance/{id}', ['uses' => 'AttendanceController@mark']);
-    Route::post('markAttendance', ['uses' => 'AttendanceController@store']);
+    Route::get('mark/attendance', ['uses' => 'AttendanceController@index']);
+    Route::get('mark/attendance/{id}', ['uses' => 'AttendanceController@mark']);
+    Route::post('mark/attendance', ['uses' => 'AttendanceController@store']);
     Route::get('attendance/batch', ['uses' => 'AttendanceController@selectBatch']);
     Route::get('attendance/batch/{id}', ['uses' => 'AttendanceController@ofBatch']);
     Route::get('attendance/student', ['uses' => 'AttendanceController@selectStudentGet']);

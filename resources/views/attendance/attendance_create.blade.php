@@ -85,7 +85,7 @@
                             absent.push($(this).children('.roll').val());
                         });
                         $('.loading-screen').show();
-                        $.post('{{url('markAttendance')}}',{
+                        $.post('{{url('mark/attendance')}}',{
                             id:id,
                             absent:absent
                         },
@@ -95,7 +95,7 @@
                                 $('.box.box-warning').hide();
                                 $('.success-message').show();
                                 setTimeout(function(){
-                                    window.location.href='{{url('attendance')}}';
+                                    window.location.href='{{url('mark/attendance')}}';
                                 },2000);
                             }
                         });

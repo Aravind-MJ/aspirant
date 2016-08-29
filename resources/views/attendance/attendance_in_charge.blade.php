@@ -21,7 +21,7 @@
                 foreach ($batch as $each_batch) {
                     if($each_batch['status']=='unmarked'){
                 ?>
-                    <a class="btn btn-app" href="{{url('attendance/'.$each_batch['enc_id'])}}">
+                    <a class="btn btn-app" href="{{url('mark/attendance/'.$each_batch['enc_id'])}}">
                         <i class="fa fa-info text-warning"></i>
                         <strong><?= $each_batch['batch'] ?> - <?= $each_batch['time_shift'] ?></strong>
                     </a>
