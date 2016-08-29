@@ -19,6 +19,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 # Standard User Routes
 Route::group(['middleware' => ['auth', 'standardUser']], function () {
+    #Home
     Route::get('home', 'PagesController@getHome');
     Route::get('userProtected', 'StandardUser\StandardUserController@getUserProtected');
     Route::resource('profiles', 'StandardUser\UsersController', ['only' => ['show', 'edit', 'update']]);
@@ -26,7 +27,9 @@ Route::group(['middleware' => ['auth', 'standardUser']], function () {
 
 # Admin Routes
 Route::group(['middleware' => ['auth', 'admin']], function () {
+    #Home
     Route::get('admin', ['as' => 'admin_dashboard', 'uses' => 'Admin\AdminController@getHome']);
+
     Route::resource('admin/profiles', 'Admin\AdminUsersController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
     Route::get('register', 'RegistrationController@create');
     Route::post('register', ['as' => 'registration.store', 'uses' => 'RegistrationController@store']);
@@ -48,33 +51,41 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 # Super Admin Routes
 Route::group(['middleware' => ['auth', 'superadmin']], function () {
+    #Home
     Route::get('sadmin', ['as' => 'admin_dashboard', 'uses' => 'SuperAdmin\SuperAdminController@getHome']);
 
     #Admin CRUD Routes
     Route::get('list/admins', 'SuperAdmin\RegistrationController@index');
     Route::get('create/admin', 'SuperAdmin\RegistrationController@create');
     Route::post('register', ['as' => 'registration.store', 'uses' => 'SuperAdmin\RegistrationController@store']);
-    Route::get('edit/admin/{id}',['as'=>'registration.edit','uses'=>'SuperAdmin\RegistrationController@edit']);
-    Route::post('edit/admin/{id}',['as'=>'registration.update','uses'=>'SuperAdmin\RegistrationController@update']);
-    Route::delete('admin/{id}',['as'=>'registration.destroy','uses'=>'SuperAdmin\RegistrationController@destroy']);
+    Route::get('edit/admin/{id}', ['as' => 'registration.edit', 'uses' => 'SuperAdmin\RegistrationController@edit']);
+    Route::post('edit/admin/{id}', ['as' => 'registration.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
+    Route::delete('admin/{id}', ['as' => 'registration.destroy', 'uses' => 'SuperAdmin\RegistrationController@destroy']);
 
-    
+
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    #Routes to Attendance Section
+    Route::get('attendance', ['uses' => 'AttendanceController@index']);
+    Route::get('attendance/{id}', ['uses' => 'AttendanceController@mark']);
+    Route::post('markAttendance', ['uses' => 'AttendanceController@store']);
+    Route::get('attendance/batch', ['uses' => 'AttendanceController@selectBatch']);
+    Route::get('attendance/batch/{id}', ['uses' => 'AttendanceController@ofBatch']);
+    Route::get('attendance/student', ['uses' => 'AttendanceController@selectStudentGet']);
+    Route::post('attendance/student', ['as' => 'attendance.student', 'uses' => 'AttendanceController@selectStudentPost']);
+    Route::get('attendance/student/{id}', ['uses' => 'AttendanceController@ofStudent']);
 });
 
 # Faculty Routes
 Route::group(['middleware' => ['auth', 'faculty']], function () {
+    #Home
     Route::get('faculty', ['as' => 'home', 'uses' => 'Faculty\FacultyController@getHome']);
 });
 
-#Routes to Attendance Section
-Route::get('attendance', ['uses' => 'AttendanceController@index']);
-Route::get('attendance/batch', ['uses' => 'AttendanceController@selectBatch']);
-Route::get('attendance/batch/{id}', ['uses' => 'AttendanceController@ofBatch']);
-Route::get('attendance/student', ['uses' => 'AttendanceController@selectStudent']);
-Route::get('attendance/student/{id}', ['uses' => 'AttendanceController@ofStudent']);
-
 Route::group(['middleware' => ['auth', 'notCurrentUser']], function () {
+    #Routes to Change Password
     Route::get('changePassword/{id}', ['uses' => 'ChangePasswordController@edit']);
-    Route::post('changePassword/{id}', ['as'=>'password.change','uses' => 'ChangePasswordController@update']);
+    Route::post('changePassword/{id}', ['as' => 'password.change', 'uses' => 'ChangePasswordController@update']);
 });
 

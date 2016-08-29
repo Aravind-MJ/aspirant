@@ -6,6 +6,8 @@
         <title>@yield('title')</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- token for laravel ajax calls -->
+        <meta name="_token" content="{!! csrf_token() !!}"/>
         <!-- Bootstrap 3.3.6 -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- DATA TABLES -->
@@ -115,6 +117,17 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
+            <div class="loading-screen">
+                <div class="loading-icon">
+                    <div class="sk-wave">
+                        <div class="sk-rect sk-rect1"></div>
+                        <div class="sk-rect sk-rect2"></div>
+                        <div class="sk-rect sk-rect3"></div>
+                        <div class="sk-rect sk-rect4"></div>
+                        <div class="sk-rect sk-rect5"></div>
+                    </div>
+                </div>
+            </div>
 
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
@@ -142,6 +155,10 @@
         <!-- AdminLTE for demo purposes -->
         <script src="{{ URL::asset('dist/js/demo.js') }}"></script>
         <script>
+            $('.loading-screen').hide();
+            $.ajaxSetup({
+               headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+            });
             @yield('pagescript')
         </script>
 
