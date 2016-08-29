@@ -72,7 +72,7 @@
             </li>
             
             
-                <li class="treeview {{ set_active('attendance') }}">
+                <li class="treeview {{ set_active('attendance') }}{{ set_active('mark/attendance') }}">
                     <a href="#">
                     <i class="fa fa-files-o"></i>
                     <span>Attendance</span>
