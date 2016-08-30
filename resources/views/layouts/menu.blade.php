@@ -43,17 +43,32 @@
                 </ul>
             </li>
             @endif
+            @if($user->inRole('admins','superadmin'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-files-o"></i>
                     <span>Faculty</span>
                     <span class="pull-right-container">
-                        <span class="label label-primary pull-right">2</span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{URL::route('addFaculty')}}"><i class="fa fa-circle-o"></i> Add Faculty</a></li>
-                    <li><a href="{{URL::route('listFaculty')}}"><i class="fa fa-circle-o"></i> List Faculty</a></li>
+                    <li><a href="{{URL::route('Faculty.create')}}"><i class="fa fa-circle-o"></i> Add Faculty</a></li>
+                    <li><a href="{{URL::route('Faculty.index')}}"><i class="fa fa-circle-o"></i> List Faculty</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-files-o"></i>
+                    <span>Student Registration</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ action("StudentController@create") }}"><i class="fa fa-circle-o"></i> New Student</a></li>
+                    <li><a href="{{ action("StudentController@index") }}"><i class="fa fa-circle-o"></i> List Students</a></li>
                 </ul>
             </li>
             
@@ -62,7 +77,7 @@
                     <i class="fa fa-files-o"></i>
                     <span>Examtype</span>
                     <span class="pull-right-container">
-                        <span class="label label-primary pull-right">2</span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
@@ -70,15 +85,21 @@
                     <li><a href="{{URL::route('listExamtype')}}"><i class="fa fa-circle-o"></i> List Examtype</a></li>
                 </ul>
             </li>
+
             
             
                 <li class="treeview {{ set_active('attendance') }}{{ set_active('mark/attendance') }}">
                     <a href="#">
+
+            @endif
+
+
                     <i class="fa fa-files-o"></i>
                     <span>Attendance</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
+
                     </a>
                     <ul class="treeview-menu">
                         @if($user->inRole('faculty'))
@@ -88,6 +109,17 @@
                         <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>
                     </ul>
                 </li>
+
+                </a>
+                <ul class="treeview-menu">
+                    @if($user->inRole('faculty'))
+                    <li><a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
+                    @endif
+                    <li><a href="{{ url('attendance/batch') }}"><i class="fa fa-circle-o"></i> Attendance By Batch</a></li>
+                    <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>
+                </ul>
+            </li>
+
             <li class="header">Settings</li>
             <li><a href="{{url('changePassword/'. \App\Encrypt::encrypt($user->id))}}"><i class="fa fa-circle-o text-orange"></i> <span>Change Password</span></a></li>
         </ul>

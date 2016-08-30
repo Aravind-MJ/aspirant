@@ -10,7 +10,7 @@
 
 @section('body')
 
-{!! Form::open(['route' => 'newFaculty','enctype' => 'multipart/form-data']) !!}
+{!! Form::open(['action' => 'FacultyController@store','enctype' => 'multipart/form-data']) !!}
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">

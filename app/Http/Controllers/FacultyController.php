@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Requests\PublishFacultyEditRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use App\Faculty;
 use APP\User;
 use Input;
@@ -51,8 +51,8 @@ class FacultyController extends Controller {
     public function store(Requests\PublishFacultyRequest $requestData) {
         //Insert Query
         $user = new \App\User;
-        $user->first_name = $requestData['firstname'];
-        $user->last_name = $requestData['lastname'];
+        $user->first_name = $requestData['first_name'];
+        $user->last_name = $requestData['last_name'];
         $user->email = $requestData['email'];
         $user->password = \Hash::make($requestData['password']);
 
@@ -93,18 +93,14 @@ class FacultyController extends Controller {
             $faculty->photo = $name;
 
             $faculty->save();
-
-//         if ($faculty->save()) 
-//         {
-//            return Redirect::back()->with(['global' => 'New faculty added successfully.', 'type' => 'success']);
-//         }else
-//         {
-//            return Redirect::back()->with(['global'=> 'New faculty registration could not be succeeded.' , 'type' => 'danger']);
-//         }
         }
 
         //redirect to addFaculty
-        return redirect()->route('addFaculty');
+        if ($faculty->save()) {
+            return Redirect::back()->with('flash_message', 'New faculty added successfully.');
+        } else {
+            return Redirect::back()->with('flash_message', 'New faculty registration could not be succeeded.');
+        }
     }
 
     /**
@@ -116,13 +112,12 @@ class FacultyController extends Controller {
     public function show($id) {
 
         //Get results by targeting id
-//        $faculty = Faculty::find($id);
         $faculty = DB::table('faculty_details')
                 ->join('users', 'users.id', '=', 'faculty_details.user_id')
                 ->select('users.*', 'faculty_details.*')
                 ->get();
 
-        //Redirecting to showBook.blade.php with $book variable
+        //Redirecting to list page
         return view('protected.admin.list_faculty')->with('faculty', $faculty);
     }
 
@@ -192,7 +187,7 @@ class FacultyController extends Controller {
         }
 
         //Send control to index() method
-        return redirect()->route('listFaculty');
+        return redirect()->route('Faculty.index');
     }
 
     /**
@@ -207,7 +202,7 @@ class FacultyController extends Controller {
         \App\Faculty::find($id)->delete();
 
         //Redirecting to index() method
-        return redirect()->route('listFaculty');
+        return redirect()->route('Faculty.index');
     }
 
 }

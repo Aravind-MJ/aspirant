@@ -23,6 +23,8 @@
         <link rel="stylesheet" href="{{ URL::asset('dist/css/skins/_all-skins.min.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css">
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -57,14 +59,14 @@
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <span class="hidden-xs">Welcome 
-                                    @if(Sentinel::check())
+                                        @if(Sentinel::check())
                                         {{ Sentinel::getUser()->first_name }} {{Sentinel::getUser()->last_name}}
-                                    @else
+                                        @else
                                         Guest
-                                    @endif
-                                    !
+                                        @endif
+                                        !
                                     </span>
-                                    
+
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
@@ -91,10 +93,10 @@
 
             </header>
             @if(Sentinel::check())
-                <?php
-                    $user = Sentinel::getUser();
-                ?>
-                @include('layouts.menu')
+            <?php
+            $user = Sentinel::getUser();
+            ?>
+            @include('layouts.menu')
             @endif
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -154,6 +156,17 @@
         <script src="{{ URL::asset('dist/js/app.min.js') }}"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="{{ URL::asset('dist/js/demo.js') }}"></script>
+
+        <script src="{{ URL::asset('dist/js/bootstrap-datepicker.js') }}"></script>
+        <script>
+            $(function () {
+                $('#datepicker').datepicker({
+                    format: 'dd/mm/yyyy',
+                    endDate: '0',
+                    autoclose: true
+                });
+            });
+        </script>
         <script>
             $('.loading-screen').hide();
             $.ajaxSetup({

@@ -41,11 +41,11 @@
                     <td><img src="{{ asset('images/'. $faculty->photo) }}"  alt="photo" width="50" height="50"/></td>
                     <td class=center>
                        
-                        <a href='{{ $faculty->id }}/edit' class='btn btn-primary'>Edit</a>
+                        <a href='Faculty/{{ $faculty->id }}/edit' class='btn btn-primary'>Edit</a>
                     </td>
                     
                     <td class=center>
-                        {!! Form::open(['route' => ['destroy', $faculty->id], 'method' => 'POST']) !!}
+                        {!! Form::open(['action' => ['FacultyController@destroy', $faculty->id], 'method' => 'POST']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$faculty->id}}">

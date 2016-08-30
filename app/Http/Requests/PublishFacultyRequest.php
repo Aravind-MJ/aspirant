@@ -35,10 +35,9 @@ class PublishFacultyRequest extends Request {
             'last_name' => 'required',
             'qualification' => 'required',
             'subject' => 'required',
-            'subject' => 'required',
             'phone' => 'required',
             'address' => 'required',
-            'email' => 'required|email|unique',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6',
             'password_confirmation' => 'required',
             'photo' => 'required'
@@ -48,10 +47,7 @@ class PublishFacultyRequest extends Request {
         case 'PATCH':
         {
             return [
-            'first_name' => 'required',
-            'last_name' => 'required',
             'qualification' => 'required',
-            'subject' => 'required',
             'subject' => 'required',
             'phone' => 'required',
             'address' => 'required'

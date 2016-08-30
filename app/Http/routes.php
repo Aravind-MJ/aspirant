@@ -33,20 +33,18 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('admin/profiles', 'Admin\AdminUsersController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
     Route::get('register', 'RegistrationController@create');
     Route::post('register', ['as' => 'registration.store', 'uses' => 'RegistrationController@store']);
-    Route::resource('admin/faculty', 'FacultyController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
-    Route::get('addFaculty', ['as' => 'addFaculty', 'uses' => 'FacultyController@create']);
-    Route::post('newFaculty', ['as' => 'newFaculty', 'uses' => 'FacultyController@store']);
-    Route::get('listFaculty', ['as' => 'listFaculty', 'uses' => 'FacultyController@index']);
-    Route::delete('destroy/{id}', ['as' => 'destroy', 'uses' => 'FacultyController@destroy']);
-    Route::get('{id}/edit', ['as' => 'edit', 'uses' => 'FacultyController@edit']);
-    Route::patch('update{id}', ['as' => 'update', 'uses' => 'FacultyController@update']);
-    Route::resource('admin/Examtype', 'Admin\ExamtypeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
+    #Faculty crud Route
+    Route::resource('Faculty', 'FacultyController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
+    #Examtype crud Routes
+    Route::resource('admin/Examtype', 'Admin\ExamtypeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store']]);
     Route::get('addExamtype', ['as' => 'addExamtype', 'uses' => 'ExamtypeController@create']);
     Route::post('newExamtype', ['as' => 'newExamtype', 'uses' => 'ExamtypeController@store']);
     Route::get('listExamtype', ['as' => 'listExamtype', 'uses' => 'ExamtypeController@index']);
     Route::delete('destroy{id}', ['as' => 'destroy', 'uses' => 'ExamtypeController@destroy']);
     Route::get('edit{id}', ['as' => 'edit', 'uses' => 'ExamtypeController@edit']);
     Route::post('update{id}', ['as' => 'update', 'uses' => 'ExamtypeController@update']);
+    #Student Reristration crud Route
+    Route::resource('Student', 'StudentController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
 });
 
 # Super Admin Routes
