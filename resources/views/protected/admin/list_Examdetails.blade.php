@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'List Examtype')
+@section('title', 'List Examdetails')
 
 <!--@section('content')
 
@@ -18,7 +18,8 @@
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Exam_Type</th>
+                    <th>Date</th>
                   
                     <!--<th>Photo</th>-->
                     <th>Edit</th>
@@ -26,21 +27,19 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach( $allExamtype as $Examtype )
+                @foreach($allExamdetails as $Examdetails )
                 <tr>
-                    <td>{{ $Examtype->name }}</td>
-                     
-             
-
+                    <td>{{ $Examdetails->name}}</td>
+                     <td>{{ $Examdetails->exam_date }}</td>
+            
                     <td class=center>
-                        <a class="btn btn-default btn-success" href="{{url('ExamType/'.$Examtype->id).'/edit'}}">Edit</a>
+                        <a class="btn btn-default btn-success" href="{{url('ExamDetails/'.$Examdetails->id).'/edit'}}">Edit</a>
                     </td>
-                    
                     <td class=center>
-                        {!! Form::open(['route' => ['ExamType.destroy', $Examtype->id], 'method' => 'POST']) !!}
+                        {!! Form::open(['route' => ['ExamDetails.destroy', $Examdetails->id], 'method' => 'POST']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
-                        <input type="hidden" name="id" value="{{$Examtype->id}}">
+                        <input type="hidden" name="id" value="{{$Examdetails->id}}">
                         <button type="submit" class="btn btn-danger">Delete</button>
                         {!! Form::close() !!}
                     </td>

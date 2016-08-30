@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Add Examtype')
+@section('title', 'Edit Examdetails')
 
 <!--@section('content')
 
@@ -10,16 +10,21 @@
 
 @section('body')
 
-{!! Form::open(['route' => 'ExamType.store', 'method'=>'post','enctype' => 'multipart/form-data']) !!}
+{!! Form::model($Examdetails, ['method' => 'PATCH', 'route' => ['ExamDetails.update',$Examdetails->id],'enctype' => 'multipart/form-data']) !!}
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">
 
-        <!-- first_name Field -->
+    
         <div class="form-group">
-            {!! Form::label('name', 'Name') !!}
-            {!! Form::text('name', null, ['class' => 'form-control', 'placeholder'=>'Enter  Name']) !!}
-            <!--{!! errors_for('first_name', $errors) !!}-->
+            {!! Form::label('type_id', 'Exam_Type') !!}
+            {!! Form::select('type_id',$Examdetails,null,['class' => 'form-control', 'placeholder'=>''])!!}
+            {!! errors_for('name', $errors) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('date', 'Exam_date') !!}
+            {!! Form::text('date', '', ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
+            {!! errors_for('date', $errors) !!}
         </div>
 
         <br>

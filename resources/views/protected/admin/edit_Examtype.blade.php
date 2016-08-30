@@ -10,7 +10,7 @@
 
 @section('body')
 
-{!! Form::model($Examtype, ['method' => 'POST', 'route' => ['update', $Examtype->id]]) !!}
+{!! Form::model($Examtype, ['method' => 'PATCH', 'route' => ['ExamType.update',$Examtype->id],'enctype' => 'multipart/form-data']) !!}
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">
@@ -28,13 +28,7 @@
         </div>
 
         {!! Form::close() !!}
-        <!--                @if($errors->any())
-                    <ul class="alert alert-danger">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                @endif-->
+        
     </div>
 
 </div>

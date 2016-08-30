@@ -7,7 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Examtype;
 
-class ExamtypeController extends Controller
+class ExamTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,7 +41,7 @@ class ExamtypeController extends Controller
         $Examtype = new \App\Examtype;
         $Examtype->name= $requestData['name'];//
            $Examtype->save();
-           return redirect()->route('addExamtype');
+           return redirect()->route('ExamType.create');
     }
    
     /**
@@ -85,7 +85,7 @@ class ExamtypeController extends Controller
         $Examtype->save();
 
         //Send control to index() method
-        return redirect()->route('listExamtype');
+        return redirect()->route('ExamType.index');
     //
     }
 
@@ -101,7 +101,7 @@ class ExamtypeController extends Controller
         \App\Examtype::find($id)->delete();
 
         //Redirecting to index() method
-        return redirect()->route('listExamtype');
+        return redirect()->route('ExamType.index');
     } //
     
 }

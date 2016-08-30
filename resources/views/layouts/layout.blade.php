@@ -174,6 +174,12 @@
             });
             @yield('pagescript')
         </script>
+        
+  <script>
+  $(function() {
+    $( "#datepicker1" ).datepicker();
+  });
+  </script>
 
     </body>
 </html>

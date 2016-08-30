@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Add Examtype')
+@section('title', 'Add Feetypes')
 
 <!--@section('content')
 
@@ -10,16 +10,16 @@
 
 @section('body')
 
-{!! Form::open(['route' => 'ExamType.store', 'method'=>'post','enctype' => 'multipart/form-data']) !!}
+{!! Form::open(['route' => 'FeeTypes.store', 'method'=>'post','enctype' => 'multipart/form-data']) !!}
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">
 
         <!-- first_name Field -->
         <div class="form-group">
-            {!! Form::label('name', 'Name') !!}
+            {!! Form::label('name', 'FeeTypes') !!}
             {!! Form::text('name', null, ['class' => 'form-control', 'placeholder'=>'Enter  Name']) !!}
-            <!--{!! errors_for('first_name', $errors) !!}-->
+            {!! errors_for('name', $errors) !!}
         </div>
 
         <br>

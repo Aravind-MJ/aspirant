@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'List Examtype')
+@section('title', 'List Feetypes')
 
 <!--@section('content')
 
@@ -26,21 +26,21 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach( $allExamtype as $Examtype )
+                @foreach( $allFeetypes as $Feetypes )
                 <tr>
-                    <td>{{ $Examtype->name }}</td>
+                    <td>{{ $Feetypes->name }}</td>
                      
              
 
                     <td class=center>
-                        <a class="btn btn-default btn-success" href="{{url('ExamType/'.$Examtype->id).'/edit'}}">Edit</a>
+                        <a class="btn btn-default btn-success" href="{{url('FeeTypes/'.$Feetypes->id).'/edit'}}">Edit</a>
                     </td>
                     
                     <td class=center>
-                        {!! Form::open(['route' => ['ExamType.destroy', $Examtype->id], 'method' => 'POST']) !!}
+                        {!! Form::open(['route' => ['FeeTypes.destroy', $Feetypes->id], 'method' => 'POST']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
-                        <input type="hidden" name="id" value="{{$Examtype->id}}">
+                        <input type="hidden" name="id" value="{{$Feetypes->id}}">
                         <button type="submit" class="btn btn-danger">Delete</button>
                         {!! Form::close() !!}
                     </td>

@@ -34,17 +34,13 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('register', 'RegistrationController@create');
     Route::post('register', ['as' => 'registration.store', 'uses' => 'RegistrationController@store']);
     #Faculty crud Route
-    Route::resource('Faculty', 'FacultyController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
-    #Examtype crud Routes
-    Route::resource('admin/Examtype', 'Admin\ExamtypeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store']]);
-    Route::get('addExamtype', ['as' => 'addExamtype', 'uses' => 'ExamtypeController@create']);
-    Route::post('newExamtype', ['as' => 'newExamtype', 'uses' => 'ExamtypeController@store']);
-    Route::get('listExamtype', ['as' => 'listExamtype', 'uses' => 'ExamtypeController@index']);
-    Route::delete('destroy{id}', ['as' => 'destroy', 'uses' => 'ExamtypeController@destroy']);
-    Route::get('edit{id}', ['as' => 'edit', 'uses' => 'ExamtypeController@edit']);
-    Route::post('update{id}', ['as' => 'update', 'uses' => 'ExamtypeController@update']);
+    Route::resource('Faculty', 'FacultyController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
     #Student Reristration crud Route
-    Route::resource('Student', 'StudentController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
+    Route::resource('Student', 'StudentController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
+    #Examtype crud Routes
+    Route::resource('ExamType', 'ExamTypeController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
+    Route::resource('ExamDetails', 'ExamDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
+    Route::resource('FeeTypes', 'FeeTypesController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
 });
 
 # Super Admin Routes
@@ -59,8 +55,6 @@ Route::group(['middleware' => ['auth', 'superadmin']], function () {
     Route::get('edit/admin/{id}', ['as' => 'registration.edit', 'uses' => 'SuperAdmin\RegistrationController@edit']);
     Route::post('edit/admin/{id}', ['as' => 'registration.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
     Route::delete('admin/{id}', ['as' => 'registration.destroy', 'uses' => 'SuperAdmin\RegistrationController@destroy']);
-
-
 });
 
 Route::group(['middleware' => ['auth']], function () {

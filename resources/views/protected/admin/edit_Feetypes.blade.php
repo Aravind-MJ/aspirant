@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Add Examtype')
+@section('title', 'Edit Feetypes')
 
 <!--@section('content')
 
@@ -10,7 +10,7 @@
 
 @section('body')
 
-{!! Form::open(['route' => 'ExamType.store', 'method'=>'post','enctype' => 'multipart/form-data']) !!}
+{!! Form::model($Feetypes, ['method' => 'PATCH', 'route' => ['FeeTypes.update',$Feetypes->id],'enctype' => 'multipart/form-data']) !!}
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">
@@ -28,13 +28,7 @@
         </div>
 
         {!! Form::close() !!}
-        <!--                @if($errors->any())
-                    <ul class="alert alert-danger">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                @endif-->
+        
     </div>
 
 </div>

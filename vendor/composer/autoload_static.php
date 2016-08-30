@@ -292,6 +292,7 @@ class ComposerStaticInit737409c2df8002e6003c88ba40c1b97b
         'CreateExamTypeTable' => __DIR__ . '/../..' . '/database/migrations/2016_08_25_182618_create_Exam_type_table.php',
         'CreateFacultyDetailsTable' => __DIR__ . '/../..' . '/database/migrations/2016_08_16_101818_create_faculty_details_table.php',
         'CreateFeePaidTable' => __DIR__ . '/../..' . '/database/migrations/2016_08_17_111747_create_fee_paid_table.php',
+        'CreateFeeTypesTable' => __DIR__ . '/../..' . '/database/migrations/2016_08_30_192432_create_fee_types_table.php',
         'CreateMarkDetailsTable' => __DIR__ . '/../..' . '/database/migrations/2016_08_17_213836_create_mark_details_table.php',
         'CreateNoticeTable' => __DIR__ . '/../..' . '/database/migrations/2016_08_17_095814_create_notice_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
