@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Attendance by Batch')
+@section('title', 'Attendance of Batch')
 
 @section('body')
 

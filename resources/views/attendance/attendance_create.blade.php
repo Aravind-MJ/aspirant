@@ -16,7 +16,7 @@
         </style>
                 <br>
                 <div class="row">
-                    <div class="error-message" hidden>
+                    <div class="failed-message" hidden>
                         <div class="callout callout-danger" style="margin-bottom: 5px !important;">
                             <h4>
                                 <i class="fa fa-info"></i>
@@ -74,26 +74,32 @@
 
 @section('pagescript')
     $(function () {
-                    var absent = [];
+                    var present = [];
                     $(".selector").click(function () {
                         $(this).toggleClass('box-danger box-success selector-present selector-absent');
                     });
 
                     $(".submit-button").click(function(){
                         var id = '{{$id}}';
-                        $('.selector-absent').each(function(){
-                            absent.push($(this).children('.roll').val());
+                        $('.selector-present').each(function(){
+                            present.push($(this).children('.roll').val());
                         });
                         $('.loading-screen').show();
                         $.post('{{url('mark/attendance')}}',{
                             id:id,
-                            absent:absent
+                            present:present
                         },
                         function(response){
                             if(response=='success'){
                                 $('.loading-screen').hide();
                                 $('.box.box-warning').hide();
                                 $('.success-message').show();
+                                setTimeout(function(){
+                                    window.location.href='{{url('mark/attendance')}}';
+                                },2000);
+                            } else {
+                                $('.box.box-warning').hide();
+                                $('.failed-message').show();
                                 setTimeout(function(){
                                     window.location.href='{{url('mark/attendance')}}';
                                 },2000);

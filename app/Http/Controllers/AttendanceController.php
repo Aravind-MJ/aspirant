@@ -25,7 +25,7 @@ class AttendanceController extends Controller
 
     public function __construct(User $user, Attendance $attendance, Batch $batch, StudentDetails $student_details)
     {
-        $this->middleware('redirectStandardUser', ['except' => ['show']]);
+        $this->middleware('redirectStandardUser', ['except' => ['ofStudent']]);
         $this->middleware('redirectFaculty', ['only' => ['edit', 'update', 'destroy']]);
         $this->users = $user;
         $this->attendance = $attendance;
@@ -146,18 +146,22 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         if ($request->ajax()) {
+            $attendance = array();
             $id = Encrypt::decrypt($request['id']);
-            $count = sizeof($request['absent']);
-            foreach ($request['absent'] as $each) {
-                $attendance [] = (int)Encrypt::decrypt($each);
+            $count = sizeof($request['present']);
+            if(empty($request['present'])){
+                $present = '';
+            } else {
+                foreach ($request['present'] as $each) {
+                    $attendance [] = (int)Encrypt::decrypt($each);
+                }
+                $present = json_encode($attendance);
             }
-            $absent = json_encode($attendance);
-
             try {
                 $this->attendance->insert(array(
                     'batch_id' => $id,
                     'absent_count' => $count,
-                    'attendance' => $absent
+                    'attendance' => $present
                 ));
             } catch (Exception $e) {
                 return 'error';
@@ -177,6 +181,7 @@ class AttendanceController extends Controller
     public function selectBatch()
     {
         $year = Cons::$year;
+        $time_shifts = array('morning','afternoon','evening');
 
         try {
             $time_shift = array('morning', 'afternoon', 'evening');
@@ -193,19 +198,7 @@ class AttendanceController extends Controller
 
         foreach ($batch as $each_batch) {
             $each_batch['enc_id'] = Encrypt::encrypt($each_batch['id']);
-            switch ($each_batch['time_shift']) {
-                case 1:
-                    $each_batch['time_shift'] = 'morning';
-                    break;
-                case 2:
-                    $each_batch['time_shift'] = 'afternoon';
-                    break;
-                case 3:
-                    $each_batch['time_shift'] = 'evening';
-                    break;
-                default:
-                    return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('error');
-            }
+            $each_batch['time_shift'] = $time_shifts[$each_batch['time_shift']-1];
         }
 
         $batch = $batch->toArray();
@@ -244,6 +237,7 @@ class AttendanceController extends Controller
     {
         $flag = false;
         $year = Cons::$year;
+        $time_shifts = array('morning','afternoon','evening');
         $data = array();
         $data['batch'] = array();
         $data['students'] = array();
@@ -270,7 +264,7 @@ class AttendanceController extends Controller
                 $data['selected']['batch'] = Encrypt::encrypt($each_batch['id']);
                 $flag = false;
             }
-            $data['batch'][Encrypt::encrypt($each_batch['id'])] = $each_batch['batch'] . ' - ' . $each_batch['time_shift'];
+            $data['batch'][Encrypt::encrypt($each_batch['id'])] = $each_batch['batch'] . ' - ' . $time_shifts[$each_batch['time_shift']-1];
         }
 
         try {
@@ -283,13 +277,16 @@ class AttendanceController extends Controller
             foreach ($students as $each_student) {
                 $data['students'][Encrypt::encrypt($each_student['id'])]['name'] = $each_student['first_name'] . ' ' . $each_student['last_name'];
             }
-            //dd($students);
-            //dd($data['students']);
+
         } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Error Selecting Students!')->withType('danger');
         }
 
-        return view('attendance.attendance_select_student', ['batch' => $data['batch'], 'selected' => $data['selected'], 'students' => $data['students']]);
+        return view('attendance.attendance_select_student', [
+            'batch' => $data['batch'],
+            'selected' => $data['selected'],
+            'students' => $data['students']
+        ]);
     }
 
     /**
@@ -357,20 +354,86 @@ class AttendanceController extends Controller
         $data = array();
 
         if (!is_numeric($id)) {
+            if (Sentinel::getUser()->inRole('users')) {
+                return redirect()->back();
+            }
             return view('attendance.attendance_student', ['flash_message' => 'Invalid Token!', 'type' => 'danger']);
         }
 
         try {
             $user = Sentinel::findById($id);
         } catch (Exception $e) {
-            return view('attendance.attendance_student', ['flash_message' => 'Database Error!', 'type' => 'danger']);
+            return view('attendance.attendance_student', ['flash_message' => 'No such user found!', 'type' => 'danger']);
         }
 
-        if ($user->roles()->get() != 'users') {
+        if (!$user->inRole('users')) {
             return view('attendance.attendance_student', ['flash_message' => 'Invalid Reference Token!', 'type' => 'danger']);
         }
 
-        return view('attendance.attendance_student', ['data' => $data]);
+        try {
+
+            $last_month = date('F - Y');
+            $working_days = array();
+            $absent = array();
+
+            $batch_id = $this->student_details
+                ->select('batch_id')
+                ->where('user_id', $id)
+                ->first();
+
+            $months = $this->attendance
+                ->select('created_at')
+                ->where('batch_id', $batch_id['batch_id'])
+                ->get()
+                ->toArray();
+
+            foreach($months as $month){
+                $date = date_create($month['created_at']);
+                if(!in_array(date_format($date,'F-Y'),$data)){
+                    $data []= date_format($date,'F-Y');
+                    $last_month = date_format($date,'F-Y');
+                }
+                $working_days[date_format($date,'F-Y')][]=date_format($date,'d');
+            }
+
+            $months = $data;
+
+            $attendance = $this->attendance
+                ->select('created_at')
+                ->where('attendance', 'like', '%[' . $id . ',%')
+                ->orWhere('attendance', 'like', '%,' . $id . ']%')
+                ->orWhere('attendance', 'like', '%,' . $id . ',%')
+                ->orWhere('attendance', 'like', '%[' . $id . ']%')
+                ->get()
+                ->toArray();
+
+            $data = '';
+            foreach ($attendance as $each_attendance) {
+                $date = date_create($each_attendance['created_at']);
+                $data[date_format($date,'F-Y')][] = date_format($date,'d');
+            }
+
+            $present = $data;
+
+            foreach($months as $month){
+                if(isset($present[$month])){
+                    $absent[$month] = array_diff($working_days[$month],$present[$month]);
+                } else {
+                    $absent[$month] = $working_days[$month];
+                }
+            }
+
+        } catch (Exception $e) {
+            return view('attendance.attendance_student', ['flash_message' => 'Error fetching Attendance!', 'type' => 'danger']);
+        }
+
+        return view('attendance.attendance_student', [
+            'months' => $months,
+            'last_month' => $last_month,
+            'present'=>$present,
+            'absent'=>$absent,
+            'working_days'=>$working_days
+        ]);
     }
 
     /**

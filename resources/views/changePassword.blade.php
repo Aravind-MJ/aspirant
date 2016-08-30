@@ -31,7 +31,7 @@
 
                             <!-- Submit field -->
                             <div class="form-group">
-                                {!! Form::submit('Create Admin', ['class' => 'btn btn-lg btn-primary btn-block']) !!}
+                                {!! Form::submit('Change Password', ['class' => 'btn btn-lg btn-primary btn-block']) !!}
                             </div>
 
                         </fieldset>

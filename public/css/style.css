@@ -158,3 +158,43 @@ color:#fff !important;
 }
 
 /*End of Loading Screen Style*/
+
+/*Attendance Callender Styles*/
+.attendance_table{
+    width: 95%;
+    margin: auto;
+    table-layout: fixed;
+    cursor: pointer;
+}
+.attendance_table tbody td{
+    background-color: #00c0ef;
+    color: #fff;
+    font-weight: bolder;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+.attendance_table thead th{
+    background-color: #139ff7;
+    color: #fff;
+    font-weight: bolder;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+.attendance_table td:hover,.attendance_table th:hover{
+    background-color: #888;
+}
+
+.attendance_table .present{
+    background-color: #117700;
+}
+
+.attendance_table .absent{
+    background-color: #d33724;
+}
+
+.attendance_table .holiday{
+    /*background-color: #FA9693;*/
+}
+/*End of attendance Callender Styles*/
