@@ -159,13 +159,14 @@ color:#fff !important;
 
 /*End of Loading Screen Style*/
 
-/*Attendance Callender Styles*/
+/*Attendance Calender Styles*/
 .attendance_table{
     width: 95%;
     margin: auto;
     table-layout: fixed;
     cursor: pointer;
 }
+
 .attendance_table tbody td{
     background-color: #00c0ef;
     color: #fff;
@@ -182,8 +183,8 @@ color:#fff !important;
     border-radius: 8px;
 }
 
-.attendance_table td:hover,.attendance_table th:hover{
-    background-color: #888;
+.attendance_table td:not(.absent):not(.present):hover{
+    background-color: #139ff7;
 }
 
 .attendance_table .present{
@@ -195,6 +196,6 @@ color:#fff !important;
 }
 
 .attendance_table .holiday{
-    /*background-color: #FA9693;*/
+    /*color: #d33724;*/
 }
-/*End of attendance Callender Styles*/
+/*End of attendance Calender Styles*/

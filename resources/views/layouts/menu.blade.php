@@ -26,7 +26,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/"><i class="fa fa-circle-o"></i> Dashboard</a></li>
+                    <li><a href="/"><i class="fa fa-circle-o"></i>Dashboard</a></li>
                 </ul>
             </li>
             @if($user->inRole('superadmin'))
@@ -43,7 +43,7 @@
                 </ul>
             </li>
             @endif
-            @if($user->inRole('admins','superadmin'))
+            {{--@if($user->inRole('admins','superadmin'))--}}
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-files-o"></i>
@@ -113,14 +113,8 @@
                 </ul>
             </li>
 
-            
-            
                 <li class="treeview {{ set_active('attendance') }}{{ set_active('mark/attendance') }}">
                     <a href="#">
-
-            @endif
-
-
                     <i class="fa fa-files-o"></i>
                     <span>Attendance</span>
                     <span class="pull-right-container">
@@ -140,15 +134,6 @@
                         @endif
                     </ul>
                 </li>
-
-                </a>
-                <ul class="treeview-menu">
-                    @if($user->inRole('faculty'))
-                    <li><a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
-                    @endif
-                    <li><a href="{{ url('attendance/batch') }}"><i class="fa fa-circle-o"></i> Attendance By Batch</a></li>
-                    <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>
-                </ul>
             </li>
 
             <li class="header">Settings</li>
