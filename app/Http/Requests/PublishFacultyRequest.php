@@ -31,16 +31,16 @@ class PublishFacultyRequest extends Request {
         case 'POST':
         {
             return [
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'first_name' => 'required|alpha',
+            'last_name' => 'required|alpha',
             'qualification' => 'required',
             'subject' => 'required',
-            'phone' => 'required',
-            'address' => 'required',
+            'phone' => 'required|regex:/[0-9]{10}/',
+            'address' => 'required|min:5',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6',
             'password_confirmation' => 'required',
-            'photo' => 'required'
+            'photo' => 'mimes:jpeg,bmp,png'
         ];
         }
         case 'PUT':
@@ -49,8 +49,9 @@ class PublishFacultyRequest extends Request {
             return [
             'qualification' => 'required',
             'subject' => 'required',
-            'phone' => 'required',
-            'address' => 'required'
+            'phone' => 'required|regex:/[0-9]{10}/',
+            'address' => 'required|min:5',
+            'photo' => 'mimes:jpeg,bmp,png'
         ];
         }
         default:break;

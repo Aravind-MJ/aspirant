@@ -33,6 +33,7 @@
             {!! Form::Label('batch', 'Batch') !!}
             {!! Form::select('batch_id', $batch, null, ['class' => 'form-control']) !!}
         </div>
+        
         <div class="form-group">
             {!! Form::Label('gender', 'Gender') !!}<br>
             {!! Form::radio('gender', 'male') !!}{!! Form::Label('gender', 'Male') !!}

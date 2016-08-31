@@ -31,33 +31,35 @@ class RegisterStudentRequest extends Request {
         case 'POST':
         {
             return [
-//            'first_name' => 'required',
-//            'last_name' => 'required',
-//            'batch' => 'required',
-//            'gender' => 'required',
-//            'dob' => 'required',
-//            'guardian' => 'required',
-//            'address' => 'required',
-//            'phone' => 'required',
-//            'school' => 'required',
-//            'cee_rank' => 'required',
-//            'percentage' => 'required',   
-//            'email' => 'required|email|unique:users,email'
+            'first_name' => 'required|alpha',
+            'last_name' => 'required|alpha',
+            'batch_id' => 'required',
+            'gender' => 'required',
+            'dob' => 'required',
+            'guardian' => 'required',
+            'address' => 'required|min:5',
+            'phone' => 'required|regex:/[0-9]{10}/',
+            'school' => 'required|regex:/^[A-Za-z. - ,]+$/',
+            'cee_rank' => 'required|numeric',
+            'percentage' => 'required|numeric',   
+            'email' => 'required|email|unique:users,email',
+            'photo' => 'mimes:jpeg,bmp,png'
         ];
         }
         case 'PUT':
         case 'PATCH':
         {
             return [
-//            'batch' => 'required',
-//            'gender' => 'required',
-//            'dob' => 'required',
-//            'guardian' => 'required',
-//            'address' => 'required',
-//            'phone' => 'required',
-//            'school' => 'required',
-//            'cee_rank' => 'required',
-//            'percentage' => 'required',
+            'batch_id' => 'required',
+            'gender' => 'required',
+            'dob' => 'required',
+            'guardian' => 'required',
+            'address' => 'required|min:5',
+            'phone' => 'required|regex:/[0-9]{10}/',
+            'school' => 'required|regex:/^[A-Za-z. - ,]+$/',
+            'cee_rank' => 'required|numeric',
+            'percentage' => 'required|numeric',
+            'photo' => 'mimes:jpeg,bmp,png'
         ];
         }
         default:break;

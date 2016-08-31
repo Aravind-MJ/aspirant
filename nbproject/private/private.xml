@@ -3,19 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/aspirant/app/Batch.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/list_faculty.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/app/Http/routes.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/edit_faculty.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Controllers/StudentController.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Requests/RegisterStudentRequest.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/add_faculty.blade.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/add_notice.blade.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Controllers/NoticeController.php</file>
             <file>file:/C:/xampp/htdocs/aspirant/resources/views/layouts/menu.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/list_student.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Controllers/FacultyController.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/layouts/layout.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/add_student.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Controllers/AttendanceController.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/list_notice.blade.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/routes.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Controllers/StudentController.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/edit_notice.blade.php</file>
+            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Requests/PublishNoticeRequest.php</file>
         </group>
     </open-files>
 </project-private>

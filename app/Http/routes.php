@@ -41,6 +41,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('ExamType', 'ExamTypeController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     Route::resource('ExamDetails', 'ExamDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     Route::resource('FeeTypes', 'FeeTypesController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
+    #Notice crud Route
+    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
+
 });
 
 # Super Admin Routes

@@ -27,7 +27,12 @@
             {!! Form::label('last_name', 'Last Name') !!}
             {!! Form::text('last_name', null, ['class' => 'form-control', 'placeholder'=>'Enter Last Name', 'readonly' => 'true']) !!}
             {!! errors_for('last_name', $errors) !!}
-        </div>       
+        </div>   
+
+        <div class="form-group">
+            {!! Form::Label('batch', 'Batch') !!}
+            {!! Form::select('batch_id', $batch, null, ['class' => 'form-control']) !!}
+        </div>
 
         <div class="form-group">
             {!! Form::Label('gender', 'Gender') !!}<br>
@@ -52,25 +57,25 @@
             {!! Form::textarea('address', null,  ['class'=>'form-control', 'placeholder'=>'Address']) !!}
             {!! errors_for('address', $errors) !!}
         </div>
-        
+
         <div class="form-group">
             {!! Form::label('phone', 'Phone') !!}
             {!! Form::text('phone', null, ['class'=>'form-control', 'placeholder'=>'Enter Phone']) !!}
             {!! errors_for('phone', $errors) !!}
         </div>
-        
+
         <div class="form-group">
             {!! Form::label('school', 'School') !!}
             {!! Form::text('school', null, ['class'=>'form-control', 'placeholder'=>'Enter School Name']) !!}
             {!! errors_for('school', $errors) !!}
         </div>
-        
+
         <div class="form-group">
             {!! Form::label('cee_rank', 'CEE Rank') !!}
             {!! Form::text('cee_rank', null, ['class'=>'form-control', 'placeholder'=>'Enter CEE Rank']) !!}
             {!! errors_for('cee_rank', $errors) !!}
         </div>
-        
+
         <div class="form-group">
             {!! Form::label('percentage', 'Percentage') !!}
             {!! Form::text('percentage', null, ['class'=>'form-control', 'placeholder'=>'Enter Percentage']) !!}
@@ -91,7 +96,7 @@
             {!! errors_for('photo', $errors) !!}
         </div>
         <br>
-        
+
         <div class="form-group">
             {!! Form::submit( 'Submit', ['class'=>'btn btn-primary']) !!} 
         </div>
@@ -103,4 +108,4 @@
 @stop
 
 @endsection
- 
+

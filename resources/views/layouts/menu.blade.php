@@ -71,7 +71,21 @@
                     <li><a href="{{ action("StudentController@index") }}"><i class="fa fa-circle-o"></i> List Students</a></li>
                 </ul>
             </li>
-            
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-files-o"></i>
+                    <span>Notice</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{URL::route('Notice.create')}}"><i class="fa fa-circle-o"></i> Add Notice</a></li>
+                    <li><a href="{{URL::route('Notice.index')}}"><i class="fa fa-circle-o"></i> List Notice</a></li>
+                </ul>
+            </li>
+
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-files-o"></i>
@@ -134,6 +148,16 @@
                         @endif
                     </ul>
                 </li>
+            <li>
+
+            </a>
+            <ul class="treeview-menu">
+                @if($user->inRole('faculty'))
+                <li><a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
+                @endif
+                <li><a href="{{ url('attendance/batch') }}"><i class="fa fa-circle-o"></i> Attendance By Batch</a></li>
+                <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>
+            </ul>
             </li>
 
             <li class="header">Settings</li>

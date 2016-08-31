@@ -134,10 +134,10 @@ class StudentController extends Controller {
                 ->where('student_details.id', $id)
                 ->first();
         $batch = \App\Batch::lists('batch', 'id');
-//        print_r($batch);die;
        
         //Redirecting to edit_student.blade.php 
-       return view('protected.admin.edit_student')->with('student', $student, compact('id', 'batch'));
+        return View('protected.admin.edit_student', compact('student','batch','id'));
+//       return view('protected.admin.edit_student')->with('student', $student, compact('id', 'batch'));
     }
 
     /**
@@ -148,8 +148,8 @@ class StudentController extends Controller {
      */
     public function update($id, Requests\RegisterStudentRequest $requestData) {
         //update student_details data
-        $student = \App\Student::find($id);;
-//        $student->batch_id = $requestData['batch_id'];
+        $student = \App\Student::find($id);
+        $student->batch_id = $requestData['batch_id'];
         $student->gender = $requestData['gender'];
         $student->dob = date('Y-m-d', strtotime($requestData['dob']));
         $student->guardian = $requestData['guardian'];
