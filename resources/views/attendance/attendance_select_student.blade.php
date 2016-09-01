@@ -36,8 +36,8 @@
                 <?php
                     foreach ($students as $enc_id => $each_student) {
                     ?>
-                        <a class="btn btn-app" href="{{url('attendance/student/'.$enc_id)}}">
-                            <i class="fa fa-folder-open text-primary"></i>
+                        <a class="btn btn-app box_batch" href="{{url('attendance/student/'.$enc_id)}}">
+                            <i class="fa fa-folder-open"></i>
                             <strong><?= $each_student['name'] ?></strong>
                         </a>
                 <?php

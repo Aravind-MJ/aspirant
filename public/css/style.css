@@ -1,14 +1,12 @@
 .selector-present{
 	height:65px;
-   /* border: 1px solid green;*/
-
+	/* border: 1px solid green;*/
 	padding-top:10px;
-    margin:10px;
-    display : inline-block;
-    background-color:#0fb706;
-    cursor: pointer;
-	
-    }
+	margin:10px;
+	display : inline-block;
+	background-color:#0fb706;
+	cursor: pointer;
+}
 .selector-absent{
     height:65px;
    /* border: 1px solid red;*/
@@ -18,60 +16,66 @@
     background-color:#f93f3f;
     color:white;
     cursor: pointer;
-	
-            }
-			.selector-present strong{
-			font-size:15px;
-			color:#fff;
-			font-weight:600 !important;
-			}
-			.box.box-success {
-			border-top-color: #000 !important;
-			}
-			.box.box-danger{
-			border-bottom: 3px solid #000 !important;
-			border-top: none !important;
-			}
-            #mark{
-                width:300px;
-                margin-top: 40px;
-            }
+}
+.selector-present strong{
+	font-size:15px;
+	color:#fff;
+	font-weight:600 !important;
+}
+.box.box-success {
+	border-top-color: #000 !important;
+}
+.box.box-danger{
+	border-bottom: 3px solid #000 !important;
+	border-top: none !important;
+}
+#mark{
+    width:300px;
+    margin-top: 40px;
+}
 .box-title h2{
-font-size:36 !important;
-font-weight:700;
-
+	font-size:36 !important;
+	font-weight:700;
 }
 .student_icon{
-font-size:14px;
- color:#fff;
+	font-size:14px;
+	color:#fff;
 }
 .user-header{
-background-color:#d9d9d9 !important;
+	background-color:#d9d9d9 !important;
 }
 .dropdown-menu > li.user-header > p {
-color:#000 !important;
+	color:#000 !important;
 }
 .sign_new{
-background-color:#605ca8;
-color:#fff !important;
+	background-color:#605ca8;
+	color:#fff !important;
 }
 .sign_new:hover{
-background-color:#333333;
-color:#fff !important;
+	background-color:#333333;
+	color:#fff !important;
 }
 .profile_new{
-background-color:#605ca8;
-color:#fff !important;
+	background-color:#605ca8;
+	color:#fff !important;
 }
 .profile_new:hover{
-background-color:#333333;
-color:#fff !important;
+	background-color:#333333;
+	color:#fff !important;
 }
 .dropdown-menu {
     border: 1px solid #ccc !important;
-	}
-
-
+}
+.box_batch {
+height:80px !important;
+padding :20px 35px !important;
+background-color:#017dc7 !important;
+color:#fff;
+}
+.box_batch:hover{
+background-color:#625dba !important;
+color:#fff !important;
+}
 
  /*~~~~Loading Screen On Ajx call~~~~*/
 .loading-screen {
