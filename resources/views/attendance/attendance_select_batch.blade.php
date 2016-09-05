@@ -19,7 +19,7 @@
             foreach($time_shift as $each_shift){
             ?>
         <div class="box-header">
-            <div class="box-title"><strong>Time Shift: <?= ucwords($each_shift)?></strong></div>
+            <div class="box-title"><strong><i class="fa fa-clock-o"></i> &nbsp; Time Shift : <?= ucwords($each_shift)?></strong></div>
         </div>
         <div class="box-body">
         <div class="app-section">
@@ -27,8 +27,8 @@
                 foreach ($batch as $each_batch) {
                     if($each_batch['time_shift']==$each_shift){
                 ?>
-                    <a class="btn btn-app" href="{{url('attendance/batch/'.$each_batch['enc_id'])}}">
-                        <i class="fa fa-folder-open text-primary"></i>
+                    <a class="btn btn-app box_batch" href="{{url('attendance/batch/'.$each_batch['enc_id'])}}">
+                        <i class="fa fa-folder-open"></i>
                         <strong><?= $each_batch['batch'] ?></strong>
                     </a>
             <?php

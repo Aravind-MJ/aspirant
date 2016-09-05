@@ -73,6 +73,7 @@
 @endsection
 
 @section('pagescript')
+<script>
     $(function () {
                     var present = [];
                     $(".selector").click(function () {
@@ -108,4 +109,5 @@
                         absent = [];
                     });
                 });
+           </script>
 @stop

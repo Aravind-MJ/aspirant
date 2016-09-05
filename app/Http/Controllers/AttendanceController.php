@@ -15,6 +15,7 @@ use Illuminate\Database;
 use App\Encrypt;
 use App\Cons;
 use App\Http\Requests\SelectBatchRequest;
+use App\Http\Requests\AjaxAttendanceRequest;
 use Illuminate\Support\Facades\Input;
 use Mockery\CountValidator\Exception;
 
@@ -143,7 +144,7 @@ class AttendanceController extends Controller
      * @param $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(AjaxAttendanceRequest $request)
     {
         if ($request->ajax()) {
             $attendance = array();
@@ -184,7 +185,6 @@ class AttendanceController extends Controller
         $time_shifts = array('morning','afternoon','evening');
 
         try {
-            $time_shift = array('morning', 'afternoon', 'evening');
 
             $batch = $this->batch
                 ->select('id', 'batch', 'time_shift')
@@ -203,7 +203,7 @@ class AttendanceController extends Controller
 
         $batch = $batch->toArray();
 
-        return view('attendance.attendance_select_batch', ['time_shift' => $time_shift, 'batch' => $batch]);
+        return view('attendance.attendance_select_batch', ['time_shift' => $time_shifts, 'batch' => $batch]);
     }
 
     /**

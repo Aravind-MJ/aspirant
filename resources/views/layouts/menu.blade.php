@@ -164,17 +164,19 @@
                         @endif
                     </ul>
                 </li>
-            <li>
-
-            </a>
-            <ul class="treeview-menu">
-                @if($user->inRole('faculty'))
-                <li><a href="{{ url('attendance') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
-                @endif
-                <li><a href="{{ url('attendance/batch') }}"><i class="fa fa-circle-o"></i> Attendance By Batch</a></li>
-                <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>
-            </ul>
-            </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-sliders"></i>
+                        <span>Marks</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{URL::route('mark.create')}}"><i class="fa fa-circle-o"></i> Add Mark</a></li>
+                        {{--<li><a href="{{URL::route('mark.index')}}"><i class="fa fa-circle-o"></i> View Mark</a></li>--}}
+                    </ul>
+                </li>
 
             <li class="header">Settings</li>
             <li><a href="{{url('changePassword/'. \App\Encrypt::encrypt($user->id))}}"><i class="fa fa-circle-o text-orange"></i> <span>Change Password</span></a></li>
