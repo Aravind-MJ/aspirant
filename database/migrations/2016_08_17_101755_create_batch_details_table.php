@@ -15,8 +15,9 @@ class CreateBatchDetailsTable extends Migration
         Schema::create('batch_details', function (Blueprint $table) {
             $table-> increments('id');
             $table-> string('batch');
+            $table-> string('syllabus');
             $table-> string('time_shift');
-            $table-> integer('year');
+            $table-> date('year');
             $table-> integer('in_charge')->unsigned();
             $table-> foreign('in_charge')->references('id')->on('faculty_details');
             $table->timestamps();           

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Examdetails;
-use App\Examtype;
+use App\Examtypes;
 use Input;
 use DB;
 
@@ -16,18 +16,22 @@ class ExamDetailsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Response public function index()
+    {
+        
+       $allExamdetails = DB::table('exam_details')
+                ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
      */
     public function index()
     {
         
-     
        $allExamdetails = DB::table('exam_details')
                 ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
                 ->select('Exam_type.*', 'exam_details.*')
-                ->get();   //Eloquent ORM method to return all matching results
-        //Redirecting to list_examdetails.blade.php with $allExamdetails      
-             return View('protected.admin.list_Examdetails', compact('allExamdetails'));
+                ->get();   
+       
+    
+             return View('Examdetails.list_Examdetails', compact('allExamdetails'));
     
     }
 
@@ -38,8 +42,8 @@ class ExamDetailsController extends Controller
      */
     public function create()
     {
-        $Examtype=  \App\Examtype::lists('name');
-       return view('protected.admin.add_Examdetails',compact('type_id','Examtype'));
+        $Examtype=  \App\Examtypes::lists('name','id');
+       return view('Examdetails.add_Examdetails',compact('type_id','Examtype','id'));
     }
 
     /**
@@ -49,11 +53,13 @@ class ExamDetailsController extends Controller
      */
     public function store(Requests\PublishExamdetailsRequest $requestData)
     {
-        
+//        $Examtypes = new \App\Examtypes;
+//        $Examtypes->name = $requestData['name'];
         
         $Examdetails = new \App\Examdetails;
         $Examdetails->type_id= $requestData['type_id'];
         $Examdetails->exam_date =date("Y/m/d", strtotime($requestData['exam_date']));
+        $Examdetails->total_mark=$requestData['total_mark'];
         $Examdetails->save();
            return redirect()->route('ExamDetails.create');
     }
@@ -66,13 +72,12 @@ class ExamDetailsController extends Controller
      */
     public function show($id)
     {
-      
        $Examdetails = DB::table('exam_details')
                 ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
                 ->select('Exam_type.*', 'exam_details.*')
                 ->get();
         //Redirecting to showBook.blade.php with $book variable
-        return view('protected.admin.list_Examdetails')->with('ExamDetails', $Examdetails);  //    }
+        return view('Examdetails.list_Examdetails')->with('Examdetails', $Examdetails); //    }
     }
     /**
      * Show the form for editing the specified resource.
@@ -85,10 +90,11 @@ class ExamDetailsController extends Controller
        $Examdetails = DB::table('exam_details')
                 ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
                 ->where('exam_details.id', $id)
-                ->select('Exam_type.name', 'exam_details.*')
+                ->select('Exam_type.*', 'exam_details.*')
                 ->first();
   
-        return view('protected.admin.edit_Examdetails')->with('Examdetails', $Examdetails);
+        $Examtype=  \App\Examtypes::lists('name','id');
+       return view('Examdetails.edit_Examdetails',compact('Examdetails','type_id','Examtype','id'));
     }
 
     /**
@@ -100,16 +106,16 @@ class ExamDetailsController extends Controller
    public function update($id, Requests\PublishExamdetailsRequest $requestData)
     {
         $Examdetails = \App\Examdetails::find($id);
-        $Examdetails->exam_type=$requestDate['name'];
+        $Examdetails->type_id= $requestData['type_id'];
         $Examdetails->exam_date =date("Y/m/d", strtotime($requestData['exam_date']));
+        $Examdetails->total_mark=$requestData['total_mark'];
+        
         $Examdetails->save();
-
-        //Send control to index() method
-        return redirect()->route('ExamDetails.index');
+       return redirect()->route('ExamDetails.index');
     }
 
     /**
-     * Remove the specified resource from storage.
+     *  Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return Response

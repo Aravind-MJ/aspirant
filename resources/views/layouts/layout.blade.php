@@ -145,6 +145,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <!-- Bootstrap 3.3.6 -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+       
         <!-- DATA TABES SCRIPT -->
         <script src="{{ URL::asset('plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
         <script src="{{ URL::asset('plugins/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
@@ -178,6 +179,11 @@
   <script>
   $(function() {
     $( "#datepicker1" ).datepicker();
+  });
+  </script>
+  <script>
+  $(function() {
+    $( "#datepicker2" ).datepicker();
   });
   </script>
 

@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'List Examdetails')
+@section('title', 'List Batchdetails')
 
 <!--@section('content')
 
@@ -18,28 +18,35 @@
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Exam_Type</th>
-                    <th>Date</th>
-                  
+                    <th>Batch</th>
+                    <th>Syllabus</th>
+                    <th>Time_shift</th>
+                    <th>year</th>
+                    <th>In_charge</th>
+                    
                     <!--<th>Photo</th>-->
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($allExamdetails as $Examdetails )
+                @foreach($allBatchdetails as $Batchdetails)
                 <tr>
-                    <td>{{ $Examdetails->name}}</td>
-                     <td>{{ $Examdetails->exam_date }}</td>
+                     <td>{{ $Batchdetails->batch}}</td>
+                     <td>{{ $Batchdetails->syllabus}}</td>
+                     <td>{{ $Batchdetails->time_shift}}</td>
+                     <td>{{ $Batchdetails->year}}</td>
+                     <td>{{ $Batchdetails->first_name}}</td>
+                 
             
                     <td class=center>
-                        <a class="btn btn-default btn-success" href="{{url('ExamDetails/'.$Examdetails->id).'/edit'}}">Edit</a>
+                        <a class="btn btn-default btn-success" href="{{url('BatchDetails/'.$Batchdetails->id).'/edit'}}">Edit</a>
                     </td>
                     <td class=center>
-                        {!! Form::open(['route' => ['ExamDetails.destroy', $Examdetails->id], 'method' => 'POST']) !!}
+                        {!! Form::open(['route' => ['BatchDetails.destroy', $Batchdetails->id], 'method' => 'POST']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
-                        <input type="hidden" name="id" value="{{$Examdetails->id}}">
+                        <input type="hidden" name="id" value="{{$Batchdetails->id}}">
                         <button type="submit" class="btn btn-danger">Delete</button>
                         {!! Form::close() !!}
                     </td>

@@ -23,10 +23,15 @@
         </div>
         <div class="form-group">
             {!! Form::label('date', 'Exam_date') !!}
-            {!! Form::text('exam_date', '', ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
+            {!! Form::text('exam_date', null, ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
             {!! errors_for('exam_date', $errors) !!}
         </div>
-
+        
+           <div class="form-group">
+            {!! Form::label('total_mark', 'TotalMark') !!}
+            {!! Form::text('total_mark',null, ['class' => 'form-control', 'placeholder'=>'Totalmark'])!!}
+            {!! errors_for('total_mark', $errors) !!}
+         </div>
         <br>
         <div class="form-group">
             {!! Form::submit( 'Submit', ['class'=>'btn btn-primary']) !!} 

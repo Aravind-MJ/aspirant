@@ -15,8 +15,9 @@ class CreateExamDetailsTable extends Migration
        Schema::create('exam_details', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('type_id')->unsigned();
-            $table->forgein('type_id')->references('id')->on('exam_type');
-            $table->date('Examdate');
+            $table->foreign('type_id')->references('id')->on('exam_type');
+            $table->date('exam_date');
+            $table->integer('total_mark');
             $table->timestamps();
         });
     }

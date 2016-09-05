@@ -39,10 +39,14 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('Student', 'StudentController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
     #Examtype crud Routes
     Route::resource('ExamType', 'ExamTypeController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
+    #ExamDetails crud Routes
     Route::resource('ExamDetails', 'ExamDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
+    #Feetype crud Routes
     Route::resource('FeeTypes', 'FeeTypesController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
-    #Notice crud Route
     Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
+
+     #Batch crud Routes
+    Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
 
 });
 

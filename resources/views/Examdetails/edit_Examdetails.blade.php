@@ -16,16 +16,24 @@
     <div class="box-body">
 
     
+        <!-- first_name Field -->
         <div class="form-group">
-            {!! Form::label('type_id', 'Exam_Type') !!}
-            {!! Form::select('type_id',$Examdetails,null,['class' => 'form-control', 'placeholder'=>''])!!}
+            {!! Form::label('Examtype', 'Examtype') !!}
+            {!! Form::select('type_id',$Examtype,null,['class' => 'form-control', 'placeholder'=>''])!!}
             {!! errors_for('name', $errors) !!}
+            <!--{!! errors_for('first_name', $errors) !!}-->
         </div>
         <div class="form-group">
             {!! Form::label('date', 'Exam_date') !!}
-            {!! Form::text('date', '', ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
+            {!! Form::text('date', null, ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
             {!! errors_for('date', $errors) !!}
         </div>
+        <div class="form-group">
+            {!! Form::label('total_mark', 'TotalMark') !!}
+            {!! Form::text('total_mark',null, ['class' => 'form-control', 'placeholder'=>'TotalMark'])!!}
+            {!! errors_for('total_mark', $errors) !!}
+        </div>
+
 
         <br>
         <div class="form-group">

@@ -19,7 +19,7 @@ class FeeTypesController extends Controller
     {
         $allFeetypes = \App\Feetypes::all();    //Eloquent ORM method to return all matching results
         //Redirecting to list_faculty.blade.php with $allFaculties       
-        return View('protected.admin.list_Feetypes', compact('allFeetypes'));
+        return View('Feetypes.list_Feetypes', compact('allFeetypes'));
     }
 
     /**
@@ -29,7 +29,7 @@ class FeeTypesController extends Controller
      */
     public function create()
     {
-        return view('protected.admin.add_Feetypes');
+        return view('Feetypes.add_Feetypes');
     }
 
     /**
@@ -55,7 +55,7 @@ class FeeTypesController extends Controller
     {
        $Feetypes = Feetypes::find($id);
 
-        return view('protected.admin.list_Feetypes')->with('Feetypes', $Feetypes);  
+        return view('Feetypes.list_Feetypes')->with('Feetypes', $Feetypes);  
     }
 
     /**
@@ -69,7 +69,7 @@ class FeeTypesController extends Controller
        $Feetypes = \App\Feetypes::find($id);
 
   
-        return view('protected.admin.edit_Feetypes')->with('Feetypes', $Feetypes);
+        return view('Feetypes.edit_Feetypes')->with('Feetypes', $Feetypes);
     }
 
     /**
