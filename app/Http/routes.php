@@ -76,6 +76,8 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['auth', 'faculty']], function () {
     #Home
     Route::get('faculty', ['as' => 'home', 'uses' => 'Faculty\FacultyController@getHome']);
+    Route::resource('mark', 'MarkDetailsController');
+    Route::post('fetchStudents',['uses'=>'MarkDetailsController@fetchStudents']);
 });
 
 Route::group(['middleware' => ['auth', 'notCurrentUser']], function () {

@@ -172,9 +172,8 @@
             $.ajaxSetup({
                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
             });
-            @yield('pagescript')
         </script>
-        
+        @yield('pagescript')
   <script>
   $(function() {
     $( "#datepicker1" ).datepicker();
