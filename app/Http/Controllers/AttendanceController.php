@@ -354,7 +354,7 @@ class AttendanceController extends Controller
             dd($present);
 
         }catch(Exception $e){
-            return view('attendance.attendance_batch', ['flash_message' => 'Error fetching Attendance!', 'type' => 'danger']);
+            return redirect()->back()->withFlashMessage('Error Fetching Attendance!')->withType('danger');
         }
 
     }
@@ -374,17 +374,17 @@ class AttendanceController extends Controller
             if (Sentinel::getUser()->inRole('users')) {
                 return redirect()->back();
             }
-            return view('attendance.attendance_student', ['flash_message' => 'Invalid Token!', 'type' => 'danger']);
+            return redirect()->back()->withFlashMessage('Invalid Token!')->withType('danger');
         }
 
         try {
             $user = Sentinel::findById($id);
         } catch (Exception $e) {
-            return view('attendance.attendance_student', ['flash_message' => 'No such user found!', 'type' => 'danger']);
+            return redirect()->back()->withFlashMessage('Invalid Token!')->withType('danger');
         }
 
         if (!$user->inRole('users')) {
-            return view('attendance.attendance_student', ['flash_message' => 'Invalid Reference Token!', 'type' => 'danger']);
+            return redirect()->back()->withFlashMessage('Invalid Reference Token!')->withType('danger');
         }
 
         try {
@@ -441,7 +441,7 @@ class AttendanceController extends Controller
             }
 
         } catch (Exception $e) {
-            return view('attendance.attendance_student', ['flash_message' => 'Error fetching Attendance!', 'type' => 'danger']);
+            return redirect()->back()->withFlashMessage('Error Fetching attendance!')->withType('danger');
         }
 
         return view('attendance.attendance_student', [
