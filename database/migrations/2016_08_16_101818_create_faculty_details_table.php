@@ -22,7 +22,8 @@ class CreateFacultyDetailsTable extends Migration
             $table-> string('address');
             $table-> string('photo');
             $table-> integer('del_status');
-            $table->timestamps();           
+            $table->timestamps();   
+            $table->softDeletes();
         });
     }
 

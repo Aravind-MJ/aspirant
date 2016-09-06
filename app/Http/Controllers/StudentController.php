@@ -30,7 +30,7 @@ class StudentController extends Controller {
                 ->select('users.*', 'student_details.*','batch_details.batch')
                 ->get();
 
-       return View('protected.admin.list_student', compact('allStudents'));
+       return View('student.list_student', compact('allStudents'));
     }
 
     /**
@@ -39,9 +39,9 @@ class StudentController extends Controller {
      * @return Response
      */
     public function create() {
-        $batch = \App\Batch::lists('batch', 'id');
+        $batch = Batch::lists('batch', 'id');
 
-        return view('protected.admin.add_student', compact('id', 'batch'));
+        return view('student.add_student', compact('id', 'batch'));
     }
 
     /**
@@ -52,9 +52,9 @@ class StudentController extends Controller {
     public function store(Requests\RegisterStudentRequest $requestData) {
 
         //store student data to student_details table
-        $user = new \App\User;
+        $user = new User;
         $user->first_name = $requestData['first_name'];
-        $user->last_name = $requestData['first_name'];
+        $user->last_name = $requestData['last_name'];
         $user->email = $requestData['email'];
         $user->password = \Hash::make($requestData['dob']);
 
@@ -68,7 +68,7 @@ class StudentController extends Controller {
         // Assign the role to the users
         $usersRole->users()->attach($user);
 
-        $student = new \App\Student;
+        $student = new Student;
         $student->batch_id = $requestData['batch_id'];
         $student->user_id = $user['id'];
         $student->gender = $requestData['gender'];
@@ -111,12 +111,14 @@ class StudentController extends Controller {
     public function show($id) {
         //Get results by targeting id
         $student = DB::table('student_details')
-                ->join('users', 'users.id', '=', 'student_details.user_id')
-                ->join('batch_details', 'id', '=', 'student_details.batch_id')
-                ->select('users.*', 'faculty_details.*', 'batch_details.*')
-                ->get();
+                 ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+                ->select('users.*', 'student_details.*','batch_details.batch')
+                ->where('student_details.id', $id)
+                ->first();
 
-        return view('protected.admin.list_student')->with('student', $student);
+//        return view('protected.admin.student_details')->with('student', $student);
+        return View('student.student_details', compact('student'));
     }
 
     /**
@@ -136,7 +138,7 @@ class StudentController extends Controller {
         $batch = \App\Batch::lists('batch', 'id');
        
         //Redirecting to edit_student.blade.php 
-        return View('protected.admin.edit_student', compact('student','batch','id'));
+        return View('student.edit_student', compact('student','batch','id'));
 //       return view('protected.admin.edit_student')->with('student', $student, compact('id', 'batch'));
     }
 
@@ -148,7 +150,7 @@ class StudentController extends Controller {
      */
     public function update($id, Requests\RegisterStudentRequest $requestData) {
         //update student_details data
-        $student = \App\Student::find($id);
+        $student = Student::find($id);
         $student->batch_id = $requestData['batch_id'];
         $student->gender = $requestData['gender'];
         $student->dob = date('Y-m-d', strtotime($requestData['dob']));
@@ -189,7 +191,7 @@ class StudentController extends Controller {
      */
     public function destroy($id) {
         //find result by id and delete 
-        \App\Student::find($id)->delete();
+        Student::find($id)->delete();
 
         //Redirecting to index() method
         return Redirect::back();

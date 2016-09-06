@@ -7,12 +7,12 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use App\Faculty;
-use APP\User;
+use App\User;
 use Input;
 use Validator;
 use Sentinel;
-Use Auth;
 use DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FacultyController extends Controller {
 
@@ -24,13 +24,13 @@ class FacultyController extends Controller {
     public function index() {
 
         //Select all records from faculty_details table 
-//        $allFaculties = \App\Faculty::all();    //Eloquent ORM method to return all matching results
+        // $allFaculties = \App\Faculty::all();    //Eloquent ORM method to return all matching results
         $allFaculties = DB::table('faculty_details')
                 ->join('users', 'users.id', '=', 'faculty_details.user_id')
                 ->select('users.*', 'faculty_details.*')
                 ->get();
         //Redirecting to list_faculty.blade.php with $allFaculties       
-        return View('protected.admin.list_faculty', compact('allFaculties'));
+        return View('faculty.list_faculty', compact('allFaculties'));
     }
 
     /**
@@ -40,7 +40,7 @@ class FacultyController extends Controller {
      */
     public function create() {
         //Redirecting to add_faculty.blade.php 
-        return view('protected.admin.add_faculty');
+        return view('faculty.add_faculty');
     }
 
     /**
@@ -50,7 +50,7 @@ class FacultyController extends Controller {
      */
     public function store(Requests\PublishFacultyRequest $requestData) {
         //Insert Query
-        $user = new \App\User;
+        $user = new User;
         $user->first_name = $requestData['first_name'];
         $user->last_name = $requestData['last_name'];
         $user->email = $requestData['email'];
@@ -65,7 +65,7 @@ class FacultyController extends Controller {
         // Assign the role to the users
         $usersRole->users()->attach($user);
 
-        $faculty = new \App\Faculty;
+        $faculty = new Faculty;
         $faculty->user_id = $user['id'];
         $faculty->qualification = $requestData['qualification'];
         $faculty->subject = $requestData['subject'];
@@ -114,11 +114,12 @@ class FacultyController extends Controller {
         //Get results by targeting id
         $faculty = DB::table('faculty_details')
                 ->join('users', 'users.id', '=', 'faculty_details.user_id')
+                ->where('faculty_details.id', $id)
                 ->select('users.*', 'faculty_details.*')
-                ->get();
+                ->first();
 
         //Redirecting to list page
-        return view('protected.admin.list_faculty')->with('faculty', $faculty);
+        return view('faculty.faculty_details')->with('faculty', $faculty);
     }
 
     /**
@@ -137,7 +138,7 @@ class FacultyController extends Controller {
                 ->first();
 
         //Redirecting to edit_faculty.blade.php 
-        return view('protected.admin.edit_faculty')->with('faculty', $faculty);
+        return view('faculty.edit_faculty')->with('faculty', $faculty);
     }
 
     /**
@@ -149,8 +150,7 @@ class FacultyController extends Controller {
     public function update($id, Requests\PublishFacultyRequest $requestData) {
 
         //Update Query       
-        $faculty = \App\Faculty::find($id);
-//        $faculty->user_id = $user['id'];
+        $faculty = Faculty::find($id);
         $faculty->qualification = $requestData['qualification'];
         $faculty->subject = $requestData['subject'];
         $faculty->phone = $requestData['phone'];
@@ -199,10 +199,10 @@ class FacultyController extends Controller {
     public function destroy($id) {
 
         //find result by id and delete 
-        \App\Faculty::find($id)->delete();
+        Faculty::find($id)->delete();
 
         //Redirecting to index() method
-        return redirect()->route('Faculty.index');
+        return redirect()->route('Faculty.index');             
     }
 
 }

@@ -175,6 +175,9 @@
             });
         </script>
         @yield('pagescript')
+
+        @yield('ckeditor')
+
   <script>
   $(function() {
     $( "#datepicker1" ).datepicker();

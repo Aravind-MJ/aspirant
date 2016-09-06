@@ -24,7 +24,7 @@ class NoticeController extends Controller {
                 ->select('notice.*', 'batch_details.batch')
                 ->get();
 
-        return View('protected.admin.list_notice', compact('allNotice'));
+        return View('notice.list_notice', compact('allNotice'));
     }
 
     /**
@@ -37,7 +37,7 @@ class NoticeController extends Controller {
         //Redirecting to add_notice.blade.php 
         $batch = \App\Batch::lists('batch', 'id');
 
-        return view('protected.admin.add_notice', compact('id', 'batch'));
+        return view('notice.add_notice', compact('id', 'batch'));
     }
 
     /**
@@ -81,7 +81,7 @@ class NoticeController extends Controller {
         
         $batch = \App\Batch::lists('batch', 'id');
 
-        return View('protected.admin.edit_notice', compact('notice','batch','id'));
+        return View('notice.edit_notice', compact('notice','batch','id'));
         
     }
 

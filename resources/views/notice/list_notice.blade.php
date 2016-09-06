@@ -28,7 +28,7 @@
                
                 @foreach( $allNotice as $notice )
                 <tr>
-                    <td>{{ $notice->message }}</td>
+                    <td>{!! $notice->message !!}</td>
                     <td>{{ $notice->batch }}</td>
                     <td class=center>
                        
