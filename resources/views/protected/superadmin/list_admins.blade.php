@@ -3,9 +3,7 @@
 @section('title', 'List of Admins')
 
 @section('body')
-    @if (session()->has('flash_message'))
-        @include('session_flash')
-    @endif
+    @include('flash')
     <div class="box box-primary">
     <div class="box-body">
     <table id="admins" class="table table-stripped table-hover text-center">

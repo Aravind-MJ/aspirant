@@ -1,6 +1,7 @@
 
 {!! Form::open(['route' => 'mark.store']) !!}
 <input type="text" name="exam_id" value="" class="exam_id" hidden>
+<input type="text" name="batch_id" value="{{$batch_id}}" class="batch_id" hidden>
 <table class="table table-striped text-center" style="width: 50%; margin: auto; border: 1px solid #000; table-layout: fixed;">
     <thead>
         <tr>

@@ -4,9 +4,7 @@
 
 @section('body')
 
-    @if (isset($flash_message))
             @include('flash')
-    @else
     <style>
             .box-body{
                 margin-top: 50px;
@@ -69,7 +67,6 @@
                         </div><!-- /.box -->
                 </div>
 
-    @endif
 @endsection
 
 @section('pagescript')

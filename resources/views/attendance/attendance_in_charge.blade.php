@@ -4,9 +4,7 @@
 
 @section('body')
 
-    @if (session()->has('flash_message'))
-        @include('session_flash')
-    @else
+   @include('flash')
 
 <style>
     .app-section .btn-app strong{
@@ -39,7 +37,6 @@
                 </div>
                 </div>
         </div>
-    @endif
 @endsection
 
 @section('pagescript')

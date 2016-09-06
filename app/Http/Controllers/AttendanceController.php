@@ -117,6 +117,9 @@ class AttendanceController extends Controller
     {
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
+        if(!is_numeric($id)){
+            return redirect()->back()->withFlashMessage('Invalid Token!')->withType('danger');
+        }
         $data = array();
 
         try {
@@ -301,45 +304,59 @@ class AttendanceController extends Controller
         $data = array();
         $id = Encrypt::decrypt($id);
 
-        if (!is_numeric($id)) {
-            return view('attendance.attendance_batch', ['flash_message' => 'Invalid Token!', 'type' => 'danger']);
-        }
+        try{
+            $last_month = date('F - Y');
+            $working_days = array();
+            $absent = array();
 
-        try {
-            $batches = $this->batch
-                ->where('id', $id)
-                ->get();
-        } catch (Exception $e) {
-            return view('attendance.attendance_batch', ['flash_message' => 'Database Error!', 'type' => 'danger']);
-        }
+            $batch_id = $this->student_details
+                ->select('batch_id')
+                ->where('user_id', $id)
+                ->first();
 
-
-        foreach ($batches as $batch) {
-            $data['batch']['batch'] = $batch['batch'];
-            $data['batch']['time_shift'] = $batch['time_shift'];
-            $data['batch']['year'] = $batch['year'];
-            $data['batch']['in_charge'] = $batch['in_charge'];
-        }
-
-        try {
-            $attendance = $this->attendance
+            $months = $this->attendance
+                ->select('created_at')
                 ->where('batch_id', $id)
+                ->get()
+                ->toArray();
+
+            foreach($months as $month){
+                $date = date_create($month['created_at']);
+                if(!in_array(date_format($date,'F-Y'),$data)){
+                    $data []= date_format($date,'F-Y');
+                    $last_month = date_format($date,'F-Y');
+                }
+                $working_days[date_format($date,'F-Y')][]=date_format($date,'d');
+            }
+
+            $months = $data;
+
+            $count_students = $this->student_details
+                ->where('batch_id',$id)
                 ->get();
-        } catch (Exception $e) {
-            return view('attendance.attendance_batch', ['flash_message' => 'Database Error!', 'type' => 'danger']);
+
+            $strength = count($count_students);
+
+            $attendance = $this->attendance
+                ->select('absent_count','attendance','created_at')
+                ->where('batch_id',$id)
+                ->get()
+                ->toArray();
+
+            $data = '';
+            foreach ($attendance as $each_attendance) {
+                $date = date_create($each_attendance['created_at']);
+                $data[date_format($date,'F-Y')][date_format($date,'d')] =$strength - $each_attendance['absent_count'].'/'.$strength;
+            }
+
+            $present = $data;
+
+            dd($present);
+
+        }catch(Exception $e){
+            return view('attendance.attendance_batch', ['flash_message' => 'Error fetching Attendance!', 'type' => 'danger']);
         }
 
-
-        foreach ($attendance as $attendance_data) {
-            $data['attendance'][$i]['id'] = $attendance_data['id'];
-            $data['attendance'][$i]['batch_id'] = $attendance_data['batch_id'];
-            $data['attendance'][$i]['attendance'] = json_decode($attendance_data['attendance']);
-            $data['attendance'][$i]['absent_count'] = $attendance_data['absent_count'];
-            $data['attendance'][$i]['date'] = $attendance_data['created_at'];
-            $i++;
-        }
-
-        return view('attendance.attendance_batch', ['data' => $data]);
     }
 
     /**

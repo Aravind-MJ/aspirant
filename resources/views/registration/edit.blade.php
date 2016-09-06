@@ -13,9 +13,7 @@
                         {!! Form::open(['route' => ['registration.update',$user->enc_id]]) !!}
                         <fieldset>
 
-                            @if (session()->has('flash_message'))
-                                @include('session_flash')
-                            @endif
+                            @include('flash')
 
                             <!-- Email field -->
                             <div class="form-group">

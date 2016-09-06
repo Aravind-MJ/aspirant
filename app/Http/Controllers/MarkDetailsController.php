@@ -33,16 +33,6 @@ class MarkDetailsController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-
-    }
-
-    /**
      * Fetch students of given Batch Id
      *
      * @param $request
@@ -51,8 +41,9 @@ class MarkDetailsController extends Controller
     public function fetchStudents(FetchStudentsRequest $request)
     {
         if ($request->ajax()) {
+            $batch_id = $request['id'];
             if ($request['id'] == '0') {
-                return 'Select a Batch to View students';
+                return '<h4>Select a Batch to View students</h4>';
             }
             $id = Encrypt::decrypt($request['id']);
             if (!is_numeric($id)) {
@@ -76,7 +67,7 @@ class MarkDetailsController extends Controller
                 return 'Error Selecting Students!';
             }
 
-            return view('mark.students_section', ['students' => $students]);
+            return view('mark.students_section', ['students' => $students,'batch_id'=>$batch_id]);
 
         } else {
             return '<h1>Invalid Request!! Access Denied</h1>';
@@ -134,6 +125,18 @@ class MarkDetailsController extends Controller
     {
         try {
             $exam_id = Encrypt::decrypt($request['exam_id']);
+            $id = Encrypt::decrypt($request['batch_id']);
+            $count = count($request['markof']);
+            if(!array_filter($request['markof'],'is_numeric')){
+                return redirect('mark/create')->withFlashMessage('
+                    <h4>Error!</h4>
+                    <ol>
+                        <li>Enter only integers as Mark</li>
+                        <li>Enter marks of all students</li>
+                    </ol>
+                ')->withType('danger');
+            }
+            dd('');
             foreach ($request['markof'] as $enc_id => $mark) {
                 $id = Encrypt::decrypt($enc_id);
                 $this->mark_details

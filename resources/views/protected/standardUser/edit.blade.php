@@ -5,9 +5,7 @@
 @section('content')
 	<h1>Edit Profile</h1>
 
-	@if (session()->has('flash_message'))
-		<div class="alert alert-success">{{ session()->get('flash_message') }}</div>
-	@endif
+	@include('flash')
 
 	{!! Form::model($user, ['method' => 'PATCH', 'route' => ['profiles.update', $user->id]]) !!}
 

@@ -4,9 +4,7 @@
 
 @section('body')
 
-@if (session()->has('flash_message'))
-@include('session_flash')
-@endif
+@include('flash')
 
 <style>
     .app-section .btn-app strong{
@@ -37,7 +35,7 @@
     </div>
     <div class="box-body">
         <div class="app-section">
-            Select a Batch to view Students
+            <h4>Select a Batch to view Students</h4>
         </div>
     </div>
 </div>

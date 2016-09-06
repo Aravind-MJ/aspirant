@@ -13,9 +13,7 @@
                         {!! Form::open(['route' => 'registration.store']) !!}
                         <fieldset>
 
-                            @if (session()->has('flash_message'))
-                                @include('session_flash')
-                            @endif
+                            @include('flash')
 
                             <!-- Email field -->
                             <div class="form-group">

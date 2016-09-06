@@ -25,7 +25,8 @@ class StoreMarkRequest extends Request
     {
         return [
             'exam_id' => 'required|alpha_num',
-            'markof' => 'required|array'
+            'markof' => 'required|array',
+            'batch_id' => 'required|alpha_num'
         ];
     }
 }

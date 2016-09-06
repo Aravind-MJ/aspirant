@@ -3,9 +3,7 @@
 @section('title', 'Attendance of Student')
 
 @section('body')
-    @if (isset($flash_message))
-            @include('flash')
-    @else
+    @include('flash')
     <?php
         $weeks = array('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
     ?>
@@ -77,7 +75,6 @@
             </div>
         </div>
     </div>
-    @endif
 @endsection
 
 @section('pagescript')
