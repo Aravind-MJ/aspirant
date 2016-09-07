@@ -4,75 +4,107 @@
 
 @section('content')
 
-@if (session()->has('flash_message'))
-<p>{{ session()->get('flash_message') }}</p>
-@endif
-
 @section('body')
 
-{!! Form::model($faculty, ['method' => 'PATCH', 'route' => ['Faculty.update', $faculty->id],'enctype' => 'multipart/form-data']) !!}
-<!--{!! Form::open() !!}-->
-<div class="box box-primary">
-    <div class="box-body">
-        
-        <!-- first_name Field -->
-        <div class="form-group">
-            {!! Form::label('first_name', 'First Name') !!}
-            {!! Form::text('first_name', null, ['class' => 'form-control', 'placeholder'=>'Enter First Name', 'readonly' => 'true']) !!}
-           
+@include('flash')
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-1">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Faculty Profile Details</h3>
+            </div>
+            <div class="box-body">
+                {!! Form::model($user,['method'=>'POST','route' => ['facultyProfile.update',$user->enc_id]]) !!}
+
+                <fieldset>
+
+                    <!--@include('flash')-->
+
+                    <!-- Email field -->
+                    <div class="form-group">
+                        {!! Form::text('email', $user->email, ['disabled' => '', 'class' => 'form-control', 'required' => 'required'])!!}
+                        {!! errors_for('email', $errors) !!}
+                    </div>
+
+                    <!-- First name field -->
+                    <div class="form-group">
+                        {!! Form::text('first_name', $user->first_name, ['placeholder' => 'First Name', 'class' => 'form-control', 'required' => 'required'])!!}
+                        {!! errors_for('first_name', $errors) !!}
+                    </div>
+
+                    <!-- Last name field -->
+                    <div class="form-group">
+                        {!! Form::text('last_name', $user->last_name, ['placeholder' => 'Last Name', 'class' => 'form-control', 'required' => 'required'])!!}
+                        {!! errors_for('last_name', $errors) !!}
+                    </div>
+
+                    <!-- Submit field -->
+                    <div class="form-group">
+                        {!! Form::submit('Edit Student', ['class' => 'btn btn-lg btn-primary btn-block']) !!}
+                    </div>
+
+                </fieldset>
+                {!! Form::close() !!}
+            </div>
         </div>
 
-        <!-- last_name Field -->
-        <div class="form-group">
-            {!! Form::label('last_name', 'Last Name') !!}
-            {!! Form::text('last_name', null, ['class' => 'form-control', 'placeholder'=>'Enter Last Name', 'readonly' => 'true']) !!}
-            
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('qualification', 'Qualification') !!}
-            {!! Form::text('qualification', null, ['class'=>'form-control', 'placeholder'=>'Enter Qualification']) !!}
-            {!! errors_for('qualification', $errors) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('subject', 'Subject') !!}
-            {!! Form::text('subject', null, ['class'=>'form-control', 'placeholder'=>'Enter Subject']) !!}
-             {!! errors_for('subject', $errors) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('phone', 'Phone') !!}
-            {!! Form::text('phone', null, ['class'=>'form-control', 'placeholder'=>'Enter Phone']) !!}
-             {!! errors_for('phone', $errors) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('address', 'Address') !!}
-            {!! Form::textarea('address', null,  ['class'=>'form-control', 'placeholder'=>'Address']) !!}
-            {!! errors_for('address', $errors) !!}
-        </div>
-        <img src="{{ asset('images/'. $faculty->photo) }}"  alt="photo" width="50" height="50"/>
-        <div class="form-group">
-            {!! Form::label('photo', 'Photo') !!}
-            {!! Form::file('photo', null, ['class'=>'form-control']) !!}
-        </div>
-
-        <br>
-        <div class="form-group">
-            {!! Form::submit( 'Submit', ['class'=>'btn btn-primary']) !!} 
-        </div>
-
-        {!! Form::close() !!}
-                @if($errors->any())
-            <ul class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
     </div>
 
+    {!! Form::model($faculty, ['method' => 'PATCH', 'route' => ['Faculty.update', $faculty->id],'enctype' => 'multipart/form-data']) !!}
+    <div class="col-md-6 col-md-offset-1">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Faculty Personal Details</h3>
+            </div>
+            <div class="box-body">
+
+                <div class="form-group">
+                    {!! Form::label('qualification', 'Qualification') !!}
+                    {!! Form::text('qualification', null, ['class'=>'form-control', 'placeholder'=>'Enter Qualification']) !!}
+                    {!! errors_for('qualification', $errors) !!}
+                </div>
+
+                <div class="form-group">
+                    {!! Form::label('subject', 'Subject') !!}
+                    {!! Form::text('subject', null, ['class'=>'form-control', 'placeholder'=>'Enter Subject']) !!}
+                    {!! errors_for('subject', $errors) !!}
+                </div>
+
+                <div class="form-group">
+                    {!! Form::label('phone', 'Phone') !!}
+                    {!! Form::text('phone', null, ['class'=>'form-control', 'placeholder'=>'Enter Phone']) !!}
+                    {!! errors_for('phone', $errors) !!}
+                </div>
+
+                <div class="form-group">
+                    {!! Form::label('address', 'Address') !!}
+                    {!! Form::textarea('address', null,  ['class'=>'form-control', 'placeholder'=>'Address']) !!}
+                    {!! errors_for('address', $errors) !!}
+                </div>
+                
+                <img src="{{ asset('images/'. $faculty->photo) }}"  alt="photo" width="50" height="50"/>
+                <div class="form-group">
+                    {!! Form::label('photo', 'Photo') !!}
+                    {!! Form::file('photo', null, ['class'=>'form-control']) !!}
+                </div>
+
+                <br>
+                <div class="form-group">
+                    {!! Form::submit( 'Submit', ['class'=>'btn btn-primary']) !!} 
+                </div>
+
+                {!! Form::close() !!}
+                @if($errors->any())
+                <ul class="alert alert-danger">
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
 @stop
 

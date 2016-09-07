@@ -4,14 +4,15 @@
 
 @section('content')
 
-@if (session()->has('flash_message'))
-<p>{{ session()->get('flash_message') }}</p>
-@endif
+<!--@if (session()->has('flash_message'))-->
+<p></p>
+<!--@endif-->
 
 @section('body')
 
 {!! Form::open(['action' => 'StudentController@store','method'=>'POST','enctype' => 'multipart/form-data']) !!}
 <!--{!! Form::open() !!}-->
+@include('flash')
 <div class="box box-primary">
     <div class="box-body">
 

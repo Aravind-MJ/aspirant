@@ -13,6 +13,7 @@ use Validator;
 use Sentinel;
 use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Encrypt;
 
 class FacultyController extends Controller {
 
@@ -136,9 +137,17 @@ class FacultyController extends Controller {
                 ->where('faculty_details.id', $id)
                 ->select('users.*', 'faculty_details.*')
                 ->first();
+        
+        //Fetch User Details
+        $user = DB::table('users')
+                ->select('id', 'first_name', 'last_name', 'email')
+                ->where('id', $faculty->user_id)
+                ->first();
+        $user->enc_id = Encrypt::encrypt($user->id);
 
         //Redirecting to edit_faculty.blade.php 
-        return view('faculty.edit_faculty')->with('faculty', $faculty);
+//        return view('faculty.edit_faculty')->with('faculty', $faculty);
+        return View('faculty.edit_faculty', compact('user', 'faculty'));
     }
 
     /**

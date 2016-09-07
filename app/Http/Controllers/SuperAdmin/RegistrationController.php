@@ -11,6 +11,7 @@ use App\Repositories\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Mockery\CountValidator\Exception;
 use Sentinel;
+use Illuminate\Support\Facades\Redirect;
 
 class RegistrationController extends Controller
 {
@@ -98,13 +99,13 @@ class RegistrationController extends Controller
      * @return Response
      */
     public function update($id, AdminEditFormRequest $request)
-    {
+    {   
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
         try {
             $user = $this->user->find($id);
         } catch(Exception $e){
-            return redirect('list/admin')->withFlashMessage('Admin Edit Failed!')->withType('danger');
+            return redirect('list/admin')->withFlashMessage('Profile Edit Failed!')->withType('danger');
         }
 
         $input = $request->only('first_name', 'last_name');
@@ -114,8 +115,8 @@ class RegistrationController extends Controller
         $user->last_name = $input['last_name'];
         $user->save();
 
-        return redirect()->route('registration.edit', $enc_id)
-            ->withFlashMessage('Admin has been Edited successfully!')
+        return redirect::back()
+            ->withFlashMessage('Profile has been Edited successfully!')
             ->withType('success');
     }
 

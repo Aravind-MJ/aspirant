@@ -43,11 +43,16 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('ExamDetails', 'ExamDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     #Feetype crud Routes
     Route::resource('FeeTypes', 'FeeTypesController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
-    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
-
+    #Notice crud Routes
+    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
     #Batch crud Routes
-    Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
-
+    Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);  
+    #Route to edit student profile
+    Route::post('edit/admin/student/{id}', ['as' => 'registration.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
+    #Route to edit faculty profile
+    Route::post('edit/admin/faculty/{id}', ['as' => 'facultyProfile.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
+    #Search Student Route 
+    Route::post('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
 });
 
 # Super Admin Routes

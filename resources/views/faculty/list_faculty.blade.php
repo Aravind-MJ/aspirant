@@ -33,7 +33,6 @@
                     <td>{{ $faculty->first_name }} {{ $faculty->last_name}}</td>
                     <td>{{ $faculty->subject}}</td>
                     <td>{{ $faculty->phone }}</td>
-                    <td>{{ $faculty->address }}</td>
                     <td><img src="{{ asset('images/'. $faculty->photo) }}"  alt="photo" width="50" height="50"/></td>
                     <td class=center>                       
                         <a href='Faculty/{{ $faculty->id }}'>View more</a>

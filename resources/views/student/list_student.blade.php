@@ -13,8 +13,14 @@
 
 <div class="box box-primary">
     <div class="box-body">
-
-
+        
+        {!! Form::open(array('route' => 'search.queries', 'class'=>'form navbar-form navbar-right searchform')) !!}
+        {!! Form::text('search', null, array('required', 'class'=>'form-control', 'placeholder'=>'Search for student...')) !!}
+        {!! Form::submit('Search', array('class'=>'btn btn-default')) !!}
+        {!! Form::close() !!}
+        @if (count($allStudents) === 0)
+        <h4><strong> No Students Found! </strong></h4>
+        @elseif (count($allStudents) >= 1)
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
@@ -34,16 +40,12 @@
                     <td>{{ $student->batch }}</td>
                     <td>{{ $student->dob }}</td>
                     <td><img src="{{ asset('images/students/'. $student->photo) }}"  alt="photo" width="50" height="50"/></td>
-                    <td class=center>
-                       
+                    <td class=center>                      
                         <a href='Student/{{ $student->id }}'>View more</a>
                     </td>
-
-                    <td class=center>
-                       
+                    <td class=center>                      
                         <a href='Student/{{ $student->id }}/edit' class='btn btn-primary'>Edit</a>
-                    </td>
-                    
+                    </td>                   
                     <td class=center>
                         {!! Form::open(['action' => ['StudentController@destroy', $student->id], 'method' => 'POST']) !!}
                         {!! csrf_field() !!}
@@ -57,6 +59,7 @@
             </tbody>
 
         </table>
+        @endif
     </div>
 
 </div>

@@ -42,8 +42,8 @@ class RegisterStudentRequest extends Request {
             'school' => 'required|regex:/^[A-Za-z. - ,]+$/',
             'cee_rank' => 'required|numeric',
             'percentage' => 'required|numeric',   
-            'email' => 'required|email|unique:users,email',
-            'photo' => 'mimes:jpeg,bmp,png'
+            'email' => 'required|email|unique:users,email'
+//            'photo' => 'mimes:jpeg,bmp,png'
         ];
         }
         case 'PUT':
@@ -58,8 +58,8 @@ class RegisterStudentRequest extends Request {
             'phone' => 'required|regex:/[0-9]{10}/',
             'school' => 'required|regex:/^[A-Za-z. - ,]+$/',
             'cee_rank' => 'required|numeric',
-            'percentage' => 'required|numeric',
-            'photo' => 'mimes:jpeg,bmp,png'
+            'percentage' => 'required|numeric'
+//            'photo' => 'mimes:jpeg,bmp,png'
         ];
         }
         default:break;
