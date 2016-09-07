@@ -57,6 +57,10 @@ class MarkDetailsController extends Controller
                     ->where('student_details.batch_id', $id)
                     ->get();
 
+                if(count($students)<=0){
+                    return '<h4>No students Available to display</h4>';
+                }
+
                 foreach ($students as $each_student) {
                     $data[Encrypt::encrypt($each_student['id'])]['name'] = $each_student['first_name'] . ' ' . $each_student['last_name'];
                 }

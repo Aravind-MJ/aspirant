@@ -43,9 +43,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('ExamDetails', 'ExamDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     #Feetype crud Routes
     Route::resource('FeeTypes', 'FeeTypesController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
-    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
+    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
 
-     #Batch crud Routes
+    #Batch crud Routes
     Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
 
 });
@@ -74,6 +74,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('attendance/student', ['uses' => 'AttendanceController@selectStudentGet']);
     Route::post('attendance/student', ['as' => 'attendance.student', 'uses' => 'AttendanceController@selectStudentPost']);
     Route::get('attendance/student/{id}', ['uses' => 'AttendanceController@ofStudent']);
+    Route::get('edit/attendance', ['uses' => 'AttendanceController@edit']);
+    Route::get('edit/attendance/{id}', ['uses' => 'AttendanceController@selectDate']);
+    Route::get('edit/attendance/{id}/{date}', ['uses' => 'AttendanceController@editBatch']);
+    Route::post('edit/attendance', ['uses' => 'AttendanceController@update']);
+
 });
 
 # Faculty Routes
@@ -81,7 +86,7 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
     #Home
     Route::get('faculty', ['as' => 'home', 'uses' => 'Faculty\FacultyController@getHome']);
     Route::resource('mark', 'MarkDetailsController');
-    Route::post('fetchStudents',['uses'=>'MarkDetailsController@fetchStudents']);
+    Route::post('fetchStudents', ['uses' => 'MarkDetailsController@fetchStudents']);
 });
 
 Route::group(['middleware' => ['auth', 'notCurrentUser']], function () {
