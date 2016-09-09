@@ -55,7 +55,7 @@ class AttendanceController extends Controller
                     ->where('created_at', 'like', date('Y-m-d') . '%')
                     ->distinct()
                     ->get();
-
+                
                 foreach ($marked as $each) {
                     $marked_batches [] = $each['batch_id'];
                 }
@@ -79,7 +79,7 @@ class AttendanceController extends Controller
                 }
 
             } catch (Exception $e) {
-                return redirect()->back()->withFlashMessage('Error Selecting batch!!')->withType('error');
+                return redirect()->back()->withFlashMessage('Error Selecting batch!!')->withType('danger');
             }
 
             foreach ($batch as $each_batch) {
@@ -96,7 +96,7 @@ class AttendanceController extends Controller
                         $each_batch['time_shift'] = 'evening';
                         break;
                     default:
-                        return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('error');
+                        return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('danger');
                 }
             }
 
@@ -198,7 +198,7 @@ class AttendanceController extends Controller
                 ->get();
 
         } catch (Exception $e) {
-            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('error');
+            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('danger');
         }
 
         foreach ($batch as $each_batch) {
@@ -264,7 +264,7 @@ class AttendanceController extends Controller
             }
 
         } catch (Exception $e) {
-            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('error');
+            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('danger');
         }
 
         foreach ($batch as $each_batch) {
@@ -426,7 +426,7 @@ class AttendanceController extends Controller
                 ->get();
 
         } catch (Exception $e) {
-            return redirect()->back()->withFlashMessage('Error Selecting batch!!')->withType('error');
+            return redirect()->back()->withFlashMessage('Error Selecting batch!!')->withType('danger');
         }
 
         foreach ($batch as $each_batch) {
@@ -443,7 +443,7 @@ class AttendanceController extends Controller
                     $each_batch['time_shift'] = 'evening';
                     break;
                 default:
-                    return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('error');
+                    return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('danger');
             }
         }
 
@@ -476,7 +476,7 @@ class AttendanceController extends Controller
                 ->get()->toArray();
 
             if(count($dates)<=0){
-                return redirect()->back()->withFlashMessage('No attendance available for this batch!!')->withType('error');
+                return redirect()->back()->withFlashMessage('No attendance available for this batch!!')->withType('danger');
             }
 
             foreach ($dates as $each_date) {
@@ -487,7 +487,7 @@ class AttendanceController extends Controller
 
             $dates = $data;
         } catch (Exception $e) {
-            return redirect()->back()->withFlashMessage('Error Selecting date!!')->withType('error');
+            return redirect()->back()->withFlashMessage('Error Selecting date!!')->withType('danger');
         }
 
         return view('attendance.attendance_select_date', ['dates' => $dates, 'id' => $enc_id]);
