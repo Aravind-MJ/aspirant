@@ -221,6 +221,7 @@ class StudentController extends Controller {
                 ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
                 ->select('users.*', 'student_details.*', 'batch_details.batch')
                 ->where('users.first_name', 'LIKE', '%' . $query . '%')
+                ->orWhere('users.last_name', 'LIKE', '%' . $query . '%')
                 ->get();
         // returns a view and passes the view the list of articles and the original query.
         return view('student.list_student', compact('allStudents', 'query'));

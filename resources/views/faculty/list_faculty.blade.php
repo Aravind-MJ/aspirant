@@ -22,7 +22,7 @@
                     <th>Subject</th>
                     <th>Phone</th>
                     <th>Photo</th>
-                    <td>View more</td>
+                    <th>View more</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -39,8 +39,7 @@
                     </td>
                     <td class=center>                       
                         <a href='Faculty/{{ $faculty->id }}/edit' class='btn btn-primary'>Edit</a>
-                    </td>
-                    
+                    </td>                   
                     <td class=center>
                         {!! Form::open(['action' => ['FacultyController@destroy', $faculty->id], 'method' => 'POST']) !!}
                         {!! csrf_field() !!}

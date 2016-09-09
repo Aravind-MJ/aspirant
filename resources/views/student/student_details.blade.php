@@ -6,13 +6,16 @@
 
 @section('body')
 
-<div class="box box-primary">
-    <div class="box-body">
+<div class="col-md-6 col-md-offset-2">
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="box-header">
+                <h3 class="box-title"><strong>Student Profile</strong></h3>
+            </div>
 
-
-        <table id="example2" class="table table-bordered table-hover">
-            <tbody>               
-                <tr>                   
+            <table id="example2" class="table table-bordered table-hover">
+                <tbody>               
+                    <tr>                   
                     <tr><th>First name</th> <td>{{ $student->first_name }}</td></tr>
                     <tr><th>Last name</th><td>{{ $student->last_name}}</td></tr>
                     <tr><th>Batch</th><td>{{$student->batch}}</td></tr>
@@ -25,26 +28,24 @@
                     <tr><th>CEE Rank</th><td>{{ $student->cee_rank }}</td></tr>
                     <tr><th>Percentage</th><td>{{ $student->percentage }}</td></tr>
                     <tr><th>Photo</th><td><img src="{{ asset('images/students/'. $student->photo) }}"  alt="photo" width="50" height="50"/></td></tr>
-                    <tr><th>Edit</th><td class=center>
-                       
-                        <a href='{{ $student->id }}/edit' class='btn btn-primary'>Edit</a>
-                    </td></tr>
-                    
-                    <tr><th>Delete</th><td class=center>
+                    <tr>                      
+                        <td><a href='{{ $student->id }}/edit' class='btn btn-primary btn-block'>Edit Student</a>
+                        </td>                   
+
                         {!! Form::open(['action' => ['StudentController@destroy', $student->id], 'method' => 'POST']) !!}
                         {!! csrf_field() !!}
-                        <input type="hidden" name="_method" value="delete">
-                        <input type="hidden" name="id" value="{{$student->id}}">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        {!! Form::close() !!}
-                    </td>
+                <input type="hidden" name="_method" value="delete">
+                <input type="hidden" name="id" value="{{$student->id}}">
+                <td><button type="submit" class="btn btn-danger btn-block">Delete Student</button>
+                    {!! Form::close() !!}
+                </td>
                 </tr>
-               
-            </tbody>
 
-        </table>
+                </tbody>
+
+            </table>
+        </div>
     </div>
-
 </div>
 @stop
 

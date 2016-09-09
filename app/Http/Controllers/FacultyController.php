@@ -98,9 +98,13 @@ class FacultyController extends Controller {
 
         //redirect to addFaculty
         if ($faculty->save()) {
-            return Redirect::back()->with('flash_message', 'New faculty added successfully.');
+            return Redirect::back()
+                    ->withFlashMessage('New faculty added successfully.')
+                    ->withType('success');
         } else {
-            return Redirect::back()->with('flash_message', 'New faculty registration could not be succeeded.');
+            return Redirect::back()
+                    ->withFlashMessage('New faculty registration could not be succeeded.')
+                    ->withType('danger');
         }
     }
 

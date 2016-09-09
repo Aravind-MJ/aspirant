@@ -52,7 +52,9 @@ class NoticeController extends Controller {
         $student->batch_id = $requestData['batch_id'];
         $student->message = $requestData['message'];
         $student->save();
-        return Redirect::back();
+        return Redirect::back()
+                        ->withFlashMessage('Notice Added successfully!')
+                        ->withType('success');
     }
 
     /**
@@ -72,17 +74,16 @@ class NoticeController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        
+
         $notice = DB::table('notice')
                 ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
                 ->select('notice.*', 'batch_details.batch')
                 ->where('notice.id', $id)
                 ->first();
-        
+
         $batch = \App\Batch::lists('batch', 'id');
 
-        return View('notice.edit_notice', compact('notice','batch','id'));
-        
+        return View('notice.edit_notice', compact('notice', 'batch', 'id'));
     }
 
     /**
@@ -93,12 +94,14 @@ class NoticeController extends Controller {
      */
     public function update($id, Requests\PublishNoticeRequest $requestData) {
         //update values in notice
-        
+
         $notice = \App\Notice::find($id);
         $notice->batch_id = $requestData['batch_id'];
         $notice->message = $requestData['message'];
         $notice->save();
-        return redirect()->route('Notice.index');
+        return redirect()->route('Notice.index')
+                        ->withFlashMessage('Notice Updated successfully!')
+                        ->withType('success');
     }
 
     /**
