@@ -37,51 +37,51 @@ class FeeTypesController extends Controller
      *
      * @return Response
      */
-    public function store(Requests\PublishFeetypesRequest$requestData)
+    public function store(Requests\PublishFeetypesRequest $requestData)
     {
-          $Feetypes = new \App\Feetypes;
-          $Feetypes->name= $requestData['name'];//
-            $Feetypes->save();
-           return redirect()->route('FeeTypes.create');
+        $Feetypes = new \App\Feetypes;
+        $Feetypes->name = $requestData['name'];//
+        $Feetypes->save();
+        return redirect()->route('FeeTypes.create');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-       $Feetypes = Feetypes::find($id);
+        $Feetypes = Feetypes::find($id);
 
-        return view('Feetypes.list_Feetypes')->with('Feetypes', $Feetypes);  
+        return view('Feetypes.list_Feetypes')->with('Feetypes', $Feetypes);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
-       $Feetypes = \App\Feetypes::find($id);
+        $Feetypes = \App\Feetypes::find($id);
 
-  
+
         return view('Feetypes.edit_Feetypes')->with('Feetypes', $Feetypes);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id, Requests\PublishFeetypesRequest $requestData)
     {
         $Feetypes = \App\Feetypes::find($id);
-        $Feetypes->name = $requestData['name']; 
+        $Feetypes->name = $requestData['name'];
         $Feetypes->save();
 
         //Send control to index() method
@@ -91,12 +91,12 @@ class FeeTypesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
     {
-       \App\Feetypes::find($id)->delete();
+        \App\Feetypes::find($id)->delete();
 
         //Redirecting to index() method
         return redirect()->route('FeeTypes.index');

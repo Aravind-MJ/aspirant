@@ -15,21 +15,23 @@ use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Encrypt;
 
-class FacultyController extends Controller {
+class FacultyController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
 
         //Select all records from faculty_details table 
         // $allFaculties = \App\Faculty::all();    //Eloquent ORM method to return all matching results
         $allFaculties = DB::table('faculty_details')
-                ->join('users', 'users.id', '=', 'faculty_details.user_id')
-                ->select('users.*', 'faculty_details.*')
-                ->get();
+            ->join('users', 'users.id', '=', 'faculty_details.user_id')
+            ->select('users.*', 'faculty_details.*')
+            ->get();
         //Redirecting to list_faculty.blade.php with $allFaculties       
         return View('faculty.list_faculty', compact('allFaculties'));
     }
@@ -39,7 +41,8 @@ class FacultyController extends Controller {
      *
      * @return Response
      */
-    public function create() {
+    public function create()
+    {
         //Redirecting to add_faculty.blade.php 
         return view('faculty.add_faculty');
     }
@@ -49,7 +52,8 @@ class FacultyController extends Controller {
      *
      * @return Response
      */
-    public function store(Requests\PublishFacultyRequest $requestData) {
+    public function store(Requests\PublishFacultyRequest $requestData)
+    {
         //Insert Query
         $user = new User;
         $user->first_name = $requestData['first_name'];
@@ -99,29 +103,30 @@ class FacultyController extends Controller {
         //redirect to addFaculty
         if ($faculty->save()) {
             return Redirect::back()
-                    ->withFlashMessage('New faculty added successfully.')
-                    ->withType('success');
+                ->withFlashMessage('New faculty added successfully.')
+                ->withType('success');
         } else {
             return Redirect::back()
-                    ->withFlashMessage('New faculty registration could not be succeeded.')
-                    ->withType('danger');
+                ->withFlashMessage('New faculty registration could not be succeeded.')
+                ->withType('danger');
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
 
         //Get results by targeting id
         $faculty = DB::table('faculty_details')
-                ->join('users', 'users.id', '=', 'faculty_details.user_id')
-                ->where('faculty_details.id', $id)
-                ->select('users.*', 'faculty_details.*')
-                ->first();
+            ->join('users', 'users.id', '=', 'faculty_details.user_id')
+            ->where('faculty_details.id', $id)
+            ->select('users.*', 'faculty_details.*')
+            ->first();
 
         //Redirecting to list page
         return view('faculty.faculty_details')->with('faculty', $faculty);
@@ -130,23 +135,24 @@ class FacultyController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
 
         //Get Result by targeting id
         $faculty = DB::table('faculty_details')
-                ->join('users', 'users.id', '=', 'faculty_details.user_id')
-                ->where('faculty_details.id', $id)
-                ->select('users.*', 'faculty_details.*')
-                ->first();
-        
+            ->join('users', 'users.id', '=', 'faculty_details.user_id')
+            ->where('faculty_details.id', $id)
+            ->select('users.*', 'faculty_details.*')
+            ->first();
+
         //Fetch User Details
         $user = DB::table('users')
-                ->select('id', 'first_name', 'last_name', 'email')
-                ->where('id', $faculty->user_id)
-                ->first();
+            ->select('id', 'first_name', 'last_name', 'email')
+            ->where('id', $faculty->user_id)
+            ->first();
         $user->enc_id = Encrypt::encrypt($user->id);
 
         //Redirecting to edit_faculty.blade.php 
@@ -157,10 +163,11 @@ class FacultyController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function update($id, Requests\PublishFacultyRequest $requestData) {
+    public function update($id, Requests\PublishFacultyRequest $requestData)
+    {
 
         //Update Query       
         $faculty = Faculty::find($id);
@@ -206,16 +213,17 @@ class FacultyController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
 
         //find result by id and delete 
         Faculty::find($id)->delete();
 
         //Redirecting to index() method
-        return redirect()->route('Faculty.index');             
+        return redirect()->route('Faculty.index');
     }
 
 }

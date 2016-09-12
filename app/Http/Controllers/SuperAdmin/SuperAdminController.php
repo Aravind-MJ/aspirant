@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class SuperAdminController extends Controller
 {
-    protected $faculty,$students,$admins,$users;
+    protected $faculty, $students, $admins, $users;
 
     public function __construct(RoleUsers $user)
     {
@@ -21,19 +21,19 @@ class SuperAdminController extends Controller
     {
         $count = array();
         $title = 'Super Admin | Home';
-        $roles = ['users','admins','superadmin','faculty'];
+        $roles = ['users', 'admins', 'superadmin', 'faculty'];
         $data = $this->users
             ->select(DB::raw('count(*) as count'))
             ->groupBy('role_id')
             ->get()->toArray();
 
-        foreach($data as $key => $each){
+        foreach ($data as $key => $each) {
             $count[$roles[$key]] = $each['count'];
         }
 
-        return view('protected.dashboard',[
-            'title'=>$title,
-            'count'=>$count
+        return view('protected.dashboard', [
+            'title' => $title,
+            'count' => $count
         ]);
     }
 

@@ -21,9 +21,9 @@ use App\Http\Requests\StoreMarkRequest;
 class MarkDetailsController extends Controller
 {
 
-    protected $users, $batch, $student_details, $exam_details,$mark_details;
+    protected $users, $batch, $student_details, $exam_details, $mark_details;
 
-    public function __construct(User $users, Batch $batch, StudentDetails $student_details, Examdetails $exam_details,MarkDetails $mark_details)
+    public function __construct(User $users, Batch $batch, StudentDetails $student_details, Examdetails $exam_details, MarkDetails $mark_details)
     {
         $this->batch = $batch;
         $this->student_details = $student_details;
@@ -57,7 +57,7 @@ class MarkDetailsController extends Controller
                     ->where('student_details.batch_id', $id)
                     ->get();
 
-                if(count($students)<=0){
+                if (count($students) <= 0) {
                     return '<h4>No students Available to display</h4>';
                 }
 
@@ -71,7 +71,7 @@ class MarkDetailsController extends Controller
                 return 'Error Selecting Students!';
             }
 
-            return view('mark.students_section', ['students' => $students,'batch_id'=>$batch_id]);
+            return view('mark.students_section', ['students' => $students, 'batch_id' => $batch_id]);
 
         } else {
             return '<h1>Invalid Request!! Access Denied</h1>';
@@ -109,7 +109,7 @@ class MarkDetailsController extends Controller
                 ->get();
             foreach ($exams as $exam) {
                 $date = date_create($exam['exam_date']);
-                $data['exams'][Encrypt::encrypt($exam['id'])] = $exam['name'].' - '.date_format($date,'d/m/Y');
+                $data['exams'][Encrypt::encrypt($exam['id'])] = $exam['name'] . ' - ' . date_format($date, 'd/m/Y');
             }
             $exams = $data['exams'];
         } catch (Exception $e) {
@@ -131,7 +131,7 @@ class MarkDetailsController extends Controller
             $exam_id = Encrypt::decrypt($request['exam_id']);
             $id = Encrypt::decrypt($request['batch_id']);
             $count = count($request['markof']);
-            if(!array_filter($request['markof'],'is_numeric')){
+            if (!array_filter($request['markof'], 'is_numeric')) {
                 return redirect('mark/create')->withFlashMessage('
                     <h4>Error!</h4>
                     <ol>
@@ -149,7 +149,7 @@ class MarkDetailsController extends Controller
                     ]);
 
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return redirect('mark/create')->withFlashMessage('Error Adding mark to database')->withType('danger');
         }
 

@@ -28,8 +28,6 @@ class PasswordController extends Controller
 
     /**
      * Create a new password controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -50,13 +48,13 @@ class PasswordController extends Controller
     /**
      * Send a reset link to the given user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function postEmail(Request $request)
     {
         $this->validate($request, ['email' => 'required|email']);
-        
+
         $response = '';
         /*$response = Password::sendResetLink($request->only('email'), function (Message $message) {
             $message->subject($this->getEmailSubject());
@@ -68,19 +66,20 @@ class PasswordController extends Controller
 
             case Password::INVALID_USER:
                 return redirect()->back()->withErrors(['email' => trans($response)]);
-                
-            default : return redirect($this->redirectPath())
-                            ->withFlashMessage('Token Generated!!');
+
+            default :
+                return redirect($this->redirectPath())
+                    ->withFlashMessage('Token Generated!!');
         }
     }
-
 
 
     /**
      * Display the password reset view for the given token.
      *
-     * @param  string  $token
+     * @param  string $token
      * @return \Illuminate\Http\Response
+     * @throws NotFoundHttpException
      */
     public function getReset($token = null)
     {
@@ -94,7 +93,7 @@ class PasswordController extends Controller
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function postReset(Request $request)
@@ -116,20 +115,20 @@ class PasswordController extends Controller
         switch ($response) {
             case Password::PASSWORD_RESET:
                 return redirect($this->redirectPath())
-                            ->withFlashMessage('Password Reset Successfully!');
+                    ->withFlashMessage('Password Reset Successfully!');
 
             default:
                 return redirect()->back()
-                            ->withInput($request->only('email'))
-                            ->withErrors(['email' => trans($response)]);
+                    ->withInput($request->only('email'))
+                    ->withErrors(['email' => trans($response)]);
         }
     }
 
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
-     * @param  string  $password
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
+     * @param  string $password
      * @return void
      */
     protected function resetPassword($user, $password)

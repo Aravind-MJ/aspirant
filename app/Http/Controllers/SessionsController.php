@@ -58,9 +58,9 @@ class SessionsController extends Controller
             return redirect()->intended('admin');
         } elseif ($user->inRole($users)) {
             return redirect()->intended('/');
-        } else if($user->inRole($superadmin)){
+        } else if ($user->inRole($superadmin)) {
             return redirect()->intended('sadmin');
-        } else if($user->inRole($faculty)){
+        } else if ($user->inRole($faculty)) {
             return redirect()->intended('faculty');
         }
     }
@@ -68,10 +68,10 @@ class SessionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function destroy($id=null)
+    public function destroy($id = null)
     {
         Sentinel::logout();
 

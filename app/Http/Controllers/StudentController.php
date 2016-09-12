@@ -17,20 +17,22 @@ use DB;
 use App\Encrypt;
 use Illuminate\Support\Facades\Request;
 
-class StudentController extends Controller {
+class StudentController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
 
         $allStudents = DB::table('student_details')
-                ->join('users', 'users.id', '=', 'student_details.user_id')
-                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*', 'batch_details.batch')
-                ->get();
+            ->join('users', 'users.id', '=', 'student_details.user_id')
+            ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+            ->select('users.*', 'student_details.*', 'batch_details.batch')
+            ->get();
 
         return View('student.list_student', compact('allStudents'));
     }
@@ -40,7 +42,8 @@ class StudentController extends Controller {
      *
      * @return Response
      */
-    public function create() {
+    public function create()
+    {
         $batch = Batch::lists('batch', 'id');
 
         return view('student.add_student', compact('id', 'batch'));
@@ -51,7 +54,8 @@ class StudentController extends Controller {
      *
      * @return Response
      */
-    public function store(Requests\RegisterStudentRequest $requestData) {
+    public function store(Requests\RegisterStudentRequest $requestData)
+    {
 
         //store student data to student_details table
         $user = new User;
@@ -102,24 +106,25 @@ class StudentController extends Controller {
 
         $student->save();
         return Redirect::back()
-                        ->withFlashMessage('Student Added successfully!')
-                        ->withType('success');
+            ->withFlashMessage('Student Added successfully!')
+            ->withType('success');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         //Get results by targeting id
         $student = DB::table('student_details')
-                ->join('users', 'users.id', '=', 'student_details.user_id')
-                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*', 'batch_details.batch')
-                ->where('student_details.id', $id)
-                ->first();
+            ->join('users', 'users.id', '=', 'student_details.user_id')
+            ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+            ->select('users.*', 'student_details.*', 'batch_details.batch')
+            ->where('student_details.id', $id)
+            ->first();
 //        dd($student);
 //        return view('protected.admin.student_details')->with('student', $student);
         return View('student.student_details', compact('student'));
@@ -128,26 +133,27 @@ class StudentController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
 
         //Fetch Student Details
         $student = DB::table('student_details')
-                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                ->select('student_details.*', 'batch_details.batch')
-                ->where('student_details.id', $id)
-                ->first();
+            ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+            ->select('student_details.*', 'batch_details.batch')
+            ->where('student_details.id', $id)
+            ->first();
 
         //Fetch Batch Details
         $batch = Batch::lists('batch', 'id');
 
         //Fetch User Details
         $user = DB::table('users')
-                ->select('id', 'first_name', 'last_name', 'email')
-                ->where('id', $student->user_id)
-                ->first();
+            ->select('id', 'first_name', 'last_name', 'email')
+            ->where('id', $student->user_id)
+            ->first();
         $user->enc_id = Encrypt::encrypt($user->id);
 
         //Redirecting to edit_student.blade.php 
@@ -157,10 +163,11 @@ class StudentController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function update($id, Requests\RegisterStudentRequest $requestData) {
+    public function update($id, Requests\RegisterStudentRequest $requestData)
+    {
         //update student_details data
         $student = Student::find($id);
         $student->batch_id = $requestData['batch_id'];
@@ -193,17 +200,18 @@ class StudentController extends Controller {
 
         $student->save();
         return redirect::back()
-                        ->withFlashMessage('Student Details Updated successfully!')
-                        ->withType('success');
+            ->withFlashMessage('Student Details Updated successfully!')
+            ->withType('success');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //find result by id and delete 
         Student::find($id)->delete();
 
@@ -211,18 +219,19 @@ class StudentController extends Controller {
         return Redirect::back();
     }
 
-    public function search(Request $request) {
-      
+    public function search(Request $request)
+    {
+
         // Gets the query string from our form submission 
         $query = Request::input('search');
         // Returns an array of articles that have the query string located somewhere within 
         $allStudents = DB::table('student_details')
-                ->join('users', 'users.id', '=', 'student_details.user_id')
-                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*', 'batch_details.batch')
-                ->where('users.first_name', 'LIKE', '%' . $query . '%')
-                ->orWhere('users.last_name', 'LIKE', '%' . $query . '%')
-                ->get();
+            ->join('users', 'users.id', '=', 'student_details.user_id')
+            ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+            ->select('users.*', 'student_details.*', 'batch_details.batch')
+            ->where('users.first_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('users.last_name', 'LIKE', '%' . $query . '%')
+            ->get();
         // returns a view and passes the view the list of articles and the original query.
         return view('student.list_student', compact('allStudents', 'query'));
     }

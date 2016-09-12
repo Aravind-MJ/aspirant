@@ -55,7 +55,7 @@ class AttendanceController extends Controller
                     ->where('created_at', 'like', date('Y-m-d') . '%')
                     ->distinct()
                     ->get();
-                
+
                 foreach ($marked as $each) {
                     $marked_batches [] = $each['batch_id'];
                 }
@@ -472,10 +472,10 @@ class AttendanceController extends Controller
             $dates = $this->attendance
                 ->select('created_at')
                 ->where('batch_id', $id)
-                ->orderBy('created_at','DESC')
+                ->orderBy('created_at', 'DESC')
                 ->get()->toArray();
 
-            if(count($dates)<=0){
+            if (count($dates) <= 0) {
                 return redirect()->back()->withFlashMessage('No attendance available for this batch!!')->withType('danger');
             }
 
@@ -531,27 +531,27 @@ class AttendanceController extends Controller
             return redirect()->back()->withFlashMessage('Error Selecting Students!')->withType('danger');
         }
 
-        try{
+        try {
             $attendance = $this->attendance
                 ->select('attendance')
-                ->whereRaw("batch_id = ".$id." AND created_at LIKE '".$date."%'")
+                ->whereRaw("batch_id = " . $id . " AND created_at LIKE '" . $date . "%'")
                 ->first()->toArray();
 
             $data = [];
             $attendance = json_decode($attendance['attendance']);
-            if(!is_array($attendance)){
+            if (!is_array($attendance)) {
                 return redirect()->back()->withFlashMessage('Attendance Data Corrupted!')->withType('danger');
             }
-            foreach($attendance as $each_attendance){
-                $data []= Encrypt::encrypt($each_attendance);
+            foreach ($attendance as $each_attendance) {
+                $data [] = Encrypt::encrypt($each_attendance);
             }
             $attendance = $data;
 
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Error Fetching Attendance!')->withType('danger');
         }
 
-        return view('attendance.attendance_edit', ['id' => $enc_id, 'students' => $students,'attendance' => $attendance]);
+        return view('attendance.attendance_edit', ['id' => $enc_id, 'students' => $students, 'attendance' => $attendance]);
     }
 
     /**
@@ -576,11 +576,11 @@ class AttendanceController extends Controller
             }
             try {
                 $this->attendance
-                    ->where('batch_id',$id)
+                    ->where('batch_id', $id)
                     ->update(array(
-                    'absent_count' => $count,
-                    'attendance' => $present
-                ));
+                        'absent_count' => $count,
+                        'attendance' => $present
+                    ));
             } catch (Exception $e) {
                 return 'error';
             }

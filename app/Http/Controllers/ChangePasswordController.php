@@ -26,20 +26,20 @@ class ChangePasswordController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
 
-        return view('changePassword',['enc_id'=>$id]);
+        return view('changePassword', ['enc_id' => $id]);
 
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id, ChangePasswordRequest $request)
@@ -49,7 +49,7 @@ class ChangePasswordController extends Controller
             $user = $this->user->find($id);
             $user->password = \Hash::make($request->input('password'));
             $user->save();
-        } catch(Exception $e){
+        } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Password Change Failed!!')->withType('danger');
         }
 
