@@ -177,6 +177,8 @@
         @yield('pagescript')
 
         @yield('ckeditor')
+        
+        @yield('confirmDelete')
 
   <script>
   $(function() {

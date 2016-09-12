@@ -32,7 +32,7 @@
                         <td><a href='{{ $student->id }}/edit' class='btn btn-primary btn-block'>Edit Student</a>
                         </td>                   
 
-                        {!! Form::open(['action' => ['StudentController@destroy', $student->id], 'method' => 'POST']) !!}
+                        {!! Form::open(['action' => ['StudentController@destroy', $student->id], 'method' => 'POST', 'class' => 'delete']) !!}
                         {!! csrf_field() !!}
                 <input type="hidden" name="_method" value="delete">
                 <input type="hidden" name="id" value="{{$student->id}}">
@@ -48,5 +48,11 @@
     </div>
 </div>
 @stop
-
+@section('confirmDelete')
+<script>
+    $(".delete").on("submit", function(){
+        return confirm("Do you want to delete this item?");
+    });
+</script>
+@stop
 @endsection

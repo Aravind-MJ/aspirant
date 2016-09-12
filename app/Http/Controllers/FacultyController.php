@@ -29,9 +29,10 @@ class FacultyController extends Controller
         //Select all records from faculty_details table 
         // $allFaculties = \App\Faculty::all();    //Eloquent ORM method to return all matching results
         $allFaculties = DB::table('faculty_details')
-            ->join('users', 'users.id', '=', 'faculty_details.user_id')
-            ->select('users.*', 'faculty_details.*')
-            ->get();
+                ->join('users', 'users.id', '=', 'faculty_details.user_id')
+                ->select('users.*', 'faculty_details.*')
+                ->where('faculty_details.deleted_at', NULL)
+                ->get();
         //Redirecting to list_faculty.blade.php with $allFaculties       
         return View('faculty.list_faculty', compact('allFaculties'));
     }
@@ -103,12 +104,12 @@ class FacultyController extends Controller
         //redirect to addFaculty
         if ($faculty->save()) {
             return Redirect::back()
-                ->withFlashMessage('New faculty added successfully.')
-                ->withType('success');
+                            ->withFlashMessage('New faculty added successfully.')
+                            ->withType('success');
         } else {
             return Redirect::back()
-                ->withFlashMessage('New faculty registration could not be succeeded.')
-                ->withType('danger');
+                            ->withFlashMessage('New faculty registration could not be succeeded.')
+                            ->withType('danger');
         }
     }
 
@@ -143,10 +144,10 @@ class FacultyController extends Controller
 
         //Get Result by targeting id
         $faculty = DB::table('faculty_details')
-            ->join('users', 'users.id', '=', 'faculty_details.user_id')
-            ->where('faculty_details.id', $id)
-            ->select('users.*', 'faculty_details.*')
-            ->first();
+                ->join('users', 'users.id', '=', 'faculty_details.user_id')
+                ->where('faculty_details.id', $id)
+                ->select('users.*', 'faculty_details.*')
+                ->first();
 
         //Fetch User Details
         $user = DB::table('users')
@@ -156,7 +157,6 @@ class FacultyController extends Controller
         $user->enc_id = Encrypt::encrypt($user->id);
 
         //Redirecting to edit_faculty.blade.php 
-//        return view('faculty.edit_faculty')->with('faculty', $faculty);
         return View('faculty.edit_faculty', compact('user', 'faculty'));
     }
 
@@ -197,17 +197,18 @@ class FacultyController extends Controller
 
             $faculty->save();
 
-//         if ($faculty->save()) 
-//         {
-//            return Redirect::back()->with(['global' => 'New faculty added successfully.', 'type' => 'success']);
-//         }else
-//         {
-//            return Redirect::back()->with(['global'=> 'New faculty registration could not be succeeded.' , 'type' => 'danger']);
-//         }
         }
 
         //Send control to index() method
-        return redirect()->route('Faculty.index');
+        if ($faculty->save()) {
+            return redirect()->route('Faculty.index')
+                            ->withFlashMessage('Faculty Updated Successfully!')
+                            ->withType('success');
+        } else {
+            return redirect()->route('Faculty.index')
+                            ->withFlashMessage('Faculty Update Failed!')
+                            ->withType('danger');
+        }
     }
 
     /**

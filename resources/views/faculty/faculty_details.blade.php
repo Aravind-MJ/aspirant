@@ -26,8 +26,8 @@
                     <tr><th>Phone</th><td>{{ $faculty->phone }}</td></tr>
                     <tr><th>Address</th><td>{{ $faculty->address }}</td></tr>
                     <tr><th>Photo</th><td><img src="{{ asset('images/'. $faculty->photo) }}"  alt="photo" width="50" height="50"/></td>
-                    <tr><th><a href='{{ $faculty->id }}/edit' class='btn btn-primary btn-block'>Edit</a>                   
-                    <th>{!! Form::open(['action' => ['FacultyController@destroy', $faculty->id], 'method' => 'POST']) !!}
+                    <tr><td><a href='{{ $faculty->id }}/edit' class='btn btn-primary btn-block'>Edit</a> </td>                  
+                    <td>{!! Form::open(['action' => ['FacultyController@destroy', $faculty->id], 'method' => 'POST', 'class' => 'delete']) !!}
                     {!! csrf_field() !!}
                     <input type="hidden" name="_method" value="delete">
                     <input type="hidden" name="id" value="{{$faculty->id}}">
@@ -42,5 +42,11 @@
     </div>
 </div>
 @stop
-
+@section('confirmDelete')
+<script>
+    $(".delete").on("submit", function(){
+        return confirm("Do you want to delete this item?");
+    });
+</script>
+@stop
 @endsection

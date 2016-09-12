@@ -29,11 +29,12 @@ class StudentController extends Controller
     {
 
         $allStudents = DB::table('student_details')
-            ->join('users', 'users.id', '=', 'student_details.user_id')
-            ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-            ->select('users.*', 'student_details.*', 'batch_details.batch')
-            ->get();
-
+                ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+                ->select('users.*', 'student_details.*', 'batch_details.batch')
+                ->where('student_details.deleted_at', NULL)
+                ->get();
+                     
         return View('student.list_student', compact('allStudents'));
     }
 
@@ -105,9 +106,15 @@ class StudentController extends Controller
         }
 
         $student->save();
-        return Redirect::back()
-            ->withFlashMessage('Student Added successfully!')
-            ->withType('success');
+        if ($student->save()) {
+            return Redirect::back()
+                            ->withFlashMessage('Student Added successfully!')
+                            ->withType('success');
+        } else {
+            return Redirect::back()
+                            ->withFlashMessage('Failed!')
+                            ->withType('danger');
+        }
     }
 
     /**
@@ -120,12 +127,12 @@ class StudentController extends Controller
     {
         //Get results by targeting id
         $student = DB::table('student_details')
-            ->join('users', 'users.id', '=', 'student_details.user_id')
-            ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-            ->select('users.*', 'student_details.*', 'batch_details.batch')
-            ->where('student_details.id', $id)
-            ->first();
-//        dd($student);
+                ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+                ->select('users.*', 'student_details.*', 'batch_details.batch')
+                ->where('student_details.id', $id)
+                ->first();
+
 //        return view('protected.admin.student_details')->with('student', $student);
         return View('student.student_details', compact('student'));
     }
@@ -196,12 +203,20 @@ class StudentController extends Controller
 //        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
 
             $student->photo = $name;
+            
+            $student->save();
         }
-
-        $student->save();
+        
+        
+        if($student->save()){
         return redirect::back()
-            ->withFlashMessage('Student Details Updated successfully!')
-            ->withType('success');
+                        ->withFlashMessage('Student Details Updated successfully!')
+                        ->withType('success');
+        }else{
+            return redirect::back()
+                        ->withFlashMessage('Student Details Update Failed!')
+                        ->withType('danger');
+        }
     }
 
     /**
@@ -219,8 +234,7 @@ class StudentController extends Controller
         return Redirect::back();
     }
 
-    public function search(Request $request)
-    {
+    public function search(Request $request) {
 
         // Gets the query string from our form submission 
         $query = Request::input('search');

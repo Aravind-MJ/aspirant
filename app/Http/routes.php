@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     #Batch crud Routes
     Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);  
     #Route to edit student profile
-    Route::post('edit/admin/student/{id}', ['as' => 'registration.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
+    Route::post('edit/admin/student/{id}', ['as' => 'studentProfilen.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
     #Route to edit faculty profile
     Route::post('edit/admin/faculty/{id}', ['as' => 'facultyProfile.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
     #Search Student Route 
