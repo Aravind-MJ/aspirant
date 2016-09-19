@@ -11,7 +11,6 @@
 @section('body')
 
 {!! Form::open(['action' => 'StudentController@store','method'=>'POST','enctype' => 'multipart/form-data']) !!}
-<!--{!! Form::open() !!}-->
 @include('flash')
 <div class="box box-primary">
     <div class="box-body">

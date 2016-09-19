@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     #Route to edit faculty profile
     Route::post('edit/admin/faculty/{id}', ['as' => 'facultyProfile.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
     #Search Student Route 
-    Route::post('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
+    Route::post('Student/Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
 });
 
 # Super Admin Routes

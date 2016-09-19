@@ -13,11 +13,17 @@
 
 <div class="box box-primary">
     <div class="box-body">
-        
+<!--        @if(Request::is('Student'))-->
         {!! Form::open(array('route' => 'search.queries', 'class'=>'form navbar-form navbar-right searchform')) !!}
-        {!! Form::text('search', null, array('required', 'class'=>'form-control', 'placeholder'=>'Search for student...')) !!}
+         @if(isset($batch))
+            @if(!empty($batch))
+        {!! Form::select('batch_id', $batch, null, array('placeholder' => 'Please select batch','class' => 'form-control')) !!}
+            @endif
+        @endif
+        {!! Form::text('search', null, array('class'=>'form-control', 'placeholder'=>'Search for student...')) !!}
         {!! Form::submit('Search', array('class'=>'btn btn-default')) !!}
         {!! Form::close() !!}
+        <!--@endif-->
         @if (count($allStudents) === 0)
         <h4><strong> No Students Found! </strong></h4>
         @elseif (count($allStudents) >= 1)
@@ -44,14 +50,14 @@
                         <a href='Student/{{ $student->id }}'>View more</a>
                     </td>
                     <td class=center>                      
-                        <a href='Student/{{ $student->id }}/edit' class='btn btn-primary'>Edit</a>
-                    </td>                   
+                        <a href='Student/{{ $student->id }}/edit' class='btn btn-primary btn-block'>Edit</a>
+                    </td> 
                     <td class=center>
                         {!! Form::open(['action' => ['StudentController@destroy', $student->id], 'method' => 'POST', 'class' => 'delete']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$student->id}}">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-block">Delete</button>
                         {!! Form::close() !!}
                     </td>
                 </tr>
