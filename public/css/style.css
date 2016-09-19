@@ -1,83 +1,106 @@
-.selector-present{
-	height:65px;
-	/* border: 1px solid green;*/
-	padding-top:10px;
-	margin:10px;
-	display : inline-block;
-	background-color:#0fb706;
-	cursor: pointer;
-}
-.selector-absent{
-    height:65px;
-   /* border: 1px solid red;*/
-    padding-top:10px;
-    margin:10px;
-    display : inline-block;
-    background-color:#f93f3f;
-    color:white;
+.selector-present {
+    height: 65px;
+    /* border: 1px solid green;*/
+    padding-top: 10px;
+    margin: 10px;
+    display: inline-block;
+    background-color: #0fb706;
     cursor: pointer;
 }
-.selector-present strong{
-	font-size:15px;
-	color:#fff;
-	font-weight:600 !important;
+
+.selector-absent {
+    height: 65px;
+    /* border: 1px solid red;*/
+    padding-top: 10px;
+    margin: 10px;
+    display: inline-block;
+    background-color: #f93f3f;
+    color: white;
+    cursor: pointer;
 }
+
+.selector-present strong {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 600 !important;
+}
+
 .box.box-success {
-	border-top-color: #000 !important;
+    border-top-color: #000 !important;
 }
-.box.box-danger{
-	border-bottom: 3px solid #000 !important;
-	border-top: none !important;
+
+.box.box-danger {
+    border-bottom: 3px solid #000 !important;
+    border-top: none !important;
 }
-#mark{
-    width:300px;
+
+#mark {
+    width: 300px;
     margin-top: 40px;
 }
-.box-title h2{
-	font-size:36 !important;
-	font-weight:700;
+
+.box-title h2 {
+    font-size: 36 !important;
+    font-weight: 700;
 }
-.student_icon{
-	font-size:14px;
-	color:#fff;
+
+.student_icon {
+    font-size: 14px;
+    color: #fff;
 }
-.user-header{
-	background-color:#d9d9d9 !important;
+
+.user-header {
+    background-color: #d9d9d9 !important;
 }
+
 .dropdown-menu > li.user-header > p {
-	color:#000 !important;
+    color: #000 !important;
 }
-.sign_new{
-	background-color:#605ca8;
-	color:#fff !important;
+
+.sign_new {
+    background-color: #605ca8;
+    color: #fff !important;
 }
-.sign_new:hover{
-	background-color:#333333;
-	color:#fff !important;
+
+.sign_new:hover {
+    background-color: #333333;
+    color: #fff !important;
 }
-.profile_new{
-	background-color:#605ca8;
-	color:#fff !important;
+
+.profile_new {
+    background-color: #605ca8;
+    color: #fff !important;
 }
-.profile_new:hover{
-	background-color:#333333;
-	color:#fff !important;
+
+.profile_new:hover {
+    background-color: #333333;
+    color: #fff !important;
 }
+
 .dropdown-menu {
     border: 1px solid #ccc !important;
 }
+
 .box_batch {
-height:80px !important;
-padding :20px 35px !important;
-background-color:#017dc7 !important;
-color:#fff;
-}
-.box_batch:hover{
-background-color:#625dba !important;
-color:#fff !important;
+    float: left;
+    min-width: 160px;
+    margin: 5px 5px;
+    padding: 15px 25px !important;
+    background-color: #017dc7 !important;
+    color: #fff;
+    text-align: center;
 }
 
- /*~~~~Loading Screen On Ajx call~~~~*/
+.box_batch:hover {
+    background-color: #625dba !important;
+    color: #fff !important;
+}
+
+.box_text{
+    font-size: 20px;
+}
+
+/*~~~~Loading Screen On Ajx call~~~~*/
 .loading-screen {
     top: 0;
     left: 0;
@@ -164,14 +187,14 @@ color:#fff !important;
 /*End of Loading Screen Style*/
 
 /*Attendance Calender Styles*/
-.attendance_table{
+.attendance_table {
     width: 95%;
     margin: auto;
     table-layout: fixed;
     cursor: pointer;
 }
 
-.attendance_table tbody td{
+.attendance_table tbody td {
     background-color: #00c0ef;
     color: #fff;
     font-weight: bolder;
@@ -179,7 +202,7 @@ color:#fff !important;
     border-radius: 8px;
 }
 
-.attendance_table thead th{
+.attendance_table thead th {
     background-color: #139ff7;
     color: #fff;
     font-weight: bolder;
@@ -187,19 +210,20 @@ color:#fff !important;
     border-radius: 8px;
 }
 
-.attendance_table td:not(.absent):not(.present):hover{
+.attendance_table td:not(.absent):not(.present):hover {
     background-color: #139ff7;
 }
 
-.attendance_table .present{
+.attendance_table .present {
     background-color: #117700;
 }
 
-.attendance_table .absent{
+.attendance_table .absent {
     background-color: #d33724;
 }
 
-.attendance_table .holiday{
+.attendance_table .holiday {
     /*color: #d33724;*/
 }
+
 /*End of attendance Calender Styles*/

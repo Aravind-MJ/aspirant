@@ -17,7 +17,8 @@ class CreateAttendanceTable extends Migration
             $table-> integer('batch_id')->unsigned();
             $table-> foreign('batch_id')->references('id')->on('batch_details');
             $table-> string('attendance');
-            $table-> integer('absent_count');           
+            $table-> integer('present_count');
+            $table-> integer('del_status');
             $table->timestamps();           
         });
     }

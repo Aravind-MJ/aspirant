@@ -44,9 +44,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     #Feetype crud Routes
     Route::resource('FeeTypes', 'FeeTypesController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     #Notice crud Routes
-    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
+    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
     #Batch crud Routes
-    Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);  
+    Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     #Route to edit student profile
     Route::post('edit/admin/student/{id}', ['as' => 'studentProfilen.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
     #Route to edit faculty profile
@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('mark/attendance', ['uses' => 'AttendanceController@store']);
     Route::get('attendance/batch', ['uses' => 'AttendanceController@selectBatch']);
     Route::get('attendance/batch/{id}', ['uses' => 'AttendanceController@ofBatch']);
+    Route::get('attendance/batch/{id}/{date}', ['uses' => 'AttendanceController@ofBatchDate']);
     Route::get('attendance/student', ['uses' => 'AttendanceController@selectStudentGet']);
     Route::post('attendance/student', ['as' => 'attendance.student', 'uses' => 'AttendanceController@selectStudentPost']);
     Route::get('attendance/student/{id}', ['uses' => 'AttendanceController@ofStudent']);
@@ -83,6 +84,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('edit/attendance/{id}', ['uses' => 'AttendanceController@selectDate']);
     Route::get('edit/attendance/{id}/{date}', ['uses' => 'AttendanceController@editBatch']);
     Route::post('edit/attendance', ['uses' => 'AttendanceController@update']);
+    Route::delete('attendance', ['as' => 'attendance.destroy', 'uses' => 'AttendanceController@destroy']);
+    Route::post('rangeAttendance', ['uses' => 'AttendanceController@rangeAttendance']);
 
 });
 

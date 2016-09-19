@@ -18,10 +18,15 @@
             <?php
                 foreach ($dates as $key => $each_date) {
                 ?>
-                    <a class="btn btn-app box_batch" href="{{url('edit/attendance/'.$id.'/'.$key)}}">
-                        <i class="fa fa-folder-open"></i>
-                        <strong><?= $each_date ?></strong>
-                    </a>
+                    <div class="box_batch">
+                        <a class="btn btn-warning btn-block" href="{{url('edit/attendance/'.$id.'/'.$key)}}">Edit</a>
+                        <strong class="box_text"><?= $each_date ?></strong><br>
+                        {!! Form::open(['route' => ['attendance.destroy'], 'method' => 'delete', 'onsubmit' => 'return ConfirmDelete()']) !!}
+                        {!! Form::hidden('id',$id) !!}
+                        {!! Form::hidden('date',$key) !!}
+                        {!! Form::submit('Delete',['class'=>'btn btn-danger btn-block']) !!}
+                        {!! Form::close() !!}
+                    </div>
             <?php
                 }
                 ?>
@@ -31,5 +36,14 @@
 @endsection
 
 @section('pagescript')
-
+<script>
+function ConfirmDelete()
+  {
+  var x = confirm("Are you sure you want to delete?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+</script>
 @stop
