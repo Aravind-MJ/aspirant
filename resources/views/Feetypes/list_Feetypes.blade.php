@@ -9,7 +9,7 @@
 @endif-->
 
 @section('body')
-
+@include('flash')
 
 <div class="box box-primary">
     <div class="box-body">
@@ -37,7 +37,7 @@
                     </td>
                     
                     <td class=center>
-                        {!! Form::open(['route' => ['FeeTypes.destroy', $Feetypes->id], 'method' => 'POST']) !!}
+                        {!! Form::open(['route' => ['FeeTypes.destroy', $Feetypes->id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$Feetypes->id}}">

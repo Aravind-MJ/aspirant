@@ -29,7 +29,7 @@ class FeeTypesController extends Controller
      */
     public function create()
     {
-        return view('Feetypes.add_Feetypes');
+        return view('Feetypes.add_Feetypes')->with('message', 'Message sent!');
     }
 
     /**
@@ -41,8 +41,10 @@ class FeeTypesController extends Controller
     {
           $Feetypes = new \App\Feetypes;
           $Feetypes->name= $requestData['name'];//
-            $Feetypes->save();
-           return redirect()->route('FeeTypes.create');
+          $Feetypes->save();
+           return redirect()->route('FeeTypes.create')
+                            ->withFlashMessage('Feetype Added successfully!')
+                            ->withType('success');
     }
 
     /**
@@ -85,7 +87,9 @@ class FeeTypesController extends Controller
         $Feetypes->save();
 
         //Send control to index() method
-        return redirect()->route('FeeTypes.index');
+        return redirect()->route('FeeTypes.index')
+                         ->withFlashMessage('Feetype Updated successfully!')
+                         ->withType('success');
     }
 
     /**

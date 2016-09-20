@@ -61,7 +61,9 @@ class ExamDetailsController extends Controller
         $Examdetails->exam_date =date("Y/m/d", strtotime($requestData['exam_date']));
         $Examdetails->total_mark=$requestData['total_mark'];
         $Examdetails->save();
-           return redirect()->route('ExamDetails.create');
+           return redirect()->route('ExamDetails.create')
+                            ->withFlashMessage('Examdetails Added successfully!')
+                            ->withType('success');
     }
 
     /**
@@ -90,7 +92,7 @@ class ExamDetailsController extends Controller
        $Examdetails = DB::table('exam_details')
                 ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
                 ->where('exam_details.id', $id)
-                ->select('Exam_type.*', 'exam_details.*')
+                ->select('Exam_type.name', 'exam_details.*')
                 ->first();
   
         $Examtype=  \App\Examtypes::lists('name','id');
@@ -111,7 +113,9 @@ class ExamDetailsController extends Controller
         $Examdetails->total_mark=$requestData['total_mark'];
         
         $Examdetails->save();
-       return redirect()->route('ExamDetails.index');
+       return redirect()->route('ExamDetails.index')
+                        ->withFlashMessage('Examdetails Updated successfully!')
+                        ->withType('success');
     }
 
     /**

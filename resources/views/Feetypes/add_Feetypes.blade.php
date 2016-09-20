@@ -9,8 +9,8 @@
 @endif-->
 
 @section('body')
-
 {!! Form::open(['route' => 'FeeTypes.store', 'method'=>'post','enctype' => 'multipart/form-data']) !!}
+@include('flash')
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">
@@ -28,12 +28,13 @@
         </div>
 
         {!! Form::close() !!}
+       
         <!--                @if($errors->any())
                     <ul class="alert alert-danger">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
-                    </ul>
+              </ul>
                 @endif-->
     </div>
 

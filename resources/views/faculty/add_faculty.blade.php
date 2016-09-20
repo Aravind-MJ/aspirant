@@ -34,7 +34,6 @@
             {!! Form::text('qualification', null, ['class'=>'form-control', 'placeholder'=>'Enter Qualification']) !!}
             {!! errors_for('qualification', $errors) !!}
         </div>
-
         <div class="form-group">
             {!! Form::label('subject', 'Subject') !!}
             {!! Form::text('subject', null, ['class'=>'form-control', 'placeholder'=>'Enter Subject']) !!}

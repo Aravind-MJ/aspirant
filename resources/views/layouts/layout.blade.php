@@ -23,7 +23,10 @@
         <link rel="stylesheet" href="{{ URL::asset('dist/css/skins/_all-skins.min.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css">
+<!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css">
+       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
+
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,7 +38,7 @@
     <body class="hold-transition skin-purple sidebar-mini">
         <!-- Site wrapper -->
         <div class="wrapper">
-            <header class="main-header">
+            <header class="main-header">cc
                 <!-- Logo -->
                 <a href="../../index2.html" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -159,6 +162,14 @@
         <script src="{{ URL::asset('dist/js/demo.js') }}"></script>
 
         <script src="{{ URL::asset('dist/js/bootstrap-datepicker.js') }}"></script>
+        
+<!--       
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script> -->
+
+
         <script>
             $(function () {
                 $('#datepicker').datepicker({
@@ -188,6 +199,26 @@
     $( "#datepicker2" ).datepicker();
   });
   </script>
+  
+  <script>
+
+  function ConfirmDelete()
+  {
+  var x = confirm("Are you sure you want to delete?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+
+</script>
+<!--  <script>
+    $('#time').datetimepicker({
+        format: 'HH:mm:ss'
+    });
+</script>-->
+
+
 
     </body>
 </html>

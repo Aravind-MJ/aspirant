@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/list_faculty.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/faculty_details.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/resources/views/protected/admin/list_student.blade.php</file>
-            <file>file:/C:/xampp/htdocs/aspirant/app/Http/Controllers/FacultyController.php</file>
+            <file>file:/opt/lampp/htdocs/aspirant/resources/views/Examdetails/list_Examdetails.blade.php</file>
+            <file>file:/opt/lampp/htdocs/aspirant/resources/views/Feetypes/add_Feetypes.blade.php</file>
+            <file>file:/opt/lampp/htdocs/aspirant/resources/views/Examdetails/list_Examtype.blade.php</file>
+            <file>file:/opt/lampp/htdocs/aspirant/resources/views/layouts/layout.blade.php</file>
         </group>
     </open-files>
 </project-private>

@@ -9,7 +9,7 @@
 @endif-->
 
 @section('body')
-
+@include('flash')
 
 <div class="box box-primary">
     <div class="box-body">
@@ -38,7 +38,7 @@
                         <a class="btn btn-default btn-success" href="{{url('ExamDetails/'.$Examdetails->id).'/edit'}}">Edit</a>
                     </td>
                     <td class=center>
-                        {!! Form::open(['route' => ['ExamDetails.destroy', $Examdetails->id], 'method' => 'POST']) !!}
+                        {!! Form::open(['route' => ['ExamDetails.destroy', $Examdetails->id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$Examdetails->id}}">

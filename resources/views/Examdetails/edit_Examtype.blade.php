@@ -11,6 +11,7 @@
 @section('body')
 
 {!! Form::model($Examtype, ['method' => 'PATCH', 'route' => ['ExamType.update',$Examtype->id],'enctype' => 'multipart/form-data']) !!}
+@include('flash')
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">

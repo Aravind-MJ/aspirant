@@ -17,7 +17,7 @@ class CreateBatchDetailsTable extends Migration
             $table-> string('batch');
             $table-> string('syllabus');
             $table-> string('time_shift');
-            $table-> date('year');
+            $table-> string('year');
             $table-> integer('in_charge')->unsigned();
             $table-> foreign('in_charge')->references('id')->on('faculty_details');
             $table->timestamps();           

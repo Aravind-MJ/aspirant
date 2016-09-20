@@ -2,15 +2,15 @@
 
 @section('title', 'Edit Feetypes')
 
-<!--@section('content')
+@section('content')
 
-@if (session()->has('flash_message'))
+<!--@if (session()->has('flash_message'))
 <p>{{ session()->get('flash_message') }}</p>
 @endif-->
-
+ 
 @section('body')
-
 {!! Form::model($Feetypes, ['method' => 'PATCH', 'route' => ['FeeTypes.update',$Feetypes->id],'enctype' => 'multipart/form-data']) !!}
+
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">

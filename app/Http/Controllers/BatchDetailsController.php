@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Batchdetails;
@@ -12,15 +11,14 @@ use App\User;
 use Input;
 use DB;
 
-class BatchDetailsController extends Controller
-{
+class BatchDetailsController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index()
-    {
+    public function index() {
         $allBatchdetails = DB::table('batch_details')
                 ->join('users', 'users.id', '=', 'batch_details.in_charge')
                 ->select('users.*', 'batch_details.*')
@@ -29,44 +27,49 @@ class BatchDetailsController extends Controller
         return View('Batchdetails.list_Batchdetails', compact('allBatchdetails'));
     }
 
-    
-
     /**
      * Show the form for creating a new resource.
      *
      * @return Response
      */
-    public function create()
-    {
-       $users= \App\User::lists('first_name','id');
-       return view('Batchdetails.add_Batchdetails',compact('in_charge','users','id'));
+    public function create() {
+        $users = \App\User::lists('first_name', 'id');
+        return view('Batchdetails.add_Batchdetails', compact('in_charge', 'users', 'id'));
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
      * @return Response
      */
-    public function store(Requests\PublishBatchdetailsRequest $requestData){
+    public function store(Requests\PublishBatchdetailsRequest $requestData) {
         $user = new \App\User;
         $user->first_name = $requestData['first_name'];
-       
 
-        
+
+
 
         // Assign the role to the users
+        {
+            $Batchdetails = new \App\Batchdetails;
+            $Batchdetails->batch = $requestData['batch'];
+            $Batchdetails->syllabus = $requestData['syllabus'];
+            $Batchdetails->time_shift = $requestData['time_shift'];
+            $Batchdetails->year = $requestData['year'];
+            $Batchdetails->in_charge = $requestData['in_charge'];
         
-    {
-         $Batchdetails = new \App\Batchdetails;
-         $Batchdetails->batch=$requestData['batch'];
-         $Batchdetails->syllabus=$requestData['syllabus'];
-         $Batchdetails->time_shift=$requestData['time_shift'];
-         $Batchdetails->year =date("Y/m/d", strtotime($requestData['year']));
-         $Batchdetails->in_charge= $requestData['in_charge'];
-    }
-        
-         $Batchdetails->save();
-           return redirect()->route('BatchDetails.create');
+        $Batchdetails->save();
+        }
+ 
+      if ($Batchdetails->save()) {
+            return redirect()->route('BatchDetails.create')
+                             ->with('flash_message', 'New Batch added successfully.')
+                             ->withType('success');
+        } else {
+            return redirect()->route('BatchDetails.create')
+                             ->with('flash_message', 'New Batch could not be succeeded.')
+                             ->withType('Danger');
+        }
     }
 
     /**
@@ -75,14 +78,17 @@ class BatchDetailsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $Batchdetails = DB::table('batch_details')
                 ->join('users', 'users.id', '=', 'batch_details.in_charge')
                 ->select('users.*', 'batch_details.*')
-                ->get();
+                ->where('batch_details.id', $id)
+                ->first();
         //Redirecting to showBook.blade.php with $book variable
-        return view('Batchdetails.list_Batchdetails')->with('Batchdetails', $Batchdetails); //   
+        
+
+//         dd($Batchdetails);
+        return View('Batchdetails.Batch_details', compact('Batchdetails'));
     }
 
     /**
@@ -91,19 +97,17 @@ class BatchDetailsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
-    
-      {
-       $Batchdetails = DB::table('batch_details')
-                 ->join('users', 'users.id', '=', 'batch_details.in_charge')
+    public function edit($id) {
+        $Batchdetails = DB::table('batch_details')
+                ->join('users', 'users.id', '=', 'batch_details.in_charge')
                 ->where('batch_details.id', $id)
                 ->select('users.*', 'batch_details.*')
                 ->first();
-       $users= \App\User::lists('first_name','id');
-       return view('Batchdetails.edit_Batchdetails',compact('Batchdetails','in_charge','users','id'));
-    
-    }  //
-    
+        $users = \App\User::lists('first_name', 'id');
+        return view('Batchdetails.edit_Batchdetails', compact('Batchdetails', 'in_charge', 'users', 'id'));
+    }
+
+//
 
     /**
      * Update the specified resource in storage.
@@ -111,18 +115,19 @@ class BatchDetailsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id,Requests\PublishBatchdetailsRequest $requestData)
-    {
-        
-         $Batchdetails = \App\Batchdetails::find($id);
-         $Batchdetails->batch=$requestData['batch'];
-         $Batchdetails->syllabus=$requestData['syllabus'];
-         $Batchdetails->time_shift=$requestData['time_shift'];
-         $Batchdetails->year =date("Y/m/d", strtotime($requestData['year']));
-         $Batchdetails->in_charge= $requestData['in_charge'];
-        
-         $Batchdetails->save();
-           return redirect()->route('BatchDetails.index');
+    public function update($id, Requests\PublishBatchdetailsRequest $requestData) {
+
+        $Batchdetails = \App\Batchdetails::find($id);
+        $Batchdetails->batch = $requestData['batch'];
+        $Batchdetails->syllabus = $requestData['syllabus'];
+        $Batchdetails->time_shift = $requestData['time_shift'];
+        $Batchdetails->year = $requestData['year'];
+        $Batchdetails->in_charge = $requestData['in_charge'];
+
+        $Batchdetails->save();
+        return redirect()->route('BatchDetails.index')
+                        ->withFlashMessage('Batch Updated successfully!')
+                        ->withType('success');
     }
 
     /**
@@ -131,12 +136,11 @@ class BatchDetailsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
-    {
-       \App\Batchdetails::find($id)->delete();
+    public function destroy($id) {
+        \App\Batchdetails::find($id)->delete();
 
         //Redirecting to index() method
         return redirect()->route('BatchDetails.index');
-    }
+    }  
 
 }

@@ -41,7 +41,9 @@ class ExamTypeController extends Controller
         $Examtype = new \App\Examtypes;
         $Examtype->name= $requestData['name'];//
            $Examtype->save();
-           return redirect()->route('ExamType.create');
+           return redirect()->route('ExamType.create')
+                            ->withFlashMessage(' Examtype added successfully!')
+                            ->withType('success');
     }
    
     /**
@@ -85,7 +87,9 @@ class ExamTypeController extends Controller
         $Examtype->save();
 
         //Send control to index() method
-        return redirect()->route('ExamType.index');
+        return redirect()->route('ExamType.index')
+                         ->withFlashMessage('Examtype updated successfully!')
+                         ->withType('success');
     //
     }
 

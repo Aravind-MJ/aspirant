@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     #Notice crud Routes
     Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
     #Batch crud Routes
-    Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);  
+    Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     #Route to edit student profile
     Route::post('edit/admin/student/{id}', ['as' => 'registration.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
     #Route to edit faculty profile

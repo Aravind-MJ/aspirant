@@ -11,6 +11,7 @@
 @section('body')
 
 {!! Form::model($Examdetails, ['method' => 'PATCH', 'route' => ['ExamDetails.update',$Examdetails->id],'enctype' => 'multipart/form-data']) !!}
+@include('flash')
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
     <div class="box-body">
@@ -24,9 +25,9 @@
             <!--{!! errors_for('first_name', $errors) !!}-->
         </div>
         <div class="form-group">
-            {!! Form::label('date', 'Exam_date') !!}
-            {!! Form::text('date', null, ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
-            {!! errors_for('date', $errors) !!}
+            {!! Form::label('exam_date', 'Exam_date') !!}
+            {!! Form::text('exam_date', null, ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
+            {!! errors_for('exam_date', $errors) !!}
         </div>
         <div class="form-group">
             {!! Form::label('total_mark', 'TotalMark') !!}

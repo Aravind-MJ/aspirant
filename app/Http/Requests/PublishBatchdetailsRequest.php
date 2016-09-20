@@ -23,21 +23,20 @@ class PublishBatchdetailsRequest extends Request {
                 }
             case 'POST': {
                     return [
-//                        'batch' => 'required',
-//                        'syllabus' => 'required',
-//                        'time_shift' => 'required',
-//                        'year' => 'required',
-//                        'in_charge' => 'required',
+                        'batch' => 'required|alpha',
+                        'syllabus' => 'required|alpha',
+                        'time_shift' => 'required|date_format:H:i',
+                        'year' => 'required',
+                        'in_charge' => 'required',
                     ];
                 }
             case 'PUT':
             case 'PATCH': {
                     return [
-//                        'batch' => 'required',
-//                        'syllabus' => 'required',
-//                        'time_shift' => 'required',
-//                        'year' => 'required',
-//                        'in_charge' => 'required',
+                        'syllabus' => 'required|alpha',
+                        'time_shift' => 'required|date_format:H:i',
+                        'year' => 'required',
+                        'in_charge' => 'required',
                     ];
                 }
             default:break;
