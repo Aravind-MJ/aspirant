@@ -25,14 +25,18 @@ class StudentController extends Controller {
      * @return Response
      */
     public function index() {
-
+        //select list of student
         $allStudents = DB::table('student_details')
                 ->join('users', 'users.id', '=', 'student_details.user_id')
                 ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
                 ->select('users.*', 'student_details.*', 'batch_details.batch')
+                ->where('student_details.deleted_at', NULL)
                 ->get();
 
-        return View('student.list_student', compact('allStudents'));
+        //Fetch Batch Details
+        $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
+
+        return View('student.list_student', compact('allStudents', 'batch', 'id'));
     }
 
     /**
@@ -101,15 +105,21 @@ class StudentController extends Controller {
         }
 
         $student->save();
-        return Redirect::back()
-                        ->withFlashMessage('Student Added successfully!')
-                        ->withType('success');
+        if ($student->save()) {
+            return Redirect::back()
+                            ->withFlashMessage('Student Added successfully!')
+                            ->withType('success');
+        } else {
+            return Redirect::back()
+                            ->withFlashMessage('Failed!')
+                            ->withType('danger');
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id) {
@@ -120,7 +130,7 @@ class StudentController extends Controller {
                 ->select('users.*', 'student_details.*', 'batch_details.batch')
                 ->where('student_details.id', $id)
                 ->first();
-//        dd($student);
+
 //        return view('protected.admin.student_details')->with('student', $student);
         return View('student.student_details', compact('student'));
     }
@@ -128,7 +138,7 @@ class StudentController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id) {
@@ -157,7 +167,7 @@ class StudentController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id, Requests\RegisterStudentRequest $requestData) {
@@ -189,18 +199,26 @@ class StudentController extends Controller {
 //        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
 
             $student->photo = $name;
+
+            $student->save();
         }
 
-        $student->save();
-        return redirect::back()
-                        ->withFlashMessage('Student Details Updated successfully!')
-                        ->withType('success');
+
+        if ($student->save()) {
+            return redirect::back()
+                            ->withFlashMessage('Student Details Updated successfully!')
+                            ->withType('success');
+        } else {
+            return redirect::back()
+                            ->withFlashMessage('Student Details Update Failed!')
+                            ->withType('danger');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id) {
@@ -211,19 +229,37 @@ class StudentController extends Controller {
         return Redirect::back();
     }
 
-    public function search(Request $request) {
-      
-        // Gets the query string from our form submission 
-        $query = Request::input('search');
+    public function search() {
+
+        // Gets the query string and batch from our form submission 
+       
+        $search = Request::input('search');
+        $batch = Request::input('batch_id');
+         if(!empty($search) || $batch==0){
         // Returns an array of articles that have the query string located somewhere within 
-        $allStudents = DB::table('student_details')
+
+        $query = DB::table('student_details')
                 ->join('users', 'users.id', '=', 'student_details.user_id')
                 ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
                 ->select('users.*', 'student_details.*', 'batch_details.batch')
-                ->where('users.first_name', 'LIKE', '%' . $query . '%')
-                ->get();
+                ->where('student_details.deleted_at', NULL);
+        if ($batch != 0)
+            $query->where('student_details.batch_id', 'LIKE', '%' . $batch . '%');
+
+        if (!empty($search))
+            $query->where('users.first_name', 'LIKE', '%' . $search . '%');
+
+        $allStudents = $query->get();
+
+        //Fetch Batch Details
+        $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
+         
         // returns a view and passes the view the list of articles and the original query.
-        return view('student.list_student', compact('allStudents', 'query'));
+//        return route('Student.index');
+        return View('student.list_student', compact('allStudents', 'batch', 'id'));
+         }else{
+             return redirect()->route('Student.index');
+         }
     }
 
 }

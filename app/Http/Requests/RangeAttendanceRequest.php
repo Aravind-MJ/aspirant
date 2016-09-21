@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Sentinel;
 
-class FetchStudentsRequest extends Request
+class RangeAttendanceRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +25,9 @@ class FetchStudentsRequest extends Request
     public function rules()
     {
         return [
-            'id' => 'required|alpha_num',
-            'exam_id' => 'required|alpha_num',
+            'id' => 'string|required',
+            'start_date' => 'date|required',
+            'end_date' => 'date|required'
         ];
     }
 }

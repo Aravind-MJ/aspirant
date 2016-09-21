@@ -18,7 +18,7 @@
                 <h3 class="box-title">Student-Profile Details</h3>
             </div>
             <div class="box-body">
-                {!! Form::model($user,['method'=>'POST','route' => ['registration.update',$user->enc_id]]) !!}
+                {!! Form::model($user,['method'=>'POST','route' => ['studentProfilen.update',$user->enc_id]]) !!}
 
                 <fieldset>
 

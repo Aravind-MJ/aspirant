@@ -12,6 +12,10 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- DATA TABLES -->
         <link href="{{ URL::asset('plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+        <!-- daterange picker -->
+        <link rel="stylesheet" href="{{ URL::asset('plugins/daterangepicker/daterangepicker.css') }}">
+        <!-- Morris charts -->
+          <link rel="stylesheet" href="{{ URL::asset('plugins/morris/morris.css') }}">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
         <!-- Ionicons -->
@@ -152,6 +156,12 @@
         <!-- DATA TABES SCRIPT -->
         <script src="{{ URL::asset('plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
         <script src="{{ URL::asset('plugins/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
+        <!-- date-range-picker -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+        <script src="{{ URL::asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+        <!-- Morris.js charts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="{{ URL::asset('plugins/morris/morris.min.js') }}"></script>
         <!-- SlimScroll -->
         <script src="{{ URL::asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
         <!-- FastClick -->
@@ -188,6 +198,8 @@
         @yield('pagescript')
 
         @yield('ckeditor')
+        
+        @yield('confirmDelete')
 
   <script>
   $(function() {

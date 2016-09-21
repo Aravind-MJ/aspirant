@@ -17,22 +17,22 @@ class ExamDetailsController extends Controller
      * Display a listing of the resource.
      *
      * @return Response public function index()
-    {
-        
-       $allExamdetails = DB::table('exam_details')
-                ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
+     * {
+     *
+     * $allExamdetails = DB::table('exam_details')
+     * ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
      */
     public function index()
     {
-        
-       $allExamdetails = DB::table('exam_details')
-                ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
-                ->select('Exam_type.*', 'exam_details.*')
-                ->get();   
-       
-    
-             return View('Examdetails.list_Examdetails', compact('allExamdetails'));
-    
+
+        $allExamdetails = DB::table('exam_details')
+            ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
+            ->select('Exam_type.*', 'exam_details.*')
+            ->get();
+
+
+        return View('Examdetails.list_Examdetails', compact('allExamdetails'));
+
     }
 
     /**
@@ -42,8 +42,8 @@ class ExamDetailsController extends Controller
      */
     public function create()
     {
-        $Examtype=  \App\Examtypes::lists('name','id');
-       return view('Examdetails.add_Examdetails',compact('type_id','Examtype','id'));
+        $Examtype = \App\Examtypes::lists('name', 'id');
+        return view('Examdetails.add_Examdetails', compact('type_id', 'Examtype', 'id'));
     }
 
     /**
@@ -55,36 +55,38 @@ class ExamDetailsController extends Controller
     {
 //        $Examtypes = new \App\Examtypes;
 //        $Examtypes->name = $requestData['name'];
-        
+
         $Examdetails = new \App\Examdetails;
-        $Examdetails->type_id= $requestData['type_id'];
-        $Examdetails->exam_date =date("Y/m/d", strtotime($requestData['exam_date']));
-        $Examdetails->total_mark=$requestData['total_mark'];
+        $Examdetails->type_id = $requestData['type_id'];
+        $Examdetails->exam_date = date("Y/m/d", strtotime($requestData['exam_date']));
+        $Examdetails->total_mark = $requestData['total_mark'];
         $Examdetails->save();
            return redirect()->route('ExamDetails.create')
                             ->withFlashMessage('Examdetails Added successfully!')
                             ->withType('success');
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-       $Examdetails = DB::table('exam_details')
-                ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
-                ->select('Exam_type.*', 'exam_details.*')
-                ->get();
+        $Examdetails = DB::table('exam_details')
+            ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
+            ->select('Exam_type.*', 'exam_details.*')
+            ->get();
         //Redirecting to showBook.blade.php with $book variable
         return view('Examdetails.list_Examdetails')->with('Examdetails', $Examdetails); //    }
     }
+
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -97,36 +99,38 @@ class ExamDetailsController extends Controller
   
         $Examtype=  \App\Examtypes::lists('name','id');
        return view('Examdetails.edit_Examdetails',compact('Examdetails','type_id','Examtype','id'));
+
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-   public function update($id, Requests\PublishExamdetailsRequest $requestData)
+    public function update($id, Requests\PublishExamdetailsRequest $requestData)
     {
         $Examdetails = \App\Examdetails::find($id);
-        $Examdetails->type_id= $requestData['type_id'];
-        $Examdetails->exam_date =date("Y/m/d", strtotime($requestData['exam_date']));
-        $Examdetails->total_mark=$requestData['total_mark'];
-        
+        $Examdetails->type_id = $requestData['type_id'];
+        $Examdetails->exam_date = date("Y/m/d", strtotime($requestData['exam_date']));
+        $Examdetails->total_mark = $requestData['total_mark'];
+
         $Examdetails->save();
        return redirect()->route('ExamDetails.index')
                         ->withFlashMessage('Examdetails Updated successfully!')
                         ->withType('success');
+
     }
 
     /**
      *  Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
     {
-   //find result by id and delete 
+        //find result by id and delete
         \App\Examdetails::find($id)->delete();
 
         //Redirecting to index() method

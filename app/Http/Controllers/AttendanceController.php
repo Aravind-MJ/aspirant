@@ -15,6 +15,8 @@ use App\Encrypt;
 use App\Cons;
 use App\Http\Requests\SelectBatchRequest;
 use App\Http\Requests\AjaxAttendanceRequest;
+use App\Http\Requests\DeleteAttendanceRequest;
+use App\Http\Requests\RangeAttendanceRequest;
 use Illuminate\Support\Facades\Input;
 use Mockery\CountValidator\Exception;
 
@@ -79,7 +81,7 @@ class AttendanceController extends Controller
                 }
 
             } catch (Exception $e) {
-                return redirect()->back()->withFlashMessage('Error Selecting batch!!')->withType('error');
+                return redirect()->back()->withFlashMessage('Error Selecting batch!!')->withType('danger');
             }
 
             foreach ($batch as $each_batch) {
@@ -96,7 +98,7 @@ class AttendanceController extends Controller
                         $each_batch['time_shift'] = 'evening';
                         break;
                     default:
-                        return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('error');
+                        return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('danger');
                 }
             }
 
@@ -166,7 +168,7 @@ class AttendanceController extends Controller
             try {
                 $this->attendance->insert(array(
                     'batch_id' => $id,
-                    'absent_count' => $count,
+                    'present_count' => $count,
                     'attendance' => $present
                 ));
             } catch (Exception $e) {
@@ -198,7 +200,7 @@ class AttendanceController extends Controller
                 ->get();
 
         } catch (Exception $e) {
-            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('error');
+            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('danger');
         }
 
         foreach ($batch as $each_batch) {
@@ -264,7 +266,7 @@ class AttendanceController extends Controller
             }
 
         } catch (Exception $e) {
-            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('error');
+            return redirect('attendance/batch')->withFlashMessage('Error Selecting batch')->withType('danger');
         }
 
         foreach ($batch as $each_batch) {
@@ -310,7 +312,154 @@ class AttendanceController extends Controller
      */
     public function ofBatch($id)
     {
+        $enc_id = $id;
+        $id = Encrypt::decrypt($id);
 
+        if (!$id) {
+            return redirect()->back()->withFlashMessage('Invalid Token!')->withType('danger');
+        }
+        try {
+            $data = $this->attendance
+                ->where('batch_id', $id)
+                ->get();
+
+            if (count($data) <= 0) {
+                return redirect()->back()->withFlashMessage('No attendance available for the batch!')->withType('danger');
+            }
+
+        } catch (Exception $e) {
+            return redirect()->back()->withFlashMessage('Error Fetching attendance!')->withType('danger');
+        }
+
+        return view('attendance.attendance_batch', ['id' => $enc_id]);
+    }
+
+    /**
+     * Batch wise attendance
+     *
+     * @param  int $id
+     * @param  date $date
+     * @return Response
+     */
+    public function ofBatchDate($id, $date)
+    {
+        $enc_id = $id;
+        $data = array();
+        $id = Encrypt::decrypt($id);
+        $date = Encrypt::decrypt($date);
+
+        if (!$id) {
+            return redirect()->back()->withFlashMessage('Invalid Batch Token!')->withType('danger');
+        }
+
+        if (!$date) {
+            return redirect()->back()->withFlashMessage('Invalid Date Token!')->withType('danger');
+        }
+        try {
+            $attendance = $this->attendance
+                ->select('attendance')
+                ->whereRaw("batch_id = " . $id . " AND created_at = '" . $date . "'")
+                ->first();
+
+            if (count($attendance) <= 0) {
+                return redirect()->back()->withFlashMessage('No attendance available for this date!')->withType('danger');
+            }
+
+            $attendance = json_decode($attendance->attendance);
+
+        } catch (Exception $e) {
+            return redirect()->back()->withFlashMessage('Error Fetching attendance!')->withType('danger');
+        }
+
+        try {
+            $students = $this->student_details
+                ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->select('users.id', 'users.first_name', 'users.last_name')
+                ->where('student_details.batch_id', $id)
+                ->get();
+
+            if (count($students) <= 0) {
+                return redirect()->back()->withFlashMessage('No students available to display!')->withType('danger');
+            }
+
+            foreach($students as $each_student){
+                $enc_std_id = Encrypt::encrypt($each_student->id);
+                $data[$enc_std_id] = new \stdClass();
+                $data[$enc_std_id]->name = $each_student->first_name.' '.$each_student->last_name;
+                $data[$enc_std_id]->status = (in_array($each_student->id,$attendance))?'present':'absent';
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->withFlashMessage('Error Fetching Students!')->withType('danger');
+        }
+
+        return view('attendance.attendance_batch_date', ['data' => $data]);
+    }
+
+    /**
+     * Attendance in the range
+     *
+     * @param $request
+     * @return Response
+     */
+    public function rangeAttendance(RangeAttendanceRequest $request)
+    {
+        if ($request->ajax()) {
+            $enc_id = $request['id'];
+            $id = Encrypt::decrypt($request['id']);
+            if (!$id) {
+                return 'Invalid Token!';
+            }
+            $start_date = $request['start_date'] . ' 00:00:00';
+            $end_date = $request['end_date'] . ' 23:59:59';
+
+            try {
+                $data = $this->attendance
+                    ->whereRaw('batch_id = ' . $id . ' AND created_at > "' . $start_date . '" AND created_at < "' . $end_date . '"')
+                    ->orderBy('created_at', 'ASC')
+                    ->get();
+
+                if (count($data) <= 0) {
+                    return 'No attendance Available!';
+                }
+
+            } catch (Exception $e) {
+                return 'Error Fetching attendance!';
+            }
+
+            $chartObject = new \stdClass();
+            $chartObject->element = 'attendance-chart';
+            $chartObject->resize = true;
+            $chartObject->data = array();
+            $chartObject->xkey = 'date';
+            $chartObject->ykeys = array('present');
+            $chartObject->labels = array('Present');
+            $chartObject->lineColors = array('#3c8dbc');
+            $chartObject->hideHover = 'auto';
+            $chartObject->parseTime = false;
+            $chartObject->xLabelAngle = 60;
+            $chartObject->stacked = true;
+
+            $max = 0;
+            foreach ($data as $each_data) {
+                $date = date_create($each_data->created_at);
+                $enc_date = Encrypt::encrypt($each_data->created_at);
+                $temp = new \stdClass();
+                $temp->date = '<a href="' . url('attendance/batch/' . $enc_id . '/' . $enc_date) . '">' . date_format($date, 'M d - D') . '</a>';
+                //$temp->date = date_format($date, 'd/m/Y');
+                $temp->present = $each_data->present_count;
+                if ($max < $each_data->present_count + 3) {
+                    $max = $each_data->present_count + 3;
+                }
+                $chartObject->data [] = $temp;
+            }
+
+            $chartObject->ymax = $max;
+
+            return json_encode($chartObject);
+
+        } else {
+            return '<h1>Invalid Request!! Access Denied!</h1>';
+        }
     }
 
     /**
@@ -426,7 +575,7 @@ class AttendanceController extends Controller
                 ->get();
 
         } catch (Exception $e) {
-            return redirect()->back()->withFlashMessage('Error Selecting batch!!')->withType('error');
+            return redirect()->back()->withFlashMessage('Error Selecting batch!!')->withType('danger');
         }
 
         foreach ($batch as $each_batch) {
@@ -443,7 +592,7 @@ class AttendanceController extends Controller
                     $each_batch['time_shift'] = 'evening';
                     break;
                 default:
-                    return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('error');
+                    return redirect()->back()->withFlashMessage('Error Selecting batch With Time Shift!!')->withType('danger');
             }
         }
 
@@ -472,11 +621,11 @@ class AttendanceController extends Controller
             $dates = $this->attendance
                 ->select('created_at')
                 ->where('batch_id', $id)
-                ->orderBy('created_at','DESC')
+                ->orderBy('created_at', 'DESC')
                 ->get()->toArray();
 
-            if(count($dates)<=0){
-                return redirect()->back()->withFlashMessage('No attendance available for this batch!!')->withType('error');
+            if (count($dates) <= 0) {
+                return redirect()->back()->withFlashMessage('No attendance available for this batch!!')->withType('danger');
             }
 
             foreach ($dates as $each_date) {
@@ -487,7 +636,7 @@ class AttendanceController extends Controller
 
             $dates = $data;
         } catch (Exception $e) {
-            return redirect()->back()->withFlashMessage('Error Selecting date!!')->withType('error');
+            return redirect()->back()->withFlashMessage('Error Selecting date!!')->withType('danger');
         }
 
         return view('attendance.attendance_select_date', ['dates' => $dates, 'id' => $enc_id]);
@@ -531,27 +680,27 @@ class AttendanceController extends Controller
             return redirect()->back()->withFlashMessage('Error Selecting Students!')->withType('danger');
         }
 
-        try{
+        try {
             $attendance = $this->attendance
                 ->select('attendance')
-                ->whereRaw("batch_id = ".$id." AND created_at LIKE '".$date."%'")
+                ->whereRaw("batch_id = " . $id . " AND created_at LIKE '" . $date . "%'")
                 ->first()->toArray();
 
             $data = [];
             $attendance = json_decode($attendance['attendance']);
-            if(!is_array($attendance)){
+            if (!is_array($attendance)) {
                 return redirect()->back()->withFlashMessage('Attendance Data Corrupted!')->withType('danger');
             }
-            foreach($attendance as $each_attendance){
-                $data []= Encrypt::encrypt($each_attendance);
+            foreach ($attendance as $each_attendance) {
+                $data [] = Encrypt::encrypt($each_attendance);
             }
             $attendance = $data;
 
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Error Fetching Attendance!')->withType('danger');
         }
 
-        return view('attendance.attendance_edit', ['id' => $enc_id, 'students' => $students,'attendance' => $attendance]);
+        return view('attendance.attendance_edit', ['id' => $enc_id, 'students' => $students, 'attendance' => $attendance]);
     }
 
     /**
@@ -576,11 +725,11 @@ class AttendanceController extends Controller
             }
             try {
                 $this->attendance
-                    ->where('batch_id',$id)
+                    ->where('batch_id', $id)
                     ->update(array(
-                    'absent_count' => $count,
-                    'attendance' => $present
-                ));
+                        'present_count' => $count,
+                        'attendance' => $present
+                    ));
             } catch (Exception $e) {
                 return 'error';
             }
@@ -594,11 +743,27 @@ class AttendanceController extends Controller
     /**
      * Remove attendance.
      *
-     * @param  int $id
+     * @param  $request
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(DeleteAttendanceRequest $request)
     {
-        //
+        $enc_id = $request['id'];
+        $id = Encrypt::decrypt($request['id']);
+        $date = Encrypt::decrypt($request['date']);
+        if (!$id) {
+            return redirect('edit/attendance/' . $enc_id)->withFlashMessage('Invalid Batch token!')->withtype('danger');
+        }
+        if (!$date) {
+            return redirect('edit/attendance/' . $enc_id)->withFlashMessage('Invalid Date token')->withtype('danger');
+        }
+        try {
+            $this->attendance
+                ->whereRaw("batch_id = " . $id . " AND created_at like '" . $date . "%'")
+                ->update('del_status', 1);
+        } catch (Exception $e) {
+            return redirect('edit/attendance/')->withFlashMessage('Failed to delete Attendance!!')->withtype('danger');
+        }
+        return redirect('edit/attendance/')->withFlashMessage('Attendance Deleted Successfully!')->withtype('success');
     }
 }

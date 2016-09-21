@@ -99,18 +99,18 @@ class RegistrationController extends Controller
      * @return Response
      */
     public function update($id, AdminEditFormRequest $request)
-    {   
+    {
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
         try {
             $user = $this->user->find($id);
-        } catch(Exception $e){
+        } catch (Exception $e) {
             return redirect('list/admin')->withFlashMessage('Profile Edit Failed!')->withType('danger');
         }
 
         $input = $request->only('first_name', 'last_name');
 
-        $user->where('id',$id);
+        $user->where('id', $id);
         $user->first_name = $input['first_name'];
         $user->last_name = $input['last_name'];
         $user->save();

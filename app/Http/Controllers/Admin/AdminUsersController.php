@@ -37,7 +37,7 @@ class AdminUsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -51,7 +51,7 @@ class AdminUsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -68,20 +68,20 @@ class AdminUsersController extends Controller
             $array_roles = array_add($array_roles, $role->id, $role->name);
         }
 
-        return view('protected.admin.edit_user', ['user' => $user, 'roles' => $array_roles, 'user_role' =>$user_role]);
+        return view('protected.admin.edit_user', ['user' => $user, 'roles' => $array_roles, 'user_role' => $user_role]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id, AdminUsersEditFormRequest $request)
     {
         $user = $this->user->find($id);
 
-        if (! $request->has("password")) {
+        if (!$request->has("password")) {
             $input = $request->only('email', 'first_name', 'last_name');
 
             $user->fill($input)->save();
@@ -89,7 +89,7 @@ class AdminUsersController extends Controller
             $this->user->updateRole($id, $request->input('account_type'));
 
             return redirect()->route('admin.profiles.edit', $user->id)
-                             ->withFlashMessage('User has been updated successfully!');
+                ->withFlashMessage('User has been updated successfully!');
 
         } else {
             $input = $request->only('email', 'first_name', 'last_name', 'password');
@@ -101,7 +101,7 @@ class AdminUsersController extends Controller
             $this->user->updateRole($id, $request->input('account_type'));
 
             return redirect()->route('admin.profiles.edit', $user->id)
-                             ->withFlashMessage('User (and password) has been updated successfully!');
+                ->withFlashMessage('User (and password) has been updated successfully!');
         }
     }
 }

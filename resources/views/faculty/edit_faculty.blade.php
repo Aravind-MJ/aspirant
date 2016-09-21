@@ -18,9 +18,7 @@
                 {!! Form::model($user,['method'=>'POST','route' => ['facultyProfile.update',$user->enc_id]]) !!}
 
                 <fieldset>
-
-                    <!--@include('flash')-->
-
+                    
                     <!-- Email field -->
                     <div class="form-group">
                         {!! Form::text('email', $user->email, ['disabled' => '', 'class' => 'form-control', 'required' => 'required'])!!}

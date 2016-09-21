@@ -27,8 +27,8 @@ class CreateStudentDetailsTable extends Migration
             $table-> string('cee_rank');
             $table-> integer('percentage');
             $table-> string('photo');
-            $table-> integer('del_status');
-            $table->timestamps();          
+            $table->timestamps();   
+            $table->softDeletes();
         });
     }
 

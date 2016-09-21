@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
-    public function getLogin(){
-        return view ('pages.index');
+    public function getLogin()
+    {
+        return view('pages.index');
     }
+
     public function getHome()
     {
         return view('pages.home');

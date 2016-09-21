@@ -4,11 +4,9 @@
 
 @section('content')
 
-@if (session()->has('flash_message'))
-<p>{{ session()->get('flash_message') }}</p>
-@endif
-
 @section('body')
+
+@include('flash')
 
 {!! Form::open(['action' => 'FacultyController@store','enctype' => 'multipart/form-data']) !!}
 <!--{!! Form::open() !!}-->

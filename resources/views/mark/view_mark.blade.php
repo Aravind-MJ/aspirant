@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Register Mark')
+@section('title', 'View Mark')
 
 @section('body')
 
@@ -48,7 +48,7 @@
             var id = $('.select-batch').val();
             var examId = $('.exam-id').val();
             $('.loading-screen').show();
-            $.post('{{url('fetchStudents')}}',{
+            $.post('{{url('fetchMark')}}',{
                 id:id,
                 exam_id:examId
             },

@@ -4,12 +4,8 @@
 
 @section('content')
 
-@if (session()->has('flash_message'))
-<p>{{ session()->get('flash_message') }}</p>
-@endif
-
 @section('body')
-
+  @include('flash')
 {!! Form::open(['action' => 'NoticeController@store','method'=>'POST']) !!}
 <!--{!! Form::open() !!}-->
 <div class="box box-primary">
@@ -36,6 +32,8 @@
 
 </div>
 @stop
+@section('ckeditor')
 <script src="//cdn.ckeditor.com/4.5.7/standard/ckeditor.js" />
+@stop
 @endsection
  

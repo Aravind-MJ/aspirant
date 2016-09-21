@@ -27,7 +27,7 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -40,7 +40,7 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -53,20 +53,20 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id, UsersEditFormRequest $request)
     {
         $user = $this->user->find($id);
 
-        if (! $request->has("password")) {
+        if (!$request->has("password")) {
             $input = $request->only('email', 'first_name', 'last_name');
 
             $user->fill($input)->save();
 
             return redirect()->route('profiles.edit', $user->id)
-                             ->withFlashMessage('User has been updated successfully!');
+                ->withFlashMessage('User has been updated successfully!');
 
         } else {
             $input = $request->only('email', 'first_name', 'last_name', 'password');
@@ -76,7 +76,7 @@ class UsersController extends Controller
             $user->save();
 
             return redirect()->route('profiles.edit', $user->id)
-                             ->withFlashMessage('User (and password) has been updated successfully!');
+                ->withFlashMessage('User (and password) has been updated successfully!');
         }
     }
 }
