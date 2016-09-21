@@ -157,6 +157,9 @@
                             <li><a href="{{ url('mark/attendance') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
                             <li><a href="{{ url('attendance/batch') }}"><i class="fa fa-circle-o"></i> Attendance By Batch</a></li>
                             <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>
+                            @if(!$user->inRole('faculty'))
+                                <li><a href="{{ url('edit/attendance') }}"><i class="fa fa-circle-o"></i> Edit Attendance</a></li>
+                            @endif
                         @else
                             <li><a href="{{ url('attendance/student/'.\App\Encrypt::encrypt($user->id)) }}">
                                 <i class="fa fa-circle-o"></i> View Attendance</a>
@@ -174,7 +177,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{URL::route('mark.create')}}"><i class="fa fa-circle-o"></i> Add Mark</a></li>
-                        {{--<li><a href="{{URL::route('mark.index')}}"><i class="fa fa-circle-o"></i> View Mark</a></li>--}}
+                        <li><a href="{{URL::route('mark.index')}}"><i class="fa fa-circle-o"></i> View Mark</a></li>
                     </ul>
                 </li>
 

@@ -25,6 +25,7 @@ class FetchStudentsRequest extends Request
     {
         return [
             'id' => 'required|alpha_num',
+            'exam_id' => 'required|alpha_num',
         ];
     }
 }
