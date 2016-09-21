@@ -26,7 +26,7 @@
                     if($each_batch['time_shift']==$each_shift){
                         if($each_batch['status']=='unmarked'){
                 ?>
-                    <a class="btn btn-app box_batch" href="{{url('mark/attendance/'.$each_batch['enc_id'])}}">
+                    <a class="btn btn-app box_batch" href="{{url('attendance/mark/'.$each_batch['enc_id'])}}">
                         <i class="fa fa-info"></i>
                         <strong><?= $each_batch['batch'] ?></strong>
                     </a>

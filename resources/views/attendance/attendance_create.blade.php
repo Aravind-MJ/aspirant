@@ -83,7 +83,7 @@
                             present.push($(this).children('.roll').val());
                         });
                         $('.loading-screen').show();
-                        $.post('{{url('mark/attendance')}}',{
+                        $.post('{{url('attendance/mark')}}',{
                             id:id,
                             present:present
                         },
@@ -93,13 +93,13 @@
                                 $('.box.box-warning').hide();
                                 $('.success-message').show();
                                 setTimeout(function(){
-                                    window.location.href='{{url('mark/attendance')}}';
+                                    window.location.href='{{url('attendance/mark')}}';
                                 },2000);
                             } else {
                                 $('.box.box-warning').hide();
                                 $('.failed-message').show();
                                 setTimeout(function(){
-                                    window.location.href='{{url('mark/attendance')}}';
+                                    window.location.href='{{url('attendance/mark')}}';
                                 },2000);
                             }
                         });
