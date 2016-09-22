@@ -43,7 +43,7 @@
     <body class="hold-transition skin-purple sidebar-mini">
         <!-- Site wrapper -->
         <div class="wrapper">
-            <header class="main-header">cc
+            <header class="main-header">
                 <!-- Logo -->
                 <a href="../../index2.html" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->

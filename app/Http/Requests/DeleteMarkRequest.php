@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use Sentinel;
 
-class AjaxAttendanceRequest extends Request
+class DeleteMarkRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +24,8 @@ class AjaxAttendanceRequest extends Request
     public function rules()
     {
         return [
-            'id' => 'string|required',
-            'date' => 'string|required',
-            'present' => 'array',
+            'exam_id' => 'required|alpha_num',
+            'batch_id' => 'required|alpha_num'
         ];
     }
 }

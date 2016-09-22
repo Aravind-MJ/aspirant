@@ -17,6 +17,7 @@ use Mockery\CountValidator\Exception;
 
 use App\Http\Requests\FetchStudentsRequest;
 use App\Http\Requests\StoreMarkRequest;
+use App\Http\Requests\DeleteMarkRequest;
 
 class MarkDetailsController extends Controller
 {
@@ -137,11 +138,10 @@ class MarkDetailsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param $id
      * @param $request
      * @return Response
      */
-    public function store($id, StoreMarkRequest $request)
+    public function store(StoreMarkRequest $request)
     {
         try {
             $exam_id = Encrypt::decrypt($request['exam_id']);
@@ -264,12 +264,13 @@ class MarkDetailsController extends Controller
                     $check = $this->mark_details
                         ->where(array(
                             'exam_id' => $exam_id,
-                            'user_id' => $id
+                            'user_id' => $each_student->id
                         ))
-                        ->first()->toArray();
+                        ->first();
                     if (count($check) <= 0) {
                         return '<h4>No marks available!</h4>';
                     }
+                    $check = $check->toArray();
                     $data[Encrypt::encrypt($each_student['id'])]['name'] = $each_student['first_name'] . ' ' . $each_student['last_name'];
                     $data[Encrypt::encrypt($each_student['id'])]['mark'] = $check['mark'];
                 }
@@ -285,17 +286,6 @@ class MarkDetailsController extends Controller
         } else {
             return '<h1>Invalid Request!! Access Denied</h1>';
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -321,7 +311,6 @@ class MarkDetailsController extends Controller
             }
             foreach ($request['markof'] as $enc_id => $mark) {
                 $id = Encrypt::decrypt($enc_id);
-
                 $check = $this->mark_details
                     ->where(array(
                         'exam_id' => $exam_id,
@@ -332,7 +321,6 @@ class MarkDetailsController extends Controller
                 if (count($check) <= 0) {
                     return redirect('mark')->withFlashMessage('Mark doesn\'t Exist.')->withType('danger');
                 }
-
                 $this->mark_details
                     ->where(array(
                         'exam_id' => $exam_id,
@@ -351,11 +339,36 @@ class MarkDetailsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  $request
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(DeleteMarkRequest $request)
     {
-        //
+        $batch_id = Encrypt::decrypt($request['batch_id']);
+        $exam_id = Encrypt::decrypt($request['exam_id']);
+        try {
+            $students = $this->student_details
+                ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->select('users.id', 'users.first_name', 'users.last_name')
+                ->where('student_details.batch_id', $batch_id)
+                ->get();
+
+            if (count($students) <= 0) {
+                return redirect('mark')->withFlashMessage('No students Found!')->withType('danger');
+            }
+
+            foreach ($students as $each_student) {
+                $this->mark_details
+                    ->where(array(
+                        'exam_id' => $exam_id,
+                        'user_id' => $each_student->id
+                    ))
+                    ->delete();
+            }
+        } catch (Exception $e) {
+            return redirect('mark')->withFlashMessage('Error Deleting Mark!')->withType('danger');
+        }
+
+        return redirect('mark')->withFlashMessage('Mark Successfully Deleted!')->withType('success');
     }
 }

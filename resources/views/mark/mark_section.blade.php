@@ -8,7 +8,8 @@
 {!! Form::open(['route' => ['mark.update','update'],'method' => "PATCH"]) !!}
 <input type="text" name="exam_id" value="" class="exam_id" hidden>
 <input type="text" name="batch_id" value="{{$batch_id}}" class="batch_id" hidden>
-    <div class="btn btn-warning pull-right" id="edit_marks"><span class="fa fa-edit"></span> Enable Mark Edit</div>
+    <div class="btn btn-warning pull-right" id="edit_marks" style="width: 200px;"><span class="fa fa-edit"></span> Enable Mark Edit</div>
+    <div class="btn btn-danger pull-right" id="delete_marks" style="clear: right; width: 200px;"><span class="fa fa-times"></span> Delete Mark</div>
     <script>
         $('#edit_marks').click(function(){
             if ($('.mark-container').attr('readonly')) {
@@ -20,6 +21,23 @@
                     $('.table_footer').remove();
                     $('#edit_marks').html('<span class="fa fa-edit"></span> Enable Mark Edit');
                 }
+        });
+
+        $('#delete_marks').click(function(){
+            var exam_id = $('.exam-id').val();
+            var html = '<input name="_method" value="DELETE">' +
+                       '<input name="_token" value="{{csrf_token()}}">' +
+                       '<input name="exam_id" value="'+exam_id+'" class="exam_id">' +
+                       '<input name="batch_id" value="{{$batch_id}}" class="batch_id">';
+            var con = confirm('Are you sure you want to delete?');
+            if(con){
+                $('<form>',{
+                    id:'delete_marks',
+                    html:html,
+                    action:'{{url('mark/delete')}}',
+                    method:'post'
+                }).appendTo(document.body).submit();
+            }
         });
     </script>
 @endif

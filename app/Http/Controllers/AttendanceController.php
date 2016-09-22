@@ -382,11 +382,11 @@ class AttendanceController extends Controller
                 return redirect()->back()->withFlashMessage('No students available to display!')->withType('danger');
             }
 
-            foreach($students as $each_student){
+            foreach ($students as $each_student) {
                 $enc_std_id = Encrypt::encrypt($each_student->id);
                 $data[$enc_std_id] = new \stdClass();
-                $data[$enc_std_id]->name = $each_student->first_name.' '.$each_student->last_name;
-                $data[$enc_std_id]->status = (in_array($each_student->id,$attendance))?'present':'absent';
+                $data[$enc_std_id]->name = $each_student->first_name . ' ' . $each_student->last_name;
+                $data[$enc_std_id]->status = (in_array($each_student->id, $attendance)) ? 'present' : 'absent';
             }
         } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Error Fetching Students!')->withType('danger');
@@ -652,6 +652,7 @@ class AttendanceController extends Controller
     public function editBatch($id, $date)
     {
         $enc_id = $id;
+        $enc_date = $date;
         $id = Encrypt::decrypt($id);
         $date = Encrypt::decrypt($date);
         if (!is_numeric($id)) {
@@ -700,7 +701,7 @@ class AttendanceController extends Controller
             return redirect()->back()->withFlashMessage('Error Fetching Attendance!')->withType('danger');
         }
 
-        return view('attendance.attendance_edit', ['id' => $enc_id, 'students' => $students, 'attendance' => $attendance]);
+        return view('attendance.attendance_edit', ['id' => $enc_id, 'students' => $students, 'attendance' => $attendance, 'created_at' => $enc_date]);
     }
 
     /**
@@ -714,6 +715,7 @@ class AttendanceController extends Controller
         if ($request->ajax()) {
             $attendance = array();
             $id = Encrypt::decrypt($request['id']);
+            $date = Encrypt::decrypt($request['date']);
             $count = sizeof($request['present']);
             if (empty($request['present'])) {
                 $present = '';
@@ -725,7 +727,11 @@ class AttendanceController extends Controller
             }
             try {
                 $this->attendance
-                    ->where('batch_id', $id)
+                    /*->where(array(
+                        'batch_id' => $id,
+                        'created_at' => $date
+                    ))*/
+                    ->whereRaw("batch_id = " . $id . " AND created_at like '" . $date . "%'")
                     ->update(array(
                         'present_count' => $count,
                         'attendance' => $present

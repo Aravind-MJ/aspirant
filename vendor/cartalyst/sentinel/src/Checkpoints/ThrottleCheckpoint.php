@@ -44,7 +44,6 @@ class ThrottleCheckpoint implements CheckpointInterface
      *
      * @param  \Cartalyst\Sentinel\Throttling\ThrottleRepositoryInterface  $throttle
      * @param  string  $ipAddress
-     * @return void
      */
     public function __construct(ThrottleRepositoryInterface $throttle, $ipAddress = null)
     {

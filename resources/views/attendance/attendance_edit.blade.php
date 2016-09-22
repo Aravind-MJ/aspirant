@@ -87,12 +87,14 @@
 
                     $(".submit-button").click(function(){
                         var id = '{{$id}}';
+                        var date = '{{$created_at}}';
                         $('.selector-present').each(function(){
                             present.push($(this).children('.roll').val());
                         });
                         //$('.loading-screen').show();
                         $.post('{{url('edit/attendance')}}',{
                             id:id,
+                            date:date,
                             present:present
                         },
                         function(response){

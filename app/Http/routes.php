@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth', 'redirectFaculty', 'redirectStandardUser'
 Route::group(['middleware' => ['auth', 'redirectStandardUser']], function () {
 
     # Routes to Mark Section.
-    Route::resource('mark', 'MarkDetailsController');
+    Route::resource('mark', 'MarkDetailsController', ['only' => ['index', 'create', 'store', 'update', 'destroy']]);
     Route::post('fetchStudents', ['uses' => 'MarkDetailsController@fetchStudents']);
     Route::post('fetchMark', ['uses' => 'MarkDetailsController@fetchMark']);
 
@@ -94,7 +94,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     #Feetype crud Routes
     Route::resource('FeeTypes', 'FeeTypesController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     #Notice crud Routes
-    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy','store','create']]);
+    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
     #Batch crud Routes
     Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
     #Route to edit student profile
