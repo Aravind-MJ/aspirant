@@ -31,11 +31,11 @@
                     <td>{{ $Examtype->name }}</td>
                      
                     <td class=center>
-                        <a class="btn btn-default btn-success" href="{{url('ExamType/'.$Examtype->id).'/edit'}}">Edit</a>
+                        <a class="btn btn-default btn-success" href="{{url('ExamType/'.$Examtype->enc_id).'/edit'}}">Edit</a>
                     </td>
                     
                     <td class=center>
-                        {!! Form::open(['route' => ['ExamType.destroy', $Examtype->id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
+                        {!! Form::open(['route' => ['ExamType.destroy', $Examtype->enc_id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$Examtype->id}}">

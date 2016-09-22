@@ -26,6 +26,7 @@
              folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="{{ URL::asset('dist/css/skins/_all-skins.min.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
 <!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css">
        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -179,7 +180,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script> -->
 
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
         <script>
             $(function () {
                 $('#datepicker').datepicker({
@@ -229,8 +230,18 @@
         format: 'HH:mm:ss'
     });
 </script>-->
-
-
-
+<script>
+$('.timepicker').timepicker({
+    timeFormat: 'h:mm p',
+    interval: 30,
+    minTime: '6',
+    maxTime: '6:00pm',
+//    defaultTime: '6',
+    startTime: '6:00',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true
+});
+</script>
     </body>
 </html>

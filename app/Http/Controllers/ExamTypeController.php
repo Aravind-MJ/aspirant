@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Examtypes;
+use App\Encrypt;
 
 class ExamTypeController extends Controller
 {
@@ -17,7 +18,11 @@ class ExamTypeController extends Controller
     public function index()
     {
         $allExamtype = \App\Examtypes::all();    //Eloquent ORM method to return all matching results
-        //Redirecting to list_faculty.blade.php with $allFaculties       
+        //Redirecting to list_faculty.blade.php with $allFaculties  
+         foreach( $allExamtype as $Examtype ){
+             $Examtype->enc_id = Encrypt::encrypt($Examtype->id);
+   
+         }
         return View('Examdetails.list_Examtype', compact('allExamtype'));
     }
 
@@ -55,6 +60,8 @@ class ExamTypeController extends Controller
      */
     public function show($id)
     {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         $Examtype = Examtypes::find($id);
 
         //Redirecting to showBook.blade.php with $book variable
@@ -69,6 +76,8 @@ class ExamTypeController extends Controller
      */
     public function edit($id)
     {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         $Examtype = \App\Examtypes::find($id);
 
 
@@ -103,6 +112,8 @@ class ExamTypeController extends Controller
      */
     public function destroy($id)
     {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         //find result by id and delete
         \App\Examtypes::find($id)->delete();
 

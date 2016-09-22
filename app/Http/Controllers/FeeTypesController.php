@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Feetypes;
+use App\Encrypt;
 
 class FeeTypesController extends Controller
 {
@@ -18,7 +19,10 @@ class FeeTypesController extends Controller
     public function index()
     {
         $allFeetypes = \App\Feetypes::all();    //Eloquent ORM method to return all matching results
-        //Redirecting to list_faculty.blade.php with $allFaculties       
+        //Redirecting to list_faculty.blade.php with $allFaculties   
+               foreach( $allFeetypes as $Feetypes ){
+                   $Feetypes->enc_id = Encrypt::encrypt($Feetypes->id);
+               }
         return View('Feetypes.list_Feetypes', compact('allFeetypes'));
     }
 
@@ -56,6 +60,8 @@ class FeeTypesController extends Controller
      */
     public function show($id)
     {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         $Feetypes = Feetypes::find($id);
 
         return view('Feetypes.list_Feetypes')->with('Feetypes', $Feetypes);
@@ -69,6 +75,8 @@ class FeeTypesController extends Controller
      */
     public function edit($id)
     {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         $Feetypes = \App\Feetypes::find($id);
 
 
@@ -101,6 +109,8 @@ class FeeTypesController extends Controller
      */
     public function destroy($id)
     {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         \App\Feetypes::find($id)->delete();
 
         //Redirecting to index() method

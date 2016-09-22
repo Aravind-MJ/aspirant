@@ -10,6 +10,7 @@ use App\Examdetails;
 use App\Examtypes;
 use Input;
 use DB;
+use App\Encrypt;
 
 class ExamDetailsController extends Controller
 {
@@ -29,10 +30,12 @@ class ExamDetailsController extends Controller
             ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
             ->select('Exam_type.*', 'exam_details.*')
             ->get();
-
+     foreach($allExamdetails as $Examdetails) {
+     $Examdetails->enc_id = Encrypt::encrypt($Examdetails->id);
+   }
 
         return View('Examdetails.list_Examdetails', compact('allExamdetails'));
-
+     
     }
 
     /**
@@ -75,6 +78,8 @@ class ExamDetailsController extends Controller
      */
     public function show($id)
     {
+        $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         $Examdetails = DB::table('exam_details')
             ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
             ->select('Exam_type.*', 'exam_details.*')
@@ -91,15 +96,16 @@ class ExamDetailsController extends Controller
      */
     public function edit($id)
     {
+        $enc_id=$id;
+        $id = Encrypt::decrypt($id);
        $Examdetails = DB::table('exam_details')
                 ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
                 ->where('exam_details.id', $id)
                 ->select('Exam_type.name', 'exam_details.*')
                 ->first();
-  
         $Examtype=  \App\Examtypes::lists('name','id');
        return view('Examdetails.edit_Examdetails',compact('Examdetails','type_id','Examtype','id'));
-
+ 
     }
 
     /**
@@ -130,6 +136,8 @@ class ExamDetailsController extends Controller
      */
     public function destroy($id)
     {
+        $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         //find result by id and delete
         \App\Examdetails::find($id)->delete();
 

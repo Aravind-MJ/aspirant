@@ -10,6 +10,7 @@ use App\Faculty;
 use App\User;
 use Input;
 use DB;
+use App\Encrypt;
 
 class BatchDetailsController extends Controller {
 
@@ -23,6 +24,9 @@ class BatchDetailsController extends Controller {
                 ->join('users', 'users.id', '=', 'batch_details.in_charge')
                 ->select('users.*', 'batch_details.*')
                 ->get();
+        foreach($allBatchdetails as $Batchdetails){
+             $Batchdetails->enc_id = Encrypt::encrypt($Batchdetails->id);
+        }
         //Redirecting to list_faculty.blade.php with $allFaculties       
         return View('Batchdetails.list_Batchdetails', compact('allBatchdetails'));
     }
@@ -79,6 +83,8 @@ class BatchDetailsController extends Controller {
      * @return Response
      */
     public function show($id) {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         $Batchdetails = DB::table('batch_details')
                 ->join('users', 'users.id', '=', 'batch_details.in_charge')
                 ->select('users.*', 'batch_details.*')
@@ -98,6 +104,8 @@ class BatchDetailsController extends Controller {
      * @return Response
      */
     public function edit($id) {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         $Batchdetails = DB::table('batch_details')
                 ->join('users', 'users.id', '=', 'batch_details.in_charge')
                 ->where('batch_details.id', $id)
@@ -137,6 +145,8 @@ class BatchDetailsController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+         $enc_id=$id;
+        $id = Encrypt::decrypt($id);
         \App\Batchdetails::find($id)->delete();
 
         //Redirecting to index() method

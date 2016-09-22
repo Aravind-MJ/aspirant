@@ -35,10 +35,10 @@
                      <td>{{ $Examdetails->total_mark }}</td>
             
                     <td class=center>
-                        <a class="btn btn-default btn-success" href="{{url('ExamDetails/'.$Examdetails->id).'/edit'}}">Edit</a>
+                        <a class="btn btn-default btn-success" href="{{url('ExamDetails/'.$Examdetails->enc_id).'/edit'}}">Edit</a>
                     </td>
                     <td class=center>
-                        {!! Form::open(['route' => ['ExamDetails.destroy', $Examdetails->id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
+                        {!! Form::open(['route' => ['ExamDetails.destroy', $Examdetails->enc_id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$Examdetails->id}}">

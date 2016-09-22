@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
             {!! Form::label('time_shift', 'Time_shift') !!}
-             {!! Form::text('time_shift', null, ['class' => 'form-control', 'placeholder'=>'00.00-00.00','id' => 'calendar1'])!!}
+            {!! Form::text('time_shift', null, ['class' => 'form-control timepicker', 'placeholder'=>'00.00-00.00','id' => 'calendar1'])!!}
             {!! errors_for('time_shift', $errors) !!}
         </div>
        

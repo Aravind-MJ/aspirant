@@ -42,10 +42,10 @@
                         <a href='BatchDetails/{{ $Batchdetails->id }}'>View more</a>
                     </td>
                     <td class=center>
-                        <a class="btn btn-default btn-success" href="{{url('BatchDetails/'.$Batchdetails->id).'/edit'}}">Edit</a>
+                        <a class="btn btn-default btn-success" href="{{url('BatchDetails/'.$Batchdetails->enc_id).'/edit'}}">Edit</a>
                     </td>
                     <td class=center>
-                        {!! Form::open(['route' => ['BatchDetails.destroy', $Batchdetails->id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
+                        {!! Form::open(['route' => ['BatchDetails.destroy', $Batchdetails->enc_id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$Batchdetails->id}}">
