@@ -14,6 +14,7 @@ use Sentinel;
 use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Encrypt;
+use DateTime;
 
 class FacultyController extends Controller
 {
@@ -33,6 +34,9 @@ class FacultyController extends Controller
                 ->select('users.*', 'faculty_details.*')
                 ->where('faculty_details.deleted_at', NULL)
                 ->get();
+        foreach ($allFaculties as $faculty) {
+            $faculty->enc_id = Encrypt::encrypt($faculty->id);
+        }
         //Redirecting to list_faculty.blade.php with $allFaculties       
         return View('faculty.list_faculty', compact('allFaculties'));
     }
@@ -121,7 +125,8 @@ class FacultyController extends Controller
      */
     public function show($id)
     {
-
+        $enc_id = $id;
+        $id = Encrypt::decrypt($id);
         //Get results by targeting id
         $faculty = DB::table('faculty_details')
             ->join('users', 'users.id', '=', 'faculty_details.user_id')
@@ -141,7 +146,8 @@ class FacultyController extends Controller
      */
     public function edit($id)
     {
-
+        $enc_id = $id;
+        $id = Encrypt::decrypt($id);
         //Get Result by targeting id
         $faculty = DB::table('faculty_details')
                 ->join('users', 'users.id', '=', 'faculty_details.user_id')
@@ -168,7 +174,8 @@ class FacultyController extends Controller
      */
     public function update($id, Requests\PublishFacultyRequest $requestData)
     {
-
+        $enc_id = $id;
+        $id = Encrypt::decrypt($id);
         //Update Query       
         $faculty = Faculty::find($id);
         $faculty->qualification = $requestData['qualification'];
@@ -219,7 +226,16 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
+        $enc_id = $id;
+        $id = Encrypt::decrypt($id);
+        $faculty = DB::table('faculty_details')
+                ->select('user_id')
+                ->where('faculty_details.id', $id)
+                ->first();
 
+        $user_id = $faculty->user_id;
+        $now = new DateTime();
+        DB::table('users')->where('id', $user_id)->skip(1)->take(1)->update(['deleted_at' => $now]);
         //find result by id and delete 
         Faculty::find($id)->delete();
 

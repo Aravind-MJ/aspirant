@@ -39,7 +39,7 @@
 
                     <!-- Submit field -->
                     <div class="form-group">
-                        {!! Form::submit('Edit Student', ['class' => 'btn btn-lg btn-primary btn-block']) !!}
+                        {!! Form::submit('Edit Faculty', ['class' => 'btn btn-lg btn-primary btn-block']) !!}
                     </div>
 
                 </fieldset>

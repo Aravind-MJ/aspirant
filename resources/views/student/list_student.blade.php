@@ -35,6 +35,8 @@
                     <th>DOB</th>                   
                     <th>Photo</th>
                     <th>View more</th>
+                    <th>Attendance</th>
+                    <th>Marks</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -47,13 +49,19 @@
                     <td>{{ $student->dob }}</td>
                     <td><img src="{{ asset('images/students/'. $student->photo) }}"  alt="photo" width="50" height="50"/></td>
                     <td class=center>                      
-                        <a href='Student/{{ $student->id }}'>View more</a>
+                        <a href='Student/{{ $student->enc_id }}'>View more</a>
                     </td>
                     <td class=center>                      
-                        <a href='Student/{{ $student->id }}/edit' class='btn btn-primary btn-block'>Edit</a>
+                        <a href='attendance/student/{{ $student->enc_userid }}' class='btn btn-primary'>Attendance</a>
+                    </td>
+                    <td class=center>                      
+                        <a href='mark/attendance/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Mark</a>
+                    </td>
+                    <td class=center>                      
+                        <a href='Student/{{ $student->enc_id }}/edit' class='btn btn-primary btn-block'>Edit</a>
                     </td> 
                     <td class=center>
-                        {!! Form::open(['action' => ['StudentController@destroy', $student->id], 'method' => 'POST', 'class' => 'delete']) !!}
+                        {!! Form::open(['action' => ['StudentController@destroy', $student->enc_id], 'method' => 'POST', 'class' => 'delete']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$student->id}}">

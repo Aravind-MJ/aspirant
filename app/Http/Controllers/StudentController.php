@@ -16,6 +16,7 @@ Use Auth;
 use DB;
 use App\Encrypt;
 use Illuminate\Support\Facades\Request;
+use DateTime;
 
 class StudentController extends Controller {
 
@@ -32,7 +33,10 @@ class StudentController extends Controller {
                 ->select('users.*', 'student_details.*', 'batch_details.batch')
                 ->where('student_details.deleted_at', NULL)
                 ->get();
-
+        foreach ($allStudents as $student) {
+            $student->enc_id = Encrypt::encrypt($student->id);
+            $student->enc_userid = Encrypt::encrypt($student->user_id);
+        }
         //Fetch Batch Details
         $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
 
@@ -123,6 +127,8 @@ class StudentController extends Controller {
      * @return Response
      */
     public function show($id) {
+        $enc_id = $id;
+        $id = Encrypt::decrypt($id);
         //Get results by targeting id
         $student = DB::table('student_details')
                 ->join('users', 'users.id', '=', 'student_details.user_id')
@@ -143,6 +149,8 @@ class StudentController extends Controller {
      */
     public function edit($id) {
 
+        $enc_id = $id;
+        $id = Encrypt::decrypt($id);
         //Fetch Student Details
         $student = DB::table('student_details')
                 ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
@@ -222,9 +230,20 @@ class StudentController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        $enc_id = $id;
+        $id = Encrypt::decrypt($id);
         //find result by id and delete 
-        Student::find($id)->delete();
 
+        $student = DB::table('student_details')
+                ->select('user_id')
+                ->where('student_details.id', $id)
+                ->first();
+
+        $user_id = $student->user_id;
+        $now = new DateTime();
+        DB::table('users')->where('id', $user_id)->skip(1)->take(1)->update(['deleted_at' => $now]);
+        Student::find($id)->delete();
+//        User::find($user_id)->delete();
         //Redirecting to index() method
         return Redirect::back();
     }
@@ -232,34 +251,34 @@ class StudentController extends Controller {
     public function search() {
 
         // Gets the query string and batch from our form submission 
-       
+
         $search = Request::input('search');
         $batch = Request::input('batch_id');
-         if(!empty($search) || $batch==0){
-        // Returns an array of articles that have the query string located somewhere within 
+        if (!empty($search) || $batch == 0) {
+            // Returns an array of articles that have the query string located somewhere within 
 
-        $query = DB::table('student_details')
-                ->join('users', 'users.id', '=', 'student_details.user_id')
-                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*', 'batch_details.batch')
-                ->where('student_details.deleted_at', NULL);
-        if ($batch != 0)
-            $query->where('student_details.batch_id', 'LIKE', '%' . $batch . '%');
+            $query = DB::table('student_details')
+                    ->join('users', 'users.id', '=', 'student_details.user_id')
+                    ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+                    ->select('users.*', 'student_details.*', 'batch_details.batch')
+                    ->where('student_details.deleted_at', NULL);
+            if ($batch != 0)
+                $query->where('student_details.batch_id', 'LIKE', '%' . $batch . '%');
 
-        if (!empty($search))
-            $query->where('users.first_name', 'LIKE', '%' . $search . '%');
+            if (!empty($search))
+                $query->where('users.first_name', 'LIKE', '%' . $search . '%');
 
-        $allStudents = $query->get();
+            $allStudents = $query->get();
 
-        //Fetch Batch Details
-        $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
-         
-        // returns a view and passes the view the list of articles and the original query.
+            //Fetch Batch Details
+            $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
+
+            // returns a view and passes the view the list of articles and the original query.
 //        return route('Student.index');
-        return View('student.list_student', compact('allStudents', 'batch', 'id'));
-         }else{
-             return redirect()->route('Student.index');
-         }
+            return View('student.list_student', compact('allStudents', 'batch', 'id'));
+        }else {
+            return redirect()->route('Student.index');
+        }
     }
 
 }

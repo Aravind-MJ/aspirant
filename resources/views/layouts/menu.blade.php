@@ -46,7 +46,7 @@
             {{--@if($user->inRole('admins','superadmin'))--}}
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i>
+                    <i class="fa fa-user"></i>
                     <span>Faculty</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -60,7 +60,7 @@
 
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i>
+                    <i class="fa fa-slideshare"></i>
                     <span>Student Registration</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -74,7 +74,7 @@
 
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i>
+                    <i class="fa fa-bell"></i>
                     <span>Notice</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -88,7 +88,7 @@
 
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i>
+                    <i class="fa fa-edit"></i>
                     <span>Examtype</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -102,7 +102,7 @@
             
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i>
+                    <i class="fa fa-file-text-o"></i>
                     <span>ExamDetails</span>
                     <span class="pull-right-container">
                         <span class="fa fa-angle-left pull-right"></span>
@@ -115,7 +115,7 @@
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i>
+                    <i class="fa fa-twitch"></i>
                     <span>FeeTypes</span>
                     <span class="pull-right-container">
                         <span class="fa fa-angle-left pull-right"></span>
@@ -129,7 +129,7 @@
 
        <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-files-o"></i>
+                    <i class="fa fa-delicious"></i>
                     <span>Batch Details</span>
                     <span class="pull-right-container">
                         <span class="fa fa-angle-left pull-right"></span>
