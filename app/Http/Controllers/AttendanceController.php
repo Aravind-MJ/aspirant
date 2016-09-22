@@ -382,11 +382,11 @@ class AttendanceController extends Controller
                 return redirect()->back()->withFlashMessage('No students available to display!')->withType('danger');
             }
 
-            foreach ($students as $each_student) {
+            foreach($students as $each_student){
                 $enc_std_id = Encrypt::encrypt($each_student->id);
                 $data[$enc_std_id] = new \stdClass();
-                $data[$enc_std_id]->name = $each_student->first_name . ' ' . $each_student->last_name;
-                $data[$enc_std_id]->status = (in_array($each_student->id, $attendance)) ? 'present' : 'absent';
+                $data[$enc_std_id]->name = $each_student->first_name.' '.$each_student->last_name;
+                $data[$enc_std_id]->status = (in_array($each_student->id,$attendance))?'present':'absent';
             }
         } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Error Fetching Students!')->withType('danger');
