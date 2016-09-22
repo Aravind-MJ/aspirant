@@ -23,9 +23,9 @@ class PublishBatchdetailsRequest extends Request {
                 }
             case 'POST': {
                     return [
-                        'batch' => 'required|alpha',
-                        'syllabus' => 'required|alpha',
-                        'time_shift' => 'required|date_format:H:i',
+                        'batch' => 'required|regex:/^[(a-zA-Z\s)]+$/u',
+                        'syllabus' => 'required|regex:/^[(a-zA-Z\s)]+$/u',
+                        'time_shift' => 'required',
                         'year' => 'required',
                         'in_charge' => 'required',
                     ];
@@ -33,8 +33,8 @@ class PublishBatchdetailsRequest extends Request {
             case 'PUT':
             case 'PATCH': {
                     return [
-                        'syllabus' => 'required|alpha',
-                        'time_shift' => 'required|date_format:H:i',
+                        'syllabus' => 'required|regex:/^[(a-zA-Z\s)]+$/u',
+                        'time_shift' => 'required|regex:/^[(a-zA-Z\s)]+$/u',
                         'year' => 'required',
                         'in_charge' => 'required',
                     ];

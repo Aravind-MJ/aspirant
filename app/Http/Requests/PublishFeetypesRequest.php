@@ -22,7 +22,7 @@ class PublishFeetypesRequest extends Request {
      */
     public function rules() {
         return [
-            'name' => 'required|alpha',
+            'name' => 'required|regex:/^[(a-zA-Z\s)]+$/u',
             
         ];
     }

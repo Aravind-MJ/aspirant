@@ -10,7 +10,14 @@
 
 @section('body')
 @include('flash')
+<!--<style>
+    th{
+        padding-left:10px;
+  
+    }
+</style>-->
 
+<div class='col-md-offset-1 col-md-10'>
 <div class="box box-primary">
     <div class="box-body">
 
@@ -18,11 +25,11 @@
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th style="width: 50%">Name</th>
                   
                     <!--<th>Photo</th>-->
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th style="width: 5%">Edit</th>
+                    <th style="width: 5%">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,7 +38,7 @@
                     <td>{{ $Examtype->name }}</td>
                      
                     <td class=center>
-                        <a class="btn btn-default btn-success" href="{{url('ExamType/'.$Examtype->enc_id).'/edit'}}">Edit</a>
+                        <a class="btn btn-primary btn-block" href="{{url('ExamType/'.$Examtype->enc_id).'/edit'}}">Edit</a>
                     </td>
                     
                     <td class=center>
@@ -39,7 +46,7 @@
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$Examtype->id}}">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-block">Delete</button>
                         {!! Form::close() !!}
                     </td>
                 </tr>
@@ -50,6 +57,7 @@
     </div>
 
 </div>
+    </div>
 @stop
 
 @endsection
