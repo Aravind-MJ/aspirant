@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Batchdetails;
 use App\Faculty;
 use App\User;
+use App\RoleUsers;
 use Input;
 use DB;
 use App\Encrypt;
@@ -20,8 +21,9 @@ class BatchDetailsController extends Controller {
      * @return Response
      */
     public function index() {
+        
         $allBatchdetails = DB::table('batch_details')
-                ->join('users', 'users.id', '=', 'batch_details.in_charge')
+                ->join('users','users.id','=', 'batch_details.in_charge')
                 ->select('users.*', 'batch_details.*')
                 ->get();
         foreach($allBatchdetails as $Batchdetails){
@@ -37,8 +39,19 @@ class BatchDetailsController extends Controller {
      * @return Response
      */
     public function create() {
-        $users = \App\User::lists('first_name', 'id');
-        return view('Batchdetails.add_Batchdetails', compact('in_charge', 'users', 'id'));
+        $users = DB::table('users')
+                  ->join('faculty_details','faculty_details.user_id', '=','users.id')              
+                  ->select('users.id','first_name','last_name')
+                  ->get();
+        $data=array();
+        foreach($users as $each){
+            $data[$each->id]=$each->first_name.' '.$each->last_name;
+        }
+        $users=$data;
+//          
+//                \App\User::lists('first_name','last_name', 'id');
+//      dd($users);
+        return view('Batchdetails.add_Batchdetails', compact('in_charge','users','id'));
     }
 
     /**
@@ -49,7 +62,7 @@ class BatchDetailsController extends Controller {
     public function store(Requests\PublishBatchdetailsRequest $requestData) {
         $user = new \App\User;
         $user->first_name = $requestData['first_name'];
-
+        $user->last_name  =$requestData['last_name'];
 
 
 
@@ -58,7 +71,7 @@ class BatchDetailsController extends Controller {
             $Batchdetails = new \App\Batchdetails;
             $Batchdetails->batch = $requestData['batch'];
             $Batchdetails->syllabus = $requestData['syllabus'];
-            $Batchdetails->time_shift = $requestData['time_shift'];
+            $Batchdetails->time_shift = strtolower($requestData['time_shift']);
             $Batchdetails->year = $requestData['year'];
             $Batchdetails->in_charge = $requestData['in_charge'];
         
@@ -86,14 +99,14 @@ class BatchDetailsController extends Controller {
          $enc_id=$id;
         $id = Encrypt::decrypt($id);
         $Batchdetails = DB::table('batch_details')
-                ->join('users', 'users.id', '=', 'batch_details.in_charge')
+                ->join('users','users.id','=', 'batch_details.in_charge') 
                 ->select('users.*', 'batch_details.*')
                 ->where('batch_details.id', $id)
                 ->first();
         //Redirecting to showBook.blade.php with $book variable
         
 
-//         dd($Batchdetails);
+
         return View('Batchdetails.Batch_details', compact('Batchdetails'));
     }
 
@@ -106,14 +119,32 @@ class BatchDetailsController extends Controller {
     public function edit($id) {
          $enc_id=$id;
         $id = Encrypt::decrypt($id);
-        $Batchdetails = DB::table('batch_details')
-                ->join('users', 'users.id', '=', 'batch_details.in_charge')
-                ->where('batch_details.id', $id)
-                ->select('users.*', 'batch_details.*')
-                ->first();
-        $users = \App\User::lists('first_name', 'id');
-        return view('Batchdetails.edit_Batchdetails', compact('Batchdetails', 'in_charge', 'users', 'id'));
+        
+         $users = DB::table('users')
+                  ->join('batch_details','users.id','=', 'batch_details.in_charge')
+                  ->join('faculty_details','faculty_details.user_id', '=','batch_details.in_charge')              
+                  ->select('users.id','first_name','last_name')
+                  ->get();
+        $data=array();
+        foreach($users as $each){
+            $data[$each->id]=$each->first_name.' '.$each->last_name;
+        }
+        $users=$data;
+//          
+//                \App\User::lists('first_name','last_name', 'id');
+//      dd($users);
+        return view('Batchdetails.add_Batchdetails', compact('in_charge','users','id'));
     }
+        
+//        
+//        $Batchdetails = DB::table('batch_details')
+//                  ->join('users','users.id','=', 'batch_details.in_charge') 
+//                  ->where('batch_details.id', $id)
+//                  ->select('users.*', 'batch_details.*')
+//                  ->first();
+//        $users = \App\User::lists('first_name', 'id');
+//        return view('Batchdetails.edit_Batchdetails', compact('Batchdetails', 'in_charge', 'users', 'id'));
+//    }
 
 //
 
