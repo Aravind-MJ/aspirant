@@ -15,11 +15,12 @@
 
             <table id="example2" class="table table-bordered table-hover">
                 <tbody>                   
-                    <tr><th>First name</th> <td>{{ $student->first_name }}</td></tr>
+                    <tr><th>First name</th><td>{{ $student->first_name }}</td></tr>
                     <tr><th>Last name</th><td>{{ $student->last_name}}</td></tr>
                     <tr><th>Batch</th><td>{{$student->batch}}</td></tr>
                     <tr><th>Gender</th><td>{{ $student->gender }}</td></tr>
                     <tr><th>DOB</th><td>{{ $student->dob }}</td></tr>
+                    <tr><th>Email</th><td>{{ $student->email }}</td></tr>
                     <tr><th>Guardian</th><td>{{ $student->guardian }}</td></tr>
                     <tr><th>Address</th><td>{{ $student->address }}</td></tr>
                     <tr><th>Phone</th><td>{{ $student->phone }}</td></tr>

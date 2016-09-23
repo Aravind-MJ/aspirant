@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth', 'standardUser']], function () {
 
     # Home
     Route::get('home', 'PagesController@getHome');
+    Route::get('notice', ['as' => 'notice.getNotice', 'uses' => 'PagesController@getNotice']);
     Route::get('userProtected', 'StandardUser\StandardUserController@getUserProtected');
     Route::resource('profiles', 'StandardUser\UsersController', ['only' => ['show', 'edit', 'update']]);
 });

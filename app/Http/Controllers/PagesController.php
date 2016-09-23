@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 use Sentinel;
 use Illuminate\Support\Facades\Redirect;
 use DB;
-use App\Student;
-use App\User;
-use App\Batch;
 use App\Encrypt;
 
 class PagesController extends Controller {
@@ -34,8 +31,20 @@ class PagesController extends Controller {
         }
     }
 
-    public function getAbout() {
-        return view('pages.about');
+    public function getNotice() {
+        //Select all records from notice table
+        $id = Sentinel::getUser()->id;
+        $student = DB::table('student_details')
+                ->select('batch_id')->where('user_id',$id)
+                ->first();
+        $allNotice = DB::table('notice')
+            ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
+                ->where('batch_id',$student->batch_id)
+            ->select('notice.*', 'batch_details.batch')
+            
+            ->get();
+        return View('notice.list_notice', compact('allNotice'));
+//        return view('pages.about');
     }
 
     public function getContact() {

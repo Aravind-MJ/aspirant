@@ -101,7 +101,7 @@ class StudentController extends Controller {
 
             $name = time() . '-' . $file->getClientOriginalName();
 
-            $file = $file->move(public_path() . '\images\students', $name);
+            $file = $file->move(public_path() . '/images/students', $name);
 
 //        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
 
@@ -202,7 +202,7 @@ class StudentController extends Controller {
 
             $name = time() . '-' . $file->getClientOriginalName();
 
-            $file = $file->move(public_path() . '\images\students', $name);
+            $file = $file->move(public_path() . '/images/students', $name);
 
 //        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
 
