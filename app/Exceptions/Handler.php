@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Exceptions\SmsApiException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -57,7 +58,17 @@ class Handler extends ExceptionHandler
                     break;
             }
         } else {
-            return parent::render($request, $e);
+            switch($e){
+                case($e instanceof SmsApiException):
+                    return $this->renderException($e);
+                    break;
+                default:
+                    return parent::render($request, $e);
+            }
         }
+    }
+
+    protected function renderException($e){
+        return redirect()->back()->withFlashMessage($e->message)->withType('danger');
     }
 }

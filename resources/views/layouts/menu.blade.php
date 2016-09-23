@@ -167,7 +167,8 @@
                         @endif
                     </ul>
                 </li>
-                <li class="treeview">
+                @if(!$user->inRole('users'))
+                <li class="treeview {{ set_active('mark') }}">
                     <a href="#">
                         <i class="fa fa-sliders"></i>
                         <span>Marks</span>
@@ -180,7 +181,23 @@
                         <li><a href="{{URL::route('mark.index')}}"><i class="fa fa-circle-o"></i> View Mark</a></li>
                     </ul>
                 </li>
-
+                @endif
+                @if(!$user->inRole('users')&&!$user->inRole('faculty'))
+                    <li class="treeview {{ set_active('SendAnSms') }}">
+                        <a href="#">
+                        <i class="fa fa-envelope"></i>
+                        <span>SMS</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="{{ set_active('SendAnSms/students') }}"><a href="{{ url('SendAnSms/students') }}"><i class="fa fa-circle-o"></i> Sms Students</a></li>
+                        <li class="{{ set_active('SendAnSms/batches') }}"><a href="{{ url('SendAnSms/batches') }}"><i class="fa fa-circle-o"></i> Sms Batch</a></li>
+                        <li class="{{ set_active('SendAnSms/faculty') }}"><a href="{{ url('SendAnSms/faculty') }}"><i class="fa fa-circle-o"></i> Sms Faculty</a></li>
+                    </ul>
+                </li>
+                @endif
             <li class="header">Settings</li>
             <li><a href="{{url('changePassword/'. \App\Encrypt::encrypt($user->id))}}"><i class="fa fa-circle-o text-orange"></i> <span>Change Password</span></a></li>
         </ul>

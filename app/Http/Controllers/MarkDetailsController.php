@@ -12,7 +12,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Batch;
 use App\Encrypt;
-use App\Cons;
 use Mockery\CountValidator\Exception;
 
 use App\Http\Requests\FetchStudentsRequest;
@@ -102,7 +101,7 @@ class MarkDetailsController extends Controller
     public function create()
     {
         $data = array();
-        $year = Cons::$year;
+        $year = 2016;
         $time_shifts = array('morning', 'afternoon', 'evening');
         try {
             $batch = $this->batch
@@ -117,7 +116,7 @@ class MarkDetailsController extends Controller
             $batch = $data['batch'];
 
         } catch (Exception $e) {
-            return back()->withFlashMessage('Error Selecting batch')->withType('error');
+            return back()->withFlashMessage('Error Selecting batch')->withType('danger');
         }
 
         try {
@@ -192,7 +191,7 @@ class MarkDetailsController extends Controller
     public function index()
     {
         $data = array();
-        $year = Cons::$year;
+        $year = 2016;
         $time_shifts = array('morning', 'afternoon', 'evening');
         try {
             $batch = $this->batch

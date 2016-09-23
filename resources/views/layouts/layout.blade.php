@@ -18,6 +18,8 @@
           <link rel="stylesheet" href="{{ URL::asset('plugins/morris/morris.css') }}">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="{{URL::asset('plugins/select2/select2.min.css')}}">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <!-- Theme style -->
@@ -163,6 +165,8 @@
         <!-- Morris.js charts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
         <script src="{{ URL::asset('plugins/morris/morris.min.js') }}"></script>
+        <!-- Select2 -->
+        <script src="{{URL::asset('plugins/select2/select2.full.min.js')}}"></script>
         <!-- SlimScroll -->
         <script src="{{ URL::asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
         <!-- FastClick -->
@@ -173,12 +177,7 @@
         <script src="{{ URL::asset('dist/js/demo.js') }}"></script>
 
         <script src="{{ URL::asset('dist/js/bootstrap-datepicker.js') }}"></script>
-        
-<!--       
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script> -->
+
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
         <script>
@@ -206,14 +205,10 @@
   $(function() {
     $( "#datepicker1" ).datepicker();
   });
-  </script>
-  <script>
+
   $(function() {
     $( "#datepicker2" ).datepicker();
   });
-  </script>
-  
-  <script>
 
   function ConfirmDelete()
   {
@@ -224,24 +219,6 @@
     return false;
   }
 
-</script>
-<!--  <script>
-    $('#time').datetimepicker({
-        format: 'HH:mm:ss'
-    });
-</script>-->
-<script>
-$('.timepicker').timepicker({
-    timeFormat: 'h:mm p',
-    interval: 30,
-    minTime: '6',
-    maxTime: '6:00pm',
-//    defaultTime: '6',
-    startTime: '6:00',
-    dynamic: false,
-    dropdown: true,
-    scrollbar: true
-});
 </script>
     </body>
 </html>

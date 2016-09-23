@@ -48,6 +48,15 @@ Route::group(['middleware' => ['auth', 'redirectFaculty', 'redirectStandardUser'
 
     # Route to edit faculty profile.
     Route::post('edit/admin/faculty/{id}', ['as' => 'facultyProfile.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
+
+    #Search Student Route
+    Route::post('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
+
+    # Sms Api Route
+    Route::get('SendAnSms/students', 'SmsApiController@students');
+    Route::get('SendAnSms/batches', 'SmsApiController@batches');
+    Route::get('SendAnSms/faculty', 'SmsApiController@faculty');
+    Route::post('SmsApi', 'SmsApiController@sms');
 });
 
 # Routes that Standard User Cannot access.
@@ -78,32 +87,6 @@ Route::group(['middleware' => ['auth', 'standardUser']], function () {
 Route::group(['middleware' => ['auth', 'admin']], function () {
     # Home
     Route::get('admin', ['as' => 'admin_dashboard', 'uses' => 'Admin\AdminController@getHome']);
-
-
-    Route::resource('admin/profiles', 'Admin\AdminUsersController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
-    Route::get('register', 'RegistrationController@create');
-    Route::post('register', ['as' => 'registration.store', 'uses' => 'RegistrationController@store']);
-    #Faculty crud Route
-    Route::resource('Faculty', 'FacultyController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
-    #Student Reristration crud Route
-    Route::resource('Student', 'StudentController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
-    #Examtype crud Routes
-    Route::resource('ExamType', 'ExamTypeController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
-    #ExamDetails crud Routes
-    Route::resource('ExamDetails', 'ExamDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
-    #Feetype crud Routes
-    Route::resource('FeeTypes', 'FeeTypesController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
-    #Notice crud Routes
-    Route::resource('Notice', 'NoticeController', ['only' => ['index', 'show', 'edit', 'update', 'destroy', 'store', 'create']]);
-    #Batch crud Routes
-    Route::resource('BatchDetails', 'BatchDetailsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
-    #Route to edit student profile
-    Route::post('edit/admin/student/{id}', ['as' => 'registration.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
-    #Route to edit faculty profile
-    Route::post('edit/admin/faculty/{id}', ['as' => 'facultyProfile.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
-    #Search Student Route 
-    Route::get('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
-
 });
 
 # Super Admin Routes.

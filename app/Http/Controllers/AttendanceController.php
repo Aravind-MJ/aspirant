@@ -12,7 +12,6 @@ use App\Batch;
 use App\StudentDetails;
 use Illuminate\Database;
 use App\Encrypt;
-use App\Cons;
 use App\Http\Requests\SelectBatchRequest;
 use App\Http\Requests\AjaxAttendanceRequest;
 use App\Http\Requests\DeleteAttendanceRequest;
@@ -44,7 +43,7 @@ class AttendanceController extends Controller
     {
         if (Sentinel::check()) {
 
-            $year = Cons::$year;
+            $year = 2016;
             $marked_batches = array();
             $user = Sentinel::getUser();
             $faculty = Sentinel::findRoleByName('Faculty');
@@ -78,6 +77,10 @@ class AttendanceController extends Controller
                         ->select('id', 'batch', 'time_shift')
                         ->where('year', $year)
                         ->get();
+
+                    if (count($batch) <= 0) {
+                        return redirect()->back()->withFlashMessage('No batch found!!')->withType('danger');
+                    }
                 }
 
             } catch (Exception $e) {
@@ -188,7 +191,7 @@ class AttendanceController extends Controller
      */
     public function selectBatch()
     {
-        $year = Cons::$year;
+        $year = 2016;
         $time_shifts = array('morning', 'afternoon', 'evening');
 
         try {
@@ -243,7 +246,7 @@ class AttendanceController extends Controller
     private function selectStudentCore($id)
     {
         $flag = false;
-        $year = Cons::$year;
+        $year = 2016;
         $time_shifts = array('morning', 'afternoon', 'evening');
         $data = array();
         $data['batch'] = array();
@@ -563,7 +566,7 @@ class AttendanceController extends Controller
      */
     public function edit()
     {
-        $year = Cons::$year;
+        $year = 2016;
         $marked_batches = array();
         $time_shift = array('morning', 'afternoon', 'evening');
 
