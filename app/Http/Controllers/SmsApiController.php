@@ -198,7 +198,7 @@ class SmsApiController extends Controller
                 return redirect()->back()->withFlashMessage($res)->withType('danger');
                 break;
             case 107:
-                $res = "Transaction template mismatch";
+                $res = "SMS Service on Cool down. Please try again after a while.";
                 return redirect()->back()->withFlashMessage($res)->withType('danger');
                 break;
             case 108:
@@ -218,7 +218,7 @@ class SmsApiController extends Controller
                 $sms_history->msg_id = $result;
                 $sms_history->save();
                 $res = "Your sms has successfully sent!";
-                return redirect('smsHistory')->withFlashMessage($res)->withType('Success');
+                return redirect('SmsHistory')->withFlashMessage($res)->withType('success');
         }
     }
 

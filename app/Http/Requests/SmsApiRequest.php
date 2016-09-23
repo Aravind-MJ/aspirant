@@ -26,7 +26,7 @@ class SmsApiRequest extends Request
         return [
             'type' => 'required|in:batches,students,faculty',
             'numbers' => 'required|array',
-            'message' => 'required|regex:/[A-Za-z0-9 ]{1,}/'
+            'message' => 'required|regex:/([A-Za-z0-9]{1,}[ ]{1,}){1,}/'
         ];
     }
 }

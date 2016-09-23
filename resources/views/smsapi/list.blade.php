@@ -1,12 +1,8 @@
 @extends('layouts.layout')
 
-@section('title', 'List Notice')
+@section('title', 'List Sms History')
 
 @section('content')
-
-@if (session()->has('flash_message'))
-<p>{{ session()->get('flash_message') }}</p>
-@endif
 
 @section('body')
 
