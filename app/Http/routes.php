@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth', 'redirectFaculty', 'redirectStandardUser'
     Route::get('SendAnSms/batches', 'SmsApiController@batches');
     Route::get('SendAnSms/faculty', 'SmsApiController@faculty');
     Route::post('SmsApi', 'SmsApiController@sms');
+    Route::get('SmsHistory', 'SmsApiController@index');
 });
 
 # Routes that Standard User Cannot access.

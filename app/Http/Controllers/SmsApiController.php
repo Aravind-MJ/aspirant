@@ -15,6 +15,7 @@ use App\Faculty;
 use App\StudentDetails;
 use App\SmsHistory;
 use Mockery\CountValidator\Exception;
+use DB;
 
 class SmsApiController extends Controller
 {
@@ -31,6 +32,30 @@ class SmsApiController extends Controller
         $this->batches = $batch;
         $this->students = $students;
         $this->faculty = $faculty;
+    }
+
+    public function index(){
+        try{
+            $list = DB::table('smshistory')
+                ->get();
+
+            foreach($list as $each){
+                $name = DB::table('users')
+                    ->select('first_name','last_name')
+                    ->where('id',$each->user_id)
+                    ->orderBy('created_at','DESC')
+                    ->first();
+
+                $each->name = $name->first_name.' '.$name->last_name;
+                $each->numbers = implode('\r\n',json_decode($each->recipients));
+                $each->time = date_format(date_create($each->created_at),'d/m/Y - D');
+            }
+        }catch(Exception $e){
+            return redirect()->back()->withFlashMessage('Error Fetching History!!')->withType('danger');
+        }
+
+        return view('smsapi.list',['data'=>$list]);
+
     }
 
     public function students()
@@ -191,7 +216,7 @@ class SmsApiController extends Controller
 
             default:
                 $sms_history->msg_id = $result;
-                //$sms_history->save();
+                $sms_history->save();
                 $res = "Your sms has successfully sent!";
                 return redirect('smsHistory')->withFlashMessage($res)->withType('Success');
         }
