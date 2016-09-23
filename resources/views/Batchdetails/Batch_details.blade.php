@@ -17,7 +17,8 @@
 
 
         <table id="example2" class="table table-bordered table-hover">
-            <tbody>               
+            <tbody> 
+                 
                 <tr>                   
                     <tr><th>Batch     </th><td>{{ $Batchdetails->batch}}</td></tr>
                     <tr><th>Syllabus  </th><td>{{ $Batchdetails->syllabus}}</td></tr>

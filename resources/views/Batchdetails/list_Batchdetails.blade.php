@@ -37,9 +37,9 @@
                      <td>{{ $Batchdetails->time_shift}}</td>
                      <td>{{ $Batchdetails->year}}</td>
                      <td>{{ $Batchdetails->first_name}}</td>
-                 
+              
                      <td class=center>                      
-                        <a href='BatchDetails/{{ $Batchdetails->id }}'>View more</a>
+                        <a href='BatchDetails/{{ $Batchdetails->enc_id }}'>View more</a>
                     </td>
                     <td class=center>
                         <a class="btn btn-default btn-success" href="{{url('BatchDetails/'.$Batchdetails->enc_id).'/edit'}}">Edit</a>
