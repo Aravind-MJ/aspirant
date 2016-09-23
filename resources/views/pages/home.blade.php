@@ -7,7 +7,10 @@
 @section('body')
 
     <div class="jumbotron">
-        <h1>Landing Page</h1>
+        <h3>@if(Sentinel::check())
+                                        {{ Sentinel::getUser()->first_name }} {{Sentinel::getUser()->last_name}}
+        @endif
+        </h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia perferendis id odit laudantium non blanditiis debitis repellat nulla accusamus cupiditate unde.</p>
 
         @if (!Sentinel::check())

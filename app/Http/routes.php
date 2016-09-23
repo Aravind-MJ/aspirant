@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth', 'redirectStandardUser']], function () {
     Route::resource('Student', 'StudentController');
 
     # Search Student Route.
-    Route::post('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
+    Route::get('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
 });
 
 # Standard User Routes.
@@ -102,7 +102,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     #Route to edit faculty profile
     Route::post('edit/admin/faculty/{id}', ['as' => 'facultyProfile.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
     #Search Student Route 
-    Route::post('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
+    Route::get('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);
 
 });
 

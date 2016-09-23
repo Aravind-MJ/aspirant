@@ -68,7 +68,7 @@ class StudentController extends Controller {
         $user->email = $requestData['email'];
         $user->password = \Hash::make($requestData['dob']);
 
-        $input = array('email' => $user->email, 'password' => $user->password, 'first_name' => $user->first_name, 'last_name' => $user->last_name);
+        $input = array('email' => $user->email, 'password' => $requestData['dob'], 'first_name' => $user->first_name, 'last_name' => $user->last_name);
 
         $user = Sentinel::registerAndActivate($input);
 
@@ -136,7 +136,7 @@ class StudentController extends Controller {
                 ->select('users.*', 'student_details.*', 'batch_details.batch')
                 ->where('student_details.id', $id)
                 ->first();
-
+      
 //        return view('protected.admin.student_details')->with('student', $student);
         return View('student.student_details', compact('student'));
     }
@@ -252,8 +252,8 @@ class StudentController extends Controller {
 
         // Gets the query string and batch from our form submission 
 
-        $search = Request::input('search');
-        $batch = Request::input('batch_id');
+        $search = Request::input('param2');
+        $batch = Request::input('param1');
         if (!empty($search) || $batch == 0) {
             // Returns an array of articles that have the query string located somewhere within 
 
@@ -269,7 +269,10 @@ class StudentController extends Controller {
                 $query->where('users.first_name', 'LIKE', '%' . $search . '%');
 
             $allStudents = $query->get();
-
+            foreach ($allStudents as $student) {
+            $student->enc_id = Encrypt::encrypt($student->id);
+            $student->enc_userid = Encrypt::encrypt($student->user_id);
+        }
             //Fetch Batch Details
             $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
 

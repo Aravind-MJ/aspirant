@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Student Details')
+@section('title', 'Student Profile')
 
 @section('content')
 
@@ -10,12 +10,11 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="box-header">
-                <h3 class="box-title"><strong>Student Profile</strong></h3>
+                <h2 class="box-title"><strong>@if(Sentinel::check()){{ Sentinel::getUser()->first_name }} {{Sentinel::getUser()->last_name}} @else Student Profile @endif</strong></h2>
             </div>
 
             <table id="example2" class="table table-bordered table-hover">
-                <tbody>               
-                    <tr>                   
+                <tbody>                   
                     <tr><th>First name</th> <td>{{ $student->first_name }}</td></tr>
                     <tr><th>Last name</th><td>{{ $student->last_name}}</td></tr>
                     <tr><th>Batch</th><td>{{$student->batch}}</td></tr>
@@ -28,6 +27,16 @@
                     <tr><th>CEE Rank</th><td>{{ $student->cee_rank }}</td></tr>
                     <tr><th>Percentage</th><td>{{ $student->percentage }}</td></tr>
                     <tr><th>Photo</th><td><img src="{{ asset('images/students/'. $student->photo) }}"  alt="photo" width="50" height="50"/></td></tr>
+                    @if(Sentinel::check())
+                    <tr>                      
+                       <td class=center>                      
+                        <a href='attendance/student/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Attendance Sheet</a>
+                    </td>                  
+                    <td class=center>                      
+                        <a href='attendance/student/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Mark Sheet</a>
+                    </td>
+                </tr>
+                    @else
                     <tr>                      
                         <td><a href='{{ $student->id }}/edit' class='btn btn-primary btn-block'>Edit Student</a>
                         </td>                   
@@ -40,7 +49,7 @@
                     {!! Form::close() !!}
                 </td>
                 </tr>
-
+                @endif
                 </tbody>
 
             </table>

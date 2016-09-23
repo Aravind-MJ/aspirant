@@ -13,17 +13,17 @@
 
 <div class="box box-primary">
     <div class="box-body">
-<!--        @if(Request::is('Student'))-->
-        {!! Form::open(array('route' => 'search.queries', 'class'=>'form navbar-form navbar-right searchform')) !!}
+
+        {!! Form::open(array('route' => 'search.queries', 'class'=>'form navbar-form navbar-right searchform', 'method'=>'get')) !!}
          @if(isset($batch))
             @if(!empty($batch))
-        {!! Form::select('batch_id', $batch, null, array('placeholder' => 'Please select batch','class' => 'form-control')) !!}
+        {!! Form::select('param1', $batch, null, array('placeholder' => 'Please select batch','class' => 'form-control')) !!}
             @endif
         @endif
-        {!! Form::text('search', null, array('class'=>'form-control', 'placeholder'=>'Search for student...')) !!}
+        {!! Form::text('param2', null, array('class'=>'form-control', 'placeholder'=>'Search for student...')) !!}
         {!! Form::submit('Search', array('class'=>'btn btn-default')) !!}
         {!! Form::close() !!}
-        <!--@endif-->
+
         @if (count($allStudents) === 0)
         <h4><strong> No Students Found! </strong></h4>
         @elseif (count($allStudents) >= 1)
