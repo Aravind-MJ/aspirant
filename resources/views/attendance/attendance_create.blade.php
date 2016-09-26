@@ -85,7 +85,8 @@
                         $('.loading-screen').show();
                         $.post('{{url('attendance/mark')}}',{
                             id:id,
-                            present:present
+                            present:present,
+                            date:'current'
                         },
                         function(response){
                             if(response=='success'){

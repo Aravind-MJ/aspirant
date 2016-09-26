@@ -509,6 +509,10 @@ class AttendanceController extends Controller
                 ->get()
                 ->toArray();
 
+            if(count($months)<=0){
+                return redirect()->back()->withFlashMessage('No attendance available!')->withType('danger');
+            }
+
             foreach ($months as $month) {
                 $date = date_create($month['created_at']);
                 if (!in_array(date_format($date, 'F-Y'), $data)) {
@@ -528,6 +532,10 @@ class AttendanceController extends Controller
                 ->orWhere('attendance', 'like', '%[' . $id . ']%')
                 ->get()
                 ->toArray();
+
+            if(count($months)<=0){
+                return redirect()->back()->withFlashMessage('No attendance available!')->withType('danger');
+            }
 
             $data = '';
             foreach ($attendance as $each_attendance) {

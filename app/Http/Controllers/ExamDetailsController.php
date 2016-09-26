@@ -31,7 +31,7 @@ class ExamDetailsController extends Controller
             ->select('Exam_type.*', 'exam_details.*')
             ->get();
      foreach($allExamdetails as $Examdetails) {
-     $Examdetails->enc_id = Encrypt::encrypt($Examdetails->id);
+     $Examdetails->id = Encrypt::encrypt($Examdetails->id);
    }
 
         return View('Examdetails.list_Examdetails', compact('allExamdetails'));
