@@ -190,7 +190,7 @@ class StudentController extends Controller {
         $student->school = $requestData['school'];
         $student->cee_rank = $requestData['cee_rank'];
         $student->percentage = $requestData['percentage'];
-
+        
 //        $this->validate($requestData['photo'], [
 //
 //            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -209,8 +209,7 @@ class StudentController extends Controller {
             $student->photo = $name;
 
             $student->save();
-        }
-
+        }       
 
         if ($student->save()) {
             return redirect::back()

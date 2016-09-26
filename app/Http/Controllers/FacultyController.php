@@ -154,6 +154,7 @@ class FacultyController extends Controller
                 ->where('faculty_details.id', $id)
                 ->select('users.*', 'faculty_details.*')
                 ->first();
+        $faculty->enc_id = Encrypt::encrypt($faculty->id);
 
         //Fetch User Details
         $user = DB::table('users')
@@ -174,6 +175,7 @@ class FacultyController extends Controller
      */
     public function update($id, Requests\PublishFacultyRequest $requestData)
     {
+        
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
         //Update Query       
@@ -183,6 +185,7 @@ class FacultyController extends Controller
         $faculty->phone = $requestData['phone'];
         $faculty->address = $requestData['address'];
         $faculty->photo = $requestData['photo'];
+        
         $input = Input::all();
 
 //        $this->validate($requestData['photo'], [
@@ -201,18 +204,17 @@ class FacultyController extends Controller
 //        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
 
             $faculty->photo = $name;
-
             $faculty->save();
 
         }
-
+                     
         //Send control to index() method
         if ($faculty->save()) {
-            return redirect()->route('Faculty.index')
+             return redirect::back()
                             ->withFlashMessage('Faculty Updated Successfully!')
                             ->withType('success');
         } else {
-            return redirect()->route('Faculty.index')
+             return redirect::back()
                             ->withFlashMessage('Faculty Update Failed!')
                             ->withType('danger');
         }
