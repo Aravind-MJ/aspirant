@@ -388,7 +388,7 @@ class MarkDetailsController extends Controller
 
                 foreach ($marks as $each) {
                     $exam = $this->exam_details
-                        ->select('name', 'type_id','exam_date')
+                        ->select('type_id','exam_date')
                         ->where('id', $each->exam_id)
                         ->orderBy('exam_date','DESC')
                         ->first();

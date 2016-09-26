@@ -20,7 +20,7 @@
                 <tbody>
                 @foreach($marks as $each)
                     <tr>
-                        <td>{{$each->exam->name}} ({{$each->exam->type}})</td>
+                        <td>{{$each->exam->type}}</td>
                         <td>{{$each->mark}}</td>
                         <td>{{$each->exam->exam_date}}</td>
                     </tr>
