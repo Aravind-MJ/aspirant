@@ -81,16 +81,15 @@
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-
                                         <p>
-                                           <i class="fa fa-users" style="font-size:14px"></i> &nbsp;Admin Profile
+
                                         </p>
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="#" class="btn btn-default profile_new btn-flat">Profile</a>
-                                        </div>
+                                        <!--div class="pull-left">
+                                            <a href="{{url('profile')}}" class="btn btn-default profile_new btn-flat">Profile</a>
+                                        </div-->
                                         <div class="pull-right">
                                             <a href="{{ url('/logout') }}" class="btn btn-default sign_new btn-flat">Sign out</a>
                                         </div>

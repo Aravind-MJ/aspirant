@@ -23,7 +23,7 @@
             @foreach ($users as $user)
             <tr>
                 <td class="col-lg-1">{{$i}}</td>
-                <td><a href="{{url('admin/'.$user->id)}}">{{ $user->email }}</a> <br>
+                <td>{{ $user->email }}<br>
                 </td>
                 <td>{{ $user->first_name}}</td>
                 <td>{{ $user->last_name}}</td>
