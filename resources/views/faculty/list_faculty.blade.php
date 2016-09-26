@@ -38,10 +38,10 @@
                     <td>{{ $faculty->phone }}</td>
                     <td><img src="{{ asset('images/'. $faculty->photo) }}"  alt="photo" width="50" height="50"/></td>
                     <td class=center>                       
-                        <a href='Faculty/{{ $faculty->id }}'>View more</a>
+                        <a href='Faculty/{{ $faculty->enc_id }}'>View more</a>
                     </td>
                     <td class=center>                       
-                        <a href='Faculty/{{ $faculty->id }}/edit' class='btn btn-primary'>Edit</a>
+                        <a href='Faculty/{{ $faculty->enc_id }}/edit' class='btn btn-primary'>Edit</a>
                     </td>                   
                     <td class=center>
                         {!! Form::open(['action' => ['FacultyController@destroy', $faculty->enc_id], 'method' => 'POST', 'class' => 'delete']) !!}
