@@ -113,7 +113,7 @@ class RegistrationController extends Controller
 
         $user->where('id', $id);
         $user->first_name = $input['first_name'];
-        $user->last_name = $input['last_name'];
+        $user->last_name = $input['last_name'];      
         $user->save();
 
         return redirect::back()
