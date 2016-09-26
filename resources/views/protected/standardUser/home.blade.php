@@ -27,11 +27,10 @@
 						<div class="line"></div>
 						</div>		
 					<div class="col-md-3 col-sm-3 col-xs-12 full_user img_profile">
-					<center> <img src="images/1472724867-Angel.jpg" class="img-rounded"  width="180" height="160"></center>
+					<center> <img src="{{ asset('images/students/'. $student->photo) }}" class="img-rounded"  width="180" height="160"></center>
 				</div>
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="add"><i class="fa fa-map-marker icon_pro" style="font-size:18"></i> <span class="profile_data"> &nbsp; &nbsp; Guardian :</span> {{ $student->guardian }}
-						<span class="join_profile">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-table icon_pro" style="font-size:18"></i><span class="profile_data"> &nbsp; Roll Number :</span> 123456789</span>
 						
 						<div class="line"></div>
 						<div class="add"><i class="fa fa-map-marker icon_pro" style="font-size:18"></i> <span class="profile_data"> &nbsp; &nbsp;Address :</span> {{ $student->address }}
@@ -40,7 +39,7 @@
 						<div class="line"></div>
 						<div class="bod"><i class="fa fa-envelope icon_pro" style="font-size:18"></i><span class="profile_data"> &nbsp; Email id:</span> {{ $student->email }}  
 						<span class="join_profile">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-calendar  icon_pro" style="font-size:18"></i>
-						<span class="profile_data"> &nbsp; Rank :</span> {{ $student->rank }}</span></div>
+						<span class="profile_data"> &nbsp; Rank :</span> {{ $student->cee_rank }}</span></div>
 						<div class="line"></div>
 						<div class="bod"><i class="fa fa-phone icon_pro" style="font-size:18"></i><span class="profile_data"> &nbsp; Phone Number :</span> {{ $student->phone }}
 						<span class="join_profile">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-table icon_pro" style="font-size:18"></i>
