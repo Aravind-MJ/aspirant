@@ -49,7 +49,7 @@
 
     </div>
 
-    {!! Form::model($faculty, ['method' => 'PATCH', 'route' => ['Faculty.update', $faculty->id],'enctype' => 'multipart/form-data']) !!}
+    {!! Form::model($faculty, ['method' => 'PATCH', 'route' => ['Faculty.update', $faculty->enc_id],'enctype' => 'multipart/form-data']) !!}
     <div class="col-md-6 col-md-offset-1">
         <div class="box box-primary">
             <div class="box-header">
