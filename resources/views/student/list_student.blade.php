@@ -15,10 +15,10 @@
     <div class="box-body">
 
         {!! Form::open(array('route' => 'search.queries', 'class'=>'form navbar-form navbar-right searchform', 'method'=>'get')) !!}
-         @if(isset($batch))
-            @if(!empty($batch))
+        @if(isset($batch))
+        @if(!empty($batch))
         {!! Form::select('param1', $batch, null, array('placeholder' => 'Please select batch','class' => 'form-control')) !!}
-            @endif
+        @endif
         @endif
         {!! Form::text('param2', null, array('class'=>'form-control', 'placeholder'=>'Search for student...')) !!}
         {!! Form::submit('Search', array('class'=>'btn btn-default')) !!}
@@ -30,6 +30,7 @@
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>Sl.No</th>
                     <th>Full name</th>
                     <th>Batch</th>
                     <th>DOB</th>                   
@@ -42,8 +43,10 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1 ?>
                 @foreach( $allStudents as $student )
                 <tr>
+                    <td>{{ $i }}</td>
                     <td>{{ $student->first_name }} {{ $student->last_name}}</td>
                     <td>{{ $student->batch }}</td>
                     <td>{{ $student->dob }}</td>
@@ -69,6 +72,7 @@
                         {!! Form::close() !!}
                     </td>
                 </tr>
+                <?php $i++ ?>
                 @endforeach
             </tbody>
         </table>
@@ -78,8 +82,23 @@
 </div>
 @section('confirmDelete')
 <script>
-    $(".delete").on("submit", function(){
+    $(".delete").on("submit", function () {
         return confirm("Do you want to delete this item?");
+    });
+</script>
+@stop
+@section('dataTable')
+<script type="text/javascript">
+    $(function () {
+        $("#example1").dataTable();
+        $('#example2').dataTable({
+            "bPaginate": true,
+            "bLengthChange": false,
+            "bFilter": false,
+            "bSort": false,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
     });
 </script>
 @stop

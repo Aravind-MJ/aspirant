@@ -81,7 +81,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ action("StudentController@create") }}"><i class="fa fa-circle-o"></i> New Student</a></li>
+                    <li><a href="{{ action("StudentController@create") }}"><i class="fa fa-circle-o"></i> Add Student</a></li>
                     <li><a href="{{ action("StudentController@index") }}"><i class="fa fa-circle-o"></i> List Students</a></li>
                 </ul>
             </li>

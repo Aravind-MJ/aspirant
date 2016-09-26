@@ -199,6 +199,8 @@
         @yield('ckeditor')
         
         @yield('confirmDelete')
+        
+        @yield('dataTable')
 
   <script>
   $(function() {

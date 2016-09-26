@@ -18,6 +18,8 @@
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>Sl.No</th>
+                    <th>Date</th>
                     <th>Message</th>
                     <th>Batch</th>
                     <th>Edit</th>
@@ -25,9 +27,11 @@
                 </tr>
             </thead>
             <tbody>
-               
+                <?php $i=1 ?>
                 @foreach( $allNotice as $notice )
                 <tr>
+                    <td>{{ $i }}</td>
+                    <td>{{ date('d-m-Y', strtotime($notice->created_at)) }}</td>
                     <td>{!! $notice->message !!}</td>
                     <td>{{ $notice->batch }}</td>
                     <td class=center>
@@ -44,6 +48,7 @@
                         {!! Form::close() !!}
                     </td>
                 </tr>
+                <?php $i++ ?>
                 @endforeach
             </tbody>
 
@@ -56,6 +61,21 @@
 <script>
     $(".delete").on("submit", function(){
         return confirm("Do you want to delete this item?");
+    });
+</script>
+@stop
+@section('dataTable')
+<script type="text/javascript">
+    $(function () {
+        $("#example1").dataTable();
+        $('#example2').dataTable({
+            "bPaginate": true,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
     });
 </script>
 @stop

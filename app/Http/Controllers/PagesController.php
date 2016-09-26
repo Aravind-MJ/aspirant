@@ -38,10 +38,11 @@ class PagesController extends Controller {
                 ->select('batch_id')->where('user_id', $id)
                 ->first();
         $allNotice = DB::table('notice')
-            ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
-                ->where('batch_id',$student->batch_id)
-            ->select('notice.*', 'batch_details.batch')
-            ->get();
+                ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
+                ->where('batch_id', $student->batch_id)
+                ->select('notice.*', 'batch_details.batch')
+                ->limit(10)
+                ->get();
         return View('protected.standardUser.notice', compact('allNotice'));
 //        return view('pages.about');
     }
