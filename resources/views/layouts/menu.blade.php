@@ -57,7 +57,7 @@
                 </ul>
             </li>
             @endif
-            @if($user->inRole('admins','superadmin'))
+           @if($user->inRole('superadmin','admin'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-user"></i>
@@ -96,7 +96,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    @if($user->inRole('superadmin','admins','faculty'))
+                    @if($user->inRole('superadmin','admin','faculty'))
                     <li><a href="{{URL::route('Notice.create')}}"><i class="fa fa-circle-o"></i> Add Notice</a></li>
                     <li><a href="{{URL::route('Notice.index')}}"><i class="fa fa-circle-o"></i> List Notice</a></li>
                     @endif
@@ -106,7 +106,7 @@
                     
                 </ul>
             </li>
-            @if($user->inRole('admins','superadmin'))
+            @if($user->inRole('superadmin','admin'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-edit"></i>
@@ -148,7 +148,7 @@
                 </ul>
             </li>
 
-       <li class="treeview">
+            <li class="treeview">
                 <a href="#">
                     <i class="fa fa-delicious"></i>
                     <span>Batch Details</span>

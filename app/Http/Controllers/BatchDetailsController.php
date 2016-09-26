@@ -21,7 +21,7 @@ class BatchDetailsController extends Controller {
      * @return Response
      */
     public function index() {
-        
+        $time_shift = [1=>'Morning',2=>'Afternoon',3=>'Evening'];
         $allBatchdetails = DB::table('batch_details')
                 ->join('users','users.id','=', 'batch_details.in_charge')
                  ->join('faculty_details','faculty_details.user_id', '=','users.id')     
@@ -29,6 +29,7 @@ class BatchDetailsController extends Controller {
                 ->get();
         foreach($allBatchdetails as $Batchdetails){
              $Batchdetails->enc_id = Encrypt::encrypt($Batchdetails->id);
+             $Batchdetails->time_shift = $time_shift[$Batchdetails->time_shift];
         }
         //Redirecting to list_faculty.blade.php with $allFaculties       
         return View('Batchdetails.list_Batchdetails', compact('allBatchdetails'));
@@ -65,6 +66,7 @@ class BatchDetailsController extends Controller {
         $user = new \App\User;
         $user->first_name = $requestData['first_name'];
         $user->last_name  =$requestData['last_name'];
+        $time_shift = ['morning'=>1,'afternoon'=>2,'evening'=>3];
 
 
 
@@ -73,7 +75,7 @@ class BatchDetailsController extends Controller {
             $Batchdetails = new \App\Batchdetails;
             $Batchdetails->batch = $requestData['batch'];
             $Batchdetails->syllabus = $requestData['syllabus'];
-            $Batchdetails->time_shift = strtolower($requestData['time_shift']);
+            $Batchdetails->time_shift = $time_shift[strtolower($requestData['time_shift'])];
             $Batchdetails->year = $requestData['year'];
             $Batchdetails->in_charge = $requestData['in_charge'];
         
@@ -99,6 +101,7 @@ class BatchDetailsController extends Controller {
      */
     public function show($id) {
          $enc_id=$id;
+        $time_shift = [1=>'morning',2=>'afternoon',3=>'evening'];
         $id = Encrypt::decrypt($id);
           $Batchdetails = DB::table('batch_details')
                 ->join('users', 'users.id', '=', 'batch_details.in_charge')
@@ -106,6 +109,7 @@ class BatchDetailsController extends Controller {
                 ->where('batch_details.id', $id)
                 ->first();
         //Redirecting to showBook.blade.php with $book variable
+            $Batchdetails->time_shift = $time_shift[$Batchdetails->time_shift];
         
 
 //         dd($Batchdetails);
@@ -152,11 +156,11 @@ class BatchDetailsController extends Controller {
      * @return Response
      */
     public function update($id, Requests\PublishBatchdetailsRequest $requestData) {
-
+        $time_shift = ['morning'=>1,'afternoon'=>2,'evening'=>3];
         $Batchdetails = \App\Batchdetails::find($id);
         $Batchdetails->batch = $requestData['batch'];
         $Batchdetails->syllabus = $requestData['syllabus'];
-        $Batchdetails->time_shift = $requestData['time_shift'];
+        $Batchdetails->time_shift = $time_shift[strtolower($requestData['time_shift'])];
         $Batchdetails->year = $requestData['year'];
         $Batchdetails->in_charge = $requestData['in_charge'];
 
