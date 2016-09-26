@@ -370,4 +370,8 @@ class MarkDetailsController extends Controller
 
         return redirect('mark')->withFlashMessage('Mark Successfully Deleted!')->withType('success');
     }
+
+    public function getMark(){
+        return view('protected.standardUser.mark');
+    }
 }

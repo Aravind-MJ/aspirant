@@ -27,7 +27,7 @@ class PagesController extends Controller {
                     ->where('student_details.user_id', $id)
                     ->first();
             $student->enc_userid = Encrypt::encrypt($student->user_id);
-            return View('student.student_details', compact('student'));
+            return View('protected.standardUser.home', compact('student'));
         }
     }
 

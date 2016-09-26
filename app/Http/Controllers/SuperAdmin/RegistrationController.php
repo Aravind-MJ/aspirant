@@ -37,8 +37,9 @@ class RegistrationController extends Controller
         $users = $admin->users()->with('roles')->get();
         foreach ($users as $user) {
             $user->enc_id = Encrypt::encrypt($user->id);
+            $user->id = 'null';
         }
-        return view('protected.Superadmin.list_admins')->withUsers($users);
+        return view('protected.superadmin.list_admins')->withUsers($users);
     }
 
     /**
