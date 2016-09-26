@@ -22,8 +22,7 @@
 						
 						</div>
 						<div class="line"></div>
-						<div class="roll_num"><i class="fa fa-tags icon_pro" style="font-size:18"></i><span class="profile_data"> &nbsp; Batch :</span> {{$student->batch}} 
-						
+						<div class="roll_num"><i class="fa fa-tags icon_pro" style="font-size:18"></i><span class="profile_data"> &nbsp; Batch :</span> {{$student->batch}}						
 						</div>
 						<div class="line"></div>
 						</div>		

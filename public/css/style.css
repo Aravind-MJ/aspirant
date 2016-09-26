@@ -147,7 +147,7 @@ border-radius:50%
 font-size:18px;
 font-family: "Source Sans Pro",sans-serif;
 color:#fff;
-font-weight:bold;
+
 
 }
 .dob{
@@ -176,9 +176,32 @@ padding:10px 10px 0px 0px;
     margin-top: 10px;
 	opacity:.5;
 }
+.line1{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #eee -moz-use-text-color -moz-use-text-color;
+    border-image: none;
+    border-style: solid none none;
+    border-width: 1px 0 0;
+    margin-bottom: 10px;
+    margin-top: 40px;
+	opacity:.5;
+}
+.full_notics{
+background-color:#017dc7;
+padding:30px 30px;
 
-
-
+}
+.notic_data{
+font-size:17px;
+color:#fff;
+}
+.date_noties{
+float:right;
+padding:0px;
+}
 
 
 /*~~~~Loading Screen On Ajx call~~~~*/
