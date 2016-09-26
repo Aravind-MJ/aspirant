@@ -18,32 +18,12 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            @if($user->inRole('superadmin'))
-            <li class="treeview {{ set_active('faculty') }}{{ set_active('admin') }}{{ set_active('sadmin') }}">
-                <a href="#">
+            <li class="{{ set_active('faculty') }}{{ set_active('admin') }}{{ set_active('sadmin') }}">
+                <a href="/">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
                 </a>
-                <ul class="treeview-menu">
-                    <li><a href="/"><i class="fa fa-circle-o"></i>Dashboard</a></li>
-                </ul>
             </li>
-            @else
-            <li class="treeview {{ set_active('user') }}">
-                <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Home</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{URL::route('home')}}"><i class="fa fa-circle-o"></i>My Profile</a></li>
-                </ul>
-            </li>
-            @endif
-            @if($user->inRole('superadmin','admin','faculty'))
+            @if($user->inRole('superadmin'))
             <li class="treeview {{ set_active('create/admin') }}{{ set_active('list/admins') }}">
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Admin</span>
@@ -57,7 +37,7 @@
                 </ul>
             </li>
             @endif
-           @if($user->inRole('superadmin','admin'))
+           @if($user->inRole('superadmin')||$user->inRole('admins'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-user"></i>
@@ -86,7 +66,10 @@
                 </ul>
             </li>
             @endif
-
+            @if($user->inRole('users'))
+            <li><a href="{{URL::route('notice.getNotice')}}"><i class="fa fa-bell"></i> List Notice</a></li>
+            @endif
+            @if($user->inRole('superadmin','admin'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-bell"></i>
@@ -96,17 +79,10 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    @if($user->inRole('superadmin','admin','faculty'))
                     <li><a href="{{URL::route('Notice.create')}}"><i class="fa fa-circle-o"></i> Add Notice</a></li>
                     <li><a href="{{URL::route('Notice.index')}}"><i class="fa fa-circle-o"></i> List Notice</a></li>
-                    @endif
-                     @if($user->inRole('users'))
-                      <li><a href="{{URL::route('notice.getNotice')}}"><i class="fa fa-circle-o"></i> List Notice</a></li>
-                     @endif
-                    
                 </ul>
             </li>
-            @if($user->inRole('superadmin','admin'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-edit"></i>
@@ -161,9 +137,17 @@
                     <li><a href="{{URL::route('BatchDetails.index')}}"><i class="fa fa-circle-o"></i> List BatchDetails</a></li>
                 </ul>
             </li>
-            
             @endif
-
+            @if($user->inRole('users'))
+                <li><a href="{{ url('attendance/student/'.\App\Encrypt::encrypt($user->id)) }}">
+                    <i class="fa fa-files-o"></i> View Attendance</a>
+                </li>
+            @else
+                @if($user->inRole('faculty'))
+                <li><a href="{{ url('Search') }}">
+                    <i class="fa fa-files-o"></i> Search Students</a>
+                </li>
+                @endif
                 <li class="treeview {{ set_active('attendance') }}{{ set_active('mark/attendance') }}">
                     <a href="#">
                     <i class="fa fa-files-o"></i>
@@ -174,20 +158,15 @@
 
                     </a>
                     <ul class="treeview-menu">
-                        @if(!$user->inRole('users'))
                             <li><a href="{{ url('attendance/mark') }}"><i class="fa fa-circle-o"></i> Mark Attendance</a></li>
                             <li><a href="{{ url('attendance/batch') }}"><i class="fa fa-circle-o"></i> Attendance By Batch</a></li>
                             <li><a href="{{ url('attendance/student') }}"><i class="fa fa-circle-o"></i> Attendance By Students</a></li>
                             @if(!$user->inRole('faculty'))
                                 <li><a href="{{ url('edit/attendance') }}"><i class="fa fa-circle-o"></i> Edit Attendance</a></li>
                             @endif
-                        @else
-                            <li><a href="{{ url('attendance/student/'.\App\Encrypt::encrypt($user->id)) }}">
-                                <i class="fa fa-circle-o"></i> View Attendance</a>
-                            </li>
-                        @endif
                     </ul>
-                </li>                
+                </li>
+            @endif
                 @if(!$user->inRole('users'))
                 <li class="treeview {{ set_active('mark') }}">
                     <a href="#">
@@ -202,6 +181,8 @@
                         <li><a href="{{URL::route('mark.index')}}"><i class="fa fa-circle-o"></i> View Mark</a></li>
                     </ul>
                 </li>
+                @else
+                    <li><a href="{{url('Marks')}}"><i class="fa fa-sliders"></i>Marks</a></li>
                 @endif
                 @if(!$user->inRole('users')&&!$user->inRole('faculty'))
                     <li class="treeview {{ set_active('SendAnSms') }}">

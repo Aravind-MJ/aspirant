@@ -24,16 +24,21 @@ class PagesController extends Controller {
                     ->join('users', 'users.id', '=', 'student_details.user_id')
                     ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
                     ->select('users.*', 'student_details.*', 'batch_details.batch')
-                    ->where('student_details.user_id', $id)
+                    ->where('users.id', $id)
                     ->first();
             $student->enc_userid = Encrypt::encrypt($student->user_id);
+            unset($student->user_id);
             return View('protected.standardUser.home', compact('student'));
         }
     }
 
     public function getNotice() {
         //Select all records from notice table
-        $id = Sentinel::getUser()->id;
+        $users = Sentinel::getUser();
+        if(!$users->inRole('users')){
+            return redirect('/');
+        }
+        $id = $users->id;
         $student = DB::table('student_details')
                 ->select('batch_id')->where('user_id', $id)
                 ->first();
