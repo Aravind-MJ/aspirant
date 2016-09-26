@@ -87,7 +87,7 @@ class FacultyController extends Controller
 
 //        $this->validate($requestData['photo'], [
 //
-//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//            'image' => 'required|image|mimes:jpeg,jpg,gif,svg',
 //        ]);
 
         if (Input::hasFile('photo')) {

@@ -26,12 +26,11 @@
                     <tr><th>Year      </th><td>{{ $Batchdetails->year}}</td></tr>
                     <tr><th>In_charge </th><td>{{ $Batchdetails->first_name}}</td></tr>
                     <tr><th>Edit       </th><td class=center>
-                       
-                        <a href='{{ $Batchdetails->id }}/edit' class='btn btn-primary'>Edit</a>
-                    </td></tr>
+                        <a class="btn btn-default btn-success" href="{{url('BatchDetails/'.$Batchdetails->id).'/edit'}}">Edit</a>
+                    </td>
                     
                     <tr><th>Delete</th><td class=center>
-                        {!! Form::open(['action' => ['BatchDetailsController@destroy', $Batchdetails->id], 'method' => 'POST']) !!}
+                          {!! Form::open(['route' => ['BatchDetails.destroy', $Batchdetails->id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$Batchdetails->id}}">

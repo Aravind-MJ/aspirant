@@ -29,7 +29,7 @@
                 <td>{{ $user->last_name}}</td>
                 <td class="col-lg-1"><a href="{{ url('edit/admin/'.$user->enc_id) }}" class="btn btn-warning btn-block">Edit</a> </td>
                 <td class="col-lg-1">
-                    {!! Form::open(array('url' => 'admin/' . $user->enc_id,)) !!}
+                    {!! Form::open(array('url' => 'admin/' . $user->enc_id,'onsubmit' => 'return ConfirmDelete()')) !!}
                     {!! Form::hidden('_method', 'DELETE') !!}
                     {!! Form::submit('DELETE', array('class' => 'btn btn-danger btn-block')) !!}
                     {!! Form::close() !!}

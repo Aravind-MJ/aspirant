@@ -59,7 +59,7 @@ class RegisterStudentRequest extends Request {
             'school' => 'required|regex:/^[A-Za-z. - ,]+$/',
             'cee_rank' => 'required|numeric',
             'percentage' => 'required|numeric',
-            'photo' =>'required|mimes:jpeg,png,jpg|max:2000'
+//            'photo' =>'required|mimes:jpeg,png,jpg|max:2000'
         
         ];
         }

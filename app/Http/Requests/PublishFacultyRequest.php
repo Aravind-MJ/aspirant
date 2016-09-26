@@ -52,7 +52,7 @@ class PublishFacultyRequest extends Request {
             'subject' => 'required',
             'phone' => 'required|regex:/[0-9]{10}/',
             'address' => 'required|min:5',
-             'photo' =>'required|mimes:jpeg,png,jpg|max:2000'
+//     'photo' =>'required'
         ];
         }
         default:break;

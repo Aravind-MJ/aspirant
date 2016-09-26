@@ -85,6 +85,7 @@
                 <div class="form-group">
                     {!! Form::label('photo', 'Photo') !!}
                     {!! Form::file('photo', null, ['class'=>'form-control']) !!}
+<!--                {!! errors_for('photo', $errors) !!}-->
                 </div>
 
                 <br>

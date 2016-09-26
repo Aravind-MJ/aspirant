@@ -22,9 +22,7 @@
                     <th>Syllabus</th>
                     <th>Time_shift</th>
                     <th>year</th>
-                    <th>In_charge</th>
-                    <th>View More</th>
-                    <!--<th>Photo</th>-->
+                    <th>In_charge</th>              
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -38,9 +36,7 @@
                      <td>{{ $Batchdetails->year}}</td>
                      <td>{{ $Batchdetails->first_name}}</td>
               
-                     <td class=center>                      
-                        <a href='BatchDetails/{{ $Batchdetails->enc_id }}'>View more</a>
-                    </td>
+
                     <td class=center>
                         <a class="btn btn-default btn-success" href="{{url('BatchDetails/'.$Batchdetails->enc_id).'/edit'}}">Edit</a>
                     </td>
