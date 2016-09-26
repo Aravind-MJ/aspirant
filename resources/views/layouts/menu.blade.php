@@ -18,6 +18,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
+            @if($user->inRole('superadmin'))
             <li class="treeview {{ set_active('faculty') }}{{ set_active('admin') }}{{ set_active('sadmin') }}">
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -29,7 +30,20 @@
                     <li><a href="/"><i class="fa fa-circle-o"></i>Dashboard</a></li>
                 </ul>
             </li>
-            @if($user->inRole('superadmin'))
+            @else
+            <li class="treeview {{ set_active('user') }}">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Home</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{URL::route('home')}}"><i class="fa fa-circle-o"></i>My Profile</a></li>
+                </ul>
+            </li>
+            @endif
+            @if($user->inRole('superadmin','admin','faculty'))
             <li class="treeview {{ set_active('create/admin') }}{{ set_active('list/admins') }}">
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Admin</span>
@@ -43,7 +57,7 @@
                 </ul>
             </li>
             @endif
-            {{--@if($user->inRole('admins','superadmin'))--}}
+            @if($user->inRole('admins','superadmin'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-user"></i>
@@ -71,6 +85,7 @@
                     <li><a href="{{ action("StudentController@index") }}"><i class="fa fa-circle-o"></i> List Students</a></li>
                 </ul>
             </li>
+            @endif
 
             <li class="treeview">
                 <a href="#">
@@ -81,11 +96,17 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
+                    @if($user->inRole('superadmin','admins','faculty'))
                     <li><a href="{{URL::route('Notice.create')}}"><i class="fa fa-circle-o"></i> Add Notice</a></li>
                     <li><a href="{{URL::route('Notice.index')}}"><i class="fa fa-circle-o"></i> List Notice</a></li>
+                    @endif
+                     @if($user->inRole('users'))
+                      <li><a href="{{URL::route('notice.getNotice')}}"><i class="fa fa-circle-o"></i> List Notice</a></li>
+                     @endif
+                    
                 </ul>
             </li>
-
+            @if($user->inRole('admins','superadmin'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-edit"></i>
@@ -141,7 +162,7 @@
                 </ul>
             </li>
             
-            
+            @endif
 
                 <li class="treeview {{ set_active('attendance') }}{{ set_active('mark/attendance') }}">
                     <a href="#">
@@ -166,7 +187,7 @@
                             </li>
                         @endif
                     </ul>
-                </li>
+                </li>                
                 @if(!$user->inRole('users'))
                 <li class="treeview {{ set_active('mark') }}">
                     <a href="#">
