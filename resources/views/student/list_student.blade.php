@@ -10,7 +10,7 @@
 
 @section('body')
 
-
+<!--<div class='col-md-offset-1 col-md-9'>-->
 <div class="box box-primary">
     <div class="box-body">
 
@@ -55,7 +55,7 @@
                         <a href='Student/{{ $student->enc_id }}'>View more</a>
                     </td>
                     <td class=center>                      
-                        <a href='attendance/student/{{ $student->enc_userid }}' class='btn btn-primary'>Attendance</a>
+                        <a href='attendance/student/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Attendance</a>
                     </td>
                     <td class=center>                      
                         <a href='mark/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Mark</a>
@@ -79,6 +79,7 @@
         @endif
     </div>
 
+</div>
 </div>
 @section('confirmDelete')
 <script>

@@ -25,7 +25,8 @@
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th style="width: 50%">Name</th>
+                    <th style="width: 30%">Sl.No</th>
+                    <th style="width: 30%">Name</th>
                   
                     <!--<th>Photo</th>-->
                     <th style="width: 5%">Edit</th>
@@ -33,8 +34,10 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1 ?>
                 @foreach( $allExamtype as $Examtype )
                 <tr>
+                    <td>{{ $i }}</td>
                     <td>{{ $Examtype->name }}</td>
                      
                     <td class=center>
@@ -50,6 +53,7 @@
                         {!! Form::close() !!}
                     </td>
                 </tr>
+                 <?php $i++ ?>
                 @endforeach
             </tbody>
 
@@ -66,7 +70,7 @@
         $('#example2').dataTable({
             "bPaginate": true,
             "bLengthChange": false,
-            "bFilter": ture,
+            "bFilter": true,
             "bSort": true,
             "bInfo": true,
             "bAutoWidth": false

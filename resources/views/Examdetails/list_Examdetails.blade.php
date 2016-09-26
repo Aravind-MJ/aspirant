@@ -21,7 +21,7 @@
                     <th>Exam_Type</th>
                     <th>Date</th>
                     <th>TotalMark</th>
-                  
+    
                     <!--<th>Photo</th>-->
                     <th>Edit</th>
                     <th>Delete</th>
