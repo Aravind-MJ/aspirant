@@ -71,6 +71,9 @@ class AttendanceController extends Controller
                         ))
                         ->orderBy('time_shift')
                         ->get();
+                    if (count($batch) <= 0) {
+                        return redirect()->back()->withFlashMessage('You are not in charge of any Batches to mark attendance!!')->withType('danger');
+                    }
                 } else {
 
                     $batch = $this->batch
@@ -129,7 +132,10 @@ class AttendanceController extends Controller
             $students = $this->student_details
                 ->join('users', 'users.id', '=', 'student_details.user_id')
                 ->select('users.id', 'users.first_name', 'users.last_name')
-                ->where('student_details.batch_id', $id)
+                ->where(array(
+                    'student_details.batch_id' => $id,
+                    'deleted_at' => null
+                ))
                 ->get();
             if (count($students) <= 0) {
                 return redirect()->back()->withFlashMessage('No students found for this Batch!')->withType('danger');
@@ -284,7 +290,10 @@ class AttendanceController extends Controller
             $students = $this->student_details
                 ->join('users', 'users.id', '=', 'student_details.user_id')
                 ->select('users.id', 'users.first_name', 'users.last_name')
-                ->where('student_details.batch_id', $id)
+                ->where(array(
+                    'student_details.batch_id' => $id,
+                    'deleted_at' => null
+                ))
                 ->get();
 
             if (count($students) <= 0) {
@@ -368,6 +377,9 @@ class AttendanceController extends Controller
             }
 
             $attendance = json_decode($attendance->attendance);
+            if (!is_array($attendance)) {
+                $attendance = array();
+            }
 
         } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Error Fetching attendance!')->withType('danger');
@@ -377,18 +389,21 @@ class AttendanceController extends Controller
             $students = $this->student_details
                 ->join('users', 'users.id', '=', 'student_details.user_id')
                 ->select('users.id', 'users.first_name', 'users.last_name')
-                ->where('student_details.batch_id', $id)
+                ->where(array(
+                    'student_details.batch_id' => $id,
+                    'deleted_at' => null
+                ))
                 ->get();
 
             if (count($students) <= 0) {
                 return redirect()->back()->withFlashMessage('No students available to display!')->withType('danger');
             }
 
-            foreach($students as $each_student){
+            foreach ($students as $each_student) {
                 $enc_std_id = Encrypt::encrypt($each_student->id);
                 $data[$enc_std_id] = new \stdClass();
-                $data[$enc_std_id]->name = $each_student->first_name.' '.$each_student->last_name;
-                $data[$enc_std_id]->status = (in_array($each_student->id,$attendance))?'present':'absent';
+                $data[$enc_std_id]->name = $each_student->first_name . ' ' . $each_student->last_name;
+                $data[$enc_std_id]->status = (in_array($each_student->id, $attendance)) ? 'present' : 'absent';
             }
         } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Error Fetching Students!')->withType('danger');
@@ -484,6 +499,9 @@ class AttendanceController extends Controller
 
         try {
             $user = Sentinel::findById($id);
+            if ($user == null) {
+                return redirect()->back()->withFlashMessage('Oops Looks like the User doesn\'t exist!')->withType('danger');
+            }
         } catch (Exception $e) {
             return redirect()->back()->withFlashMessage('Invalid Token!')->withType('danger');
         }
@@ -509,7 +527,7 @@ class AttendanceController extends Controller
                 ->get()
                 ->toArray();
 
-            if(count($months)<=0){
+            if (count($months) <= 0) {
                 return redirect()->back()->withFlashMessage('No attendance available!')->withType('danger');
             }
 
@@ -533,7 +551,7 @@ class AttendanceController extends Controller
                 ->get()
                 ->toArray();
 
-            if(count($months)<=0){
+            if (count($months) <= 0) {
                 return redirect()->back()->withFlashMessage('No attendance available!')->withType('danger');
             }
 
@@ -677,7 +695,10 @@ class AttendanceController extends Controller
             $students = $this->student_details
                 ->join('users', 'users.id', '=', 'student_details.user_id')
                 ->select('users.id', 'users.first_name', 'users.last_name')
-                ->where('student_details.batch_id', $id)
+                ->where(array(
+                    'student_details.batch_id' => $id,
+                    'deleted_at' => null
+                ))
                 ->get();
             if (count($students) <= 0) {
                 return redirect()->back()->withFlashMessage('No students found for this Batch!')->withType('danger');

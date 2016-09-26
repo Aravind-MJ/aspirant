@@ -62,7 +62,10 @@ class MarkDetailsController extends Controller
                 $students = $this->student_details
                     ->join('users', 'users.id', '=', 'student_details.user_id')
                     ->select('users.id', 'users.first_name', 'users.last_name')
-                    ->where('student_details.batch_id', $id)
+                    ->where(array(
+                        'student_details.batch_id'=> $id,
+                        'deleted_at' => null
+                    ))
                     ->get();
 
                 if (count($students) <= 0) {
@@ -254,7 +257,10 @@ class MarkDetailsController extends Controller
                 $students = $this->student_details
                     ->join('users', 'users.id', '=', 'student_details.user_id')
                     ->select('users.id', 'users.first_name', 'users.last_name')
-                    ->where('student_details.batch_id', $id)
+                    ->where(array(
+                        'student_details.batch_id'=> $id,
+                        'deleted_at' => null
+                    ))
                     ->get();
 
                 if (count($students) <= 0) {
