@@ -24,6 +24,7 @@ class BatchDetailsController extends Controller {
         
         $allBatchdetails = DB::table('batch_details')
                 ->join('users','users.id','=', 'batch_details.in_charge')
+                 ->join('faculty_details','faculty_details.user_id', '=','users.id')     
                 ->select('users.*', 'batch_details.*')
                 ->get();
         foreach($allBatchdetails as $Batchdetails){
@@ -33,6 +34,7 @@ class BatchDetailsController extends Controller {
         return View('Batchdetails.list_Batchdetails', compact('allBatchdetails'));
     }
 
+        
     /**
      * Show the form for creating a new resource.
      *
@@ -51,7 +53,7 @@ class BatchDetailsController extends Controller {
 //          
 //                \App\User::lists('first_name','last_name', 'id');
 //      dd($users);
-        return view('Batchdetails.add_Batchdetails', compact('in_charge','users','id'));
+        return view('Batchdetails.add_Batchdetails', compact('Batchdetails','in_charge','users','id'));
     }
 
     /**
@@ -98,17 +100,18 @@ class BatchDetailsController extends Controller {
     public function show($id) {
          $enc_id=$id;
         $id = Encrypt::decrypt($id);
-        $Batchdetails = DB::table('batch_details')
-                ->join('users','users.id','=', 'batch_details.in_charge') 
+          $Batchdetails = DB::table('batch_details')
+                ->join('users', 'users.id', '=', 'batch_details.in_charge')
                 ->select('users.*', 'batch_details.*')
                 ->where('batch_details.id', $id)
                 ->first();
         //Redirecting to showBook.blade.php with $book variable
         
 
-
+//         dd($Batchdetails);
         return View('Batchdetails.Batch_details', compact('Batchdetails'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -117,12 +120,18 @@ class BatchDetailsController extends Controller {
      * @return Response
      */
     public function edit($id) {
-         $enc_id=$id;
-        $id = Encrypt::decrypt($id);
+    $enc_id=$id;
+     $id = Encrypt::decrypt($id);
         
-         $users = DB::table('users')
-                  ->join('batch_details','users.id','=', 'batch_details.in_charge')
-                  ->join('faculty_details','faculty_details.user_id', '=','batch_details.in_charge')              
+    $Batchdetails = DB::table('batch_details')
+                ->join('users', 'users.id', '=', 'batch_details.in_charge')  
+                ->where('batch_details.id', $id)
+                ->select('users.*', 'batch_details.*')
+                ->first();
+    
+    
+     $users = DB::table('users')
+                  ->join('faculty_details','faculty_details.user_id', '=','users.id')              
                   ->select('users.id','first_name','last_name')
                   ->get();
         $data=array();
@@ -130,23 +139,11 @@ class BatchDetailsController extends Controller {
             $data[$each->id]=$each->first_name.' '.$each->last_name;
         }
         $users=$data;
-//          
-//                \App\User::lists('first_name','last_name', 'id');
-//      dd($users);
-        return view('Batchdetails.add_Batchdetails', compact('in_charge','users','id'));
-    }
-        
-//        
-//        $Batchdetails = DB::table('batch_details')
-//                  ->join('users','users.id','=', 'batch_details.in_charge') 
-//                  ->where('batch_details.id', $id)
-//                  ->select('users.*', 'batch_details.*')
-//                  ->first();
 //        $users = \App\User::lists('first_name', 'id');
-//        return view('Batchdetails.edit_Batchdetails', compact('Batchdetails', 'in_charge', 'users', 'id'));
-//    }
-
+        return view('Batchdetails.edit_Batchdetails', compact('Batchdetails', 'in_charge', 'users', 'id'));
+    }
 //
+////
 
     /**
      * Update the specified resource in storage.
