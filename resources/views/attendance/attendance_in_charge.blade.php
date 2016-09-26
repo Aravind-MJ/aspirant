@@ -3,7 +3,6 @@
 @section('title', 'Choose Batch')
 
 @section('body')
-
    @include('flash')
 
 <style>
@@ -26,19 +25,24 @@
                     if($each_batch['time_shift']==$each_shift){
                         if($each_batch['status']=='unmarked'){
                 ?>
+<<<<<<< Updated upstream
                     <a class="btn btn-app box_batch" href="{{url('attendance/mark/'.$each_batch['enc_id'])}}">
                         <i class="fa fa-info"></i>
+=======
+                    <a class="btn btn-app box_batch" href="{{url('mark/attendance/'.$each_batch['enc_id'])}}">
+                        <i class="fa fa-users"></i>
+>>>>>>> Stashed changes
                         <strong><?= $each_batch['batch'] ?></strong>
                     </a>
             <?php
-                } else {
+                } else {/*
                 ?>
                     <a class="btn btn-app box_batch">
                         <i class="fa fa-check"></i>
                         <strong><?= $each_batch['batch'] ?></strong>
                     </a>
                 <?
-                        }
+                        */}
                     }
                 }
                 ?>
