@@ -58,7 +58,7 @@
                         <a href='attendance/student/{{ $student->enc_userid }}' class='btn btn-primary'>Attendance</a>
                     </td>
                     <td class=center>                      
-                        <a href='mark/attendance/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Mark</a>
+                        <a href='mark/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Mark</a>
                     </td>
                     <td class=center>                      
                         <a href='Student/{{ $student->enc_id }}/edit' class='btn btn-primary btn-block'>Edit</a>
