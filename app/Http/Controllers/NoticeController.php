@@ -24,6 +24,7 @@ class NoticeController extends Controller
         $allNotice = DB::table('notice')
             ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
             ->select('notice.*', 'batch_details.batch')
+            ->orderBy('notice.created_at','DESC')
             ->get();
 
         return View('notice.list_notice', compact('allNotice'));

@@ -32,6 +32,7 @@ class StudentController extends Controller {
                 ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
                 ->select('users.*', 'student_details.*', 'batch_details.batch')
                 ->where('student_details.deleted_at', NULL)
+                ->orderBy('student_details.created_at', 'DESC')
                 ->get();
         foreach ($allStudents as $student) {
             $student->enc_id = Encrypt::encrypt($student->id);
@@ -136,7 +137,8 @@ class StudentController extends Controller {
                 ->select('users.*', 'student_details.*', 'batch_details.batch')
                 ->where('student_details.id', $id)
                 ->first();
-      
+        $student->enc_id = Encrypt::encrypt($student->id);
+        $student->enc_userid = Encrypt::encrypt($student->user_id);
 //        return view('protected.admin.student_details')->with('student', $student);
         return View('student.student_details', compact('student'));
     }
@@ -190,7 +192,7 @@ class StudentController extends Controller {
         $student->school = $requestData['school'];
         $student->cee_rank = $requestData['cee_rank'];
         $student->percentage = $requestData['percentage'];
-        
+
 //        $this->validate($requestData['photo'], [
 //
 //            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -209,7 +211,7 @@ class StudentController extends Controller {
             $student->photo = $name;
 
             $student->save();
-        }       
+        }
 
         if ($student->save()) {
             return redirect::back()
@@ -269,16 +271,16 @@ class StudentController extends Controller {
 
             $allStudents = $query->get();
             foreach ($allStudents as $student) {
-            $student->enc_id = Encrypt::encrypt($student->id);
-            $student->enc_userid = Encrypt::encrypt($student->user_id);
-        }
+                $student->enc_id = Encrypt::encrypt($student->id);
+                $student->enc_userid = Encrypt::encrypt($student->user_id);
+            }
             //Fetch Batch Details
             $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
 
             // returns a view and passes the view the list of articles and the original query.
 //        return route('Student.index');
             return View('student.list_student', compact('allStudents', 'batch', 'id'));
-        }else {
+        } else {
             return redirect()->route('Student.index');
         }
     }

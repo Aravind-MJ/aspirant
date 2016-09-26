@@ -10,7 +10,7 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="box-header">
-                <h2 class="box-title"><strong>@if(Sentinel::check()){{ Sentinel::getUser()->first_name }} {{Sentinel::getUser()->last_name}} @else Student Profile @endif</strong></h2>
+                <h2 class="box-title"><strong> Student Profile</strong></h2>
             </div>
 
             <table id="example2" class="table table-bordered table-hover">
@@ -27,22 +27,12 @@
                     <tr><th>School</th><td>{{ $student->school }}</td></tr>
                     <tr><th>CEE Rank</th><td>{{ $student->cee_rank }}</td></tr>
                     <tr><th>Percentage</th><td>{{ $student->percentage }}</td></tr>
-                    <tr><th>Photo</th><td><img src="{{ asset('images/students/'. $student->photo) }}"  alt="photo" width="50" height="50"/></td></tr>
-                    @if(Sentinel::check())
+                    <tr><th>Photo</th><td><img src="{{ asset('images/students/'. $student->photo) }}"  alt="photo" width="50" height="50"/></td></tr>                   
                     <tr>                      
-                       <td class=center>                      
-                        <a href='attendance/student/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Attendance Sheet</a>
-                    </td>                  
-                    <td class=center>                      
-                        <a href='attendance/student/{{ $student->enc_userid }}' class='btn btn-primary btn-block'>Mark Sheet</a>
-                    </td>
-                </tr>
-                    @else
-                    <tr>                      
-                        <td><a href='{{ $student->id }}/edit' class='btn btn-primary btn-block'>Edit Student</a>
+                        <td><a href='{{ $student->enc_id }}/edit' class='btn btn-primary btn-block'>Edit Student</a>
                         </td>                   
 
-                        {!! Form::open(['action' => ['StudentController@destroy', $student->id], 'method' => 'POST', 'class' => 'delete']) !!}
+                        {!! Form::open(['action' => ['StudentController@destroy', $student->enc_id], 'method' => 'POST', 'class' => 'delete']) !!}
                         {!! csrf_field() !!}
                 <input type="hidden" name="_method" value="delete">
                 <input type="hidden" name="id" value="{{$student->id}}">
@@ -50,7 +40,6 @@
                     {!! Form::close() !!}
                 </td>
                 </tr>
-                @endif
                 </tbody>
 
             </table>

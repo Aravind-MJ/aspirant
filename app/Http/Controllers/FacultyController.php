@@ -33,6 +33,7 @@ class FacultyController extends Controller
                 ->join('users', 'users.id', '=', 'faculty_details.user_id')
                 ->select('users.*', 'faculty_details.*')
                 ->where('faculty_details.deleted_at', NULL)
+                ->orderBy('faculty_details.created_at','DESC')
                 ->get();
         foreach ($allFaculties as $faculty) {
             $faculty->enc_id = Encrypt::encrypt($faculty->id);
@@ -133,6 +134,7 @@ class FacultyController extends Controller
             ->where('faculty_details.id', $id)
             ->select('users.*', 'faculty_details.*')
             ->first();
+        $faculty->enc_id = Encrypt::encrypt($faculty->id);
 
         //Redirecting to list page
         return view('faculty.faculty_details')->with('faculty', $faculty);
