@@ -9,13 +9,15 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends \Cartalyst\Sentinel\Users\EloquentUser implements AuthenticatableContract, CanResetPasswordContract
-{
-    use Authenticatable, CanResetPassword;
+class User extends \Cartalyst\Sentinel\Users\EloquentUser implements AuthenticatableContract, CanResetPasswordContract {
+    
+    use Authenticatable,
+        CanResetPassword;
 
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
     /**
      * The database table used by the model.
      *
@@ -41,5 +43,4 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser implements Authenticat
     // {
     //     $this->attributes['password'] = \Hash::make($value);
     // }
-
 }

@@ -57,7 +57,7 @@
                 </ul>
             </li>
             @endif
-            @if($user->inRole('admins','superadmin'))
+           @if($user->inRole('superadmin','admin'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-user"></i>
@@ -148,7 +148,7 @@
                 </ul>
             </li>
 
-       <li class="treeview">
+            <li class="treeview">
                 <a href="#">
                     <i class="fa fa-delicious"></i>
                     <span>Batch Details</span>
