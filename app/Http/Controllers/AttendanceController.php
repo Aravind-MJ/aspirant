@@ -106,7 +106,6 @@ class AttendanceController extends Controller
             }
 
             $batch = $batch->toArray();
-
             return view('attendance.attendance_in_charge', ['time_shift' => $time_shift, 'batch' => $batch]);
         }
     }

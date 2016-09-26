@@ -19,12 +19,13 @@
                 foreach ($dates as $key => $each_date) {
                 ?>
                     <div class="box_batch">
-                        <a class="btn btn-warning btn-block" href="{{url('edit/attendance/'.$id.'/'.$key)}}">Edit</a>
+                       
                         <strong class="box_text"><?= $each_date ?></strong><br>
+						<a class="btn edit_form1 btn-warning btn-block" href="{{url('edit/attendance/'.$id.'/'.$key)}}">Edit &nbsp;&nbsp;<i class="fa fa-edit"></i></a>
                         {!! Form::open(['route' => ['attendance.destroy'], 'method' => 'delete', 'onsubmit' => 'return ConfirmDelete()']) !!}
                         {!! Form::hidden('id',$id) !!}
                         {!! Form::hidden('date',$key) !!}
-                        {!! Form::submit('Delete',['class'=>'btn btn-danger btn-block']) !!}
+                        {!! Form::submit('Delete',['class'=>'btn del_form1 btn-danger btn-block']) !!}
                         {!! Form::close() !!}
                     </div>
             <?php

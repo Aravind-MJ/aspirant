@@ -7,7 +7,9 @@
     background-color: #0fb706;
     cursor: pointer;
 }
-
+.btn-app {
+height:65px !important;
+}
 .selector-absent {
     height: 65px;
     /* border: 1px solid red;*/
@@ -76,6 +78,13 @@
     background-color: #333333;
     color: #fff !important;
 }
+.edit_form1{
+background-color:#19c025;
+margin:5px 0px 5px 0px;
+}
+.edit_form1:hover{
+background-color:#0caf18;
+}
 
 .dropdown-menu {
     border: 1px solid #ccc !important;
@@ -99,6 +108,78 @@
 .box_text{
     font-size: 20px;
 }
+/*~~~~Loading Screen On Ajx call~~~~*/
+.full_user{
+height:auto;
+}
+.full_users{
+background:url(../images/1473348025-screenshot-01.png);
+ padding: 20px 30px 60px 20px;
+}
+.img_profile{
+padding:30px 5px 0px 5px;
+}
+.profile_data{
+font-size:20px;
+color:#000;
+text-shadow: 2px 2px 4px #dbdbdb;
+font-weight:bold;
+}
+.full_profile2, .full_profile1 {
+padding:10px 0px;
+}
+.img-rounded {
+    border: 2px solid #fff;
+    padding: 5px;
+	background-color:none;
+}
+.join_profile{
+float:right;
+}
+.icon_pro{
+font-size:15px;
+color:#fff;
+padding:6px;
+border:1px solid #fff;
+border-radius:50%
+}
+.name, .bod, .roll_num, .add{
+font-size:18px;
+font-family: "Source Sans Pro",sans-serif;
+color:#fff;
+font-weight:bold;
+
+}
+.dob{
+padding:10px;
+}
+.name{
+padding:35px 10px 0px 0px;
+}
+.add{
+padding:10px 10px 0px 0px;
+}
+
+.roll_num{
+
+}
+.line{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #eee -moz-use-text-color -moz-use-text-color;
+    border-image: none;
+    border-style: solid none none;
+    border-width: 1px 0 0;
+    margin-bottom: 10px;
+    margin-top: 10px;
+	opacity:.5;
+}
+
+
+
+
 
 /*~~~~Loading Screen On Ajx call~~~~*/
 .loading-screen {
