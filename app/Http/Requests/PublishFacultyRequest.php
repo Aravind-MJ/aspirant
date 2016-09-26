@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
+
 class PublishFacultyRequest extends Request {
 
     /**
@@ -40,7 +41,7 @@ class PublishFacultyRequest extends Request {
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6',
             'password_confirmation' => 'required',
-//            'photo' => 'mimes:jpeg,bmp,png'
+            'photo' =>'required|mimes:jpeg,png,jpg|max:2000'
         ];
         }
         case 'PUT':
@@ -51,7 +52,7 @@ class PublishFacultyRequest extends Request {
             'subject' => 'required',
             'phone' => 'required|regex:/[0-9]{10}/',
             'address' => 'required|min:5',
-//            'photo' => 'mimes:jpeg,bmp,png'
+             'photo' =>'required|mimes:jpeg,png,jpg|max:2000'
         ];
         }
         default:break;
