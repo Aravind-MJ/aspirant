@@ -16,16 +16,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Encrypt;
 use DateTime;
 
-class FacultyController extends Controller
-{
+class FacultyController extends Controller {
 
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index()
-    {
+    public function index() {
 
         //Select all records from faculty_details table 
         // $allFaculties = \App\Faculty::all();    //Eloquent ORM method to return all matching results
@@ -33,7 +31,7 @@ class FacultyController extends Controller
                 ->join('users', 'users.id', '=', 'faculty_details.user_id')
                 ->select('users.*', 'faculty_details.*')
                 ->where('faculty_details.deleted_at', NULL)
-                ->orderBy('faculty_details.created_at','DESC')
+                ->orderBy('faculty_details.created_at', 'DESC')
                 ->get();
         foreach ($allFaculties as $faculty) {
             $faculty->enc_id = Encrypt::encrypt($faculty->id);
@@ -47,8 +45,7 @@ class FacultyController extends Controller
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
         //Redirecting to add_faculty.blade.php 
         return view('faculty.add_faculty');
     }
@@ -58,8 +55,7 @@ class FacultyController extends Controller
      *
      * @return Response
      */
-    public function store(Requests\PublishFacultyRequest $requestData)
-    {
+    public function store(Requests\PublishFacultyRequest $requestData) {
         //Insert Query
         $user = new User;
         $user->first_name = $requestData['first_name'];
@@ -124,16 +120,15 @@ class FacultyController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
         //Get results by targeting id
         $faculty = DB::table('faculty_details')
-            ->join('users', 'users.id', '=', 'faculty_details.user_id')
-            ->where('faculty_details.id', $id)
-            ->select('users.*', 'faculty_details.*')
-            ->first();
+                ->join('users', 'users.id', '=', 'faculty_details.user_id')
+                ->where('faculty_details.id', $id)
+                ->select('users.*', 'faculty_details.*')
+                ->first();
         $faculty->enc_id = Encrypt::encrypt($faculty->id);
 
         //Redirecting to list page
@@ -146,8 +141,7 @@ class FacultyController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
         //Get Result by targeting id
@@ -160,9 +154,9 @@ class FacultyController extends Controller
 
         //Fetch User Details
         $user = DB::table('users')
-            ->select('id', 'first_name', 'last_name', 'email')
-            ->where('id', $faculty->user_id)
-            ->first();
+                ->select('id', 'first_name', 'last_name', 'email')
+                ->where('id', $faculty->user_id)
+                ->first();
         $user->enc_id = Encrypt::encrypt($user->id);
 
         //Redirecting to edit_faculty.blade.php 
@@ -175,9 +169,8 @@ class FacultyController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update($id, Requests\PublishFacultyRequest $requestData)
-    {
-        
+    public function update($id, Requests\PublishFacultyRequest $requestData) {
+
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
         //Update Query       
@@ -186,37 +179,29 @@ class FacultyController extends Controller
         $faculty->subject = $requestData['subject'];
         $faculty->phone = $requestData['phone'];
         $faculty->address = $requestData['address'];
-        $faculty->photo = $requestData['photo'];
-        
-        $input = Input::all();
+        if ($requestData['photo'] != null) {
+            $faculty->photo = $requestData['photo'];
+                        $input = Input::all();
+            if (Input::hasFile('photo')) {
 
-//        $this->validate($requestData['photo'], [
-//
-//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//        ]);
+                $file = Input::file('photo');
 
-        if (Input::hasFile('photo')) {
+                $name = time() . '-' . $file->getClientOriginalName();
 
-            $file = Input::file('photo');
+                $file = $file->move(public_path() . '/images', $name);
 
-            $name = time() . '-' . $file->getClientOriginalName();
-
-            $file = $file->move(public_path() . '/images', $name);
-
-//        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
-
-            $faculty->photo = $name;
-            $faculty->save();
-
+                $faculty->photo = $name;
+        } 
         }
-                     
+        
+        $faculty->save();
         //Send control to index() method
         if ($faculty->save()) {
-             return redirect::back()
+            return redirect::back()
                             ->withFlashMessage('Faculty Updated Successfully!')
                             ->withType('success');
         } else {
-             return redirect::back()
+            return redirect::back()
                             ->withFlashMessage('Faculty Update Failed!')
                             ->withType('danger');
         }
@@ -228,8 +213,7 @@ class FacultyController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
         $faculty = DB::table('faculty_details')

@@ -193,10 +193,6 @@ class StudentController extends Controller {
         $student->cee_rank = $requestData['cee_rank'];
         $student->percentage = $requestData['percentage'];
 
-//        $this->validate($requestData['photo'], [
-//
-//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//        ]);
 
         if ($requestData->hasFile('photo')) {
 
@@ -208,10 +204,9 @@ class StudentController extends Controller {
 
 //        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
 
-            $student->photo = $name;
-
-            $student->save();
+            $student->photo = $name;            
         }
+        $student->save();
 
         if ($student->save()) {
             return redirect::back()
