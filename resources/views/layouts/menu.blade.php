@@ -69,7 +69,7 @@
             @if($user->inRole('users'))
             <li><a href="{{URL::route('notice.getNotice')}}"><i class="fa fa-bell"></i> List Notice</a></li>
             @endif
-            @if($user->inRole('superadmin','admin'))
+            @if($user->inRole('superadmin')||$user->inRole('admins'))
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-bell"></i>

@@ -22,14 +22,16 @@ class AdminController extends Controller
     {
         $count = array();
         $title = 'Admin | Home';
-        $roles = ['users', 'admins', 'superadmin', 'faculty'];
-        $data = $this->users
-            ->select(DB::raw('count(*) as count'))
-            ->groupBy('role_id')
-            ->get()->toArray();
-
-        foreach ($data as $key => $each) {
-            $count[$roles[$key]] = $each['count'];
+        $roles = [1=>'users', 2=>'admins', 3=>'superadmin', 4=>'faculty'];
+        foreach($roles as $id =>$role){
+            $data = $this->users
+                ->join('users','role_users.user_id','=','users.id')
+                ->where(array(
+                    'users.deleted_at'=>null,
+                    'role_users.role_id'=>$id
+                ))
+                ->get();
+            $count[$role] = count($data);
         }
 
         return view('protected.dashboard', [
