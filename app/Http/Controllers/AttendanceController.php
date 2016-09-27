@@ -134,7 +134,7 @@ class AttendanceController extends Controller
                 ->select('users.id', 'users.first_name', 'users.last_name')
                 ->where(array(
                     'student_details.batch_id' => $id,
-                    'deleted_at' => null
+                    'users.deleted_at' => null
                 ))
                 ->get();
             if (count($students) <= 0) {
@@ -292,7 +292,7 @@ class AttendanceController extends Controller
                 ->select('users.id', 'users.first_name', 'users.last_name')
                 ->where(array(
                     'student_details.batch_id' => $id,
-                    'deleted_at' => null
+                    'users.deleted_at' => null
                 ))
                 ->get();
 
@@ -391,7 +391,7 @@ class AttendanceController extends Controller
                 ->select('users.id', 'users.first_name', 'users.last_name')
                 ->where(array(
                     'student_details.batch_id' => $id,
-                    'deleted_at' => null
+                    'users.deleted_at' => null
                 ))
                 ->get();
 
@@ -697,7 +697,7 @@ class AttendanceController extends Controller
                 ->select('users.id', 'users.first_name', 'users.last_name')
                 ->where(array(
                     'student_details.batch_id' => $id,
-                    'deleted_at' => null
+                    'users.deleted_at' => null
                 ))
                 ->get();
             if (count($students) <= 0) {

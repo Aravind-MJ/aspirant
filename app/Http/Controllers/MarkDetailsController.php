@@ -188,6 +188,50 @@ class MarkDetailsController extends Controller
 
     }
 
+    public function show($id){
+            try {
+                $id = Encrypt::decrypt($id);
+                $marks = $this->mark_details
+                    ->select('exam_id', 'mark')
+                    ->where(array(
+                        'user_id' => $id
+                    ))
+                    ->get();
+                if(count($marks)<=0){
+                    return redirect()->back()->withFlashMessage('No marks available to display!')->withType('danger');
+                }
+
+                foreach ($marks as $each) {
+                    $exam = $this->exam_details
+                        ->select('type_id','exam_date')
+                        ->where('id', $each->exam_id)
+                        ->orderBy('exam_date','DESC')
+                        ->first();
+                    if (count($exam) <= 0) {
+                        return redirect()->back()->withFlashMessage('No marks available to display!')->withType('danger');
+                    }
+
+                    $exam->exam_date = date_format(date_create($exam->exam_date),'d/m/Y');
+                    $exam_type = DB::table('Exam_type')
+                        ->select('name')
+                        ->where('id', $exam->type_id)
+                        ->first();
+
+                    if (count($exam_type) <= 0) {
+                        return redirect()->back()->withFlashMessage('Exam Type Mismatch!')->withType('danger');
+                    }
+                    unset($exam->type_id);
+                    unset($each->exam_id);
+                    $exam->type = $exam_type->name;
+                    $each->exam = $exam;
+                }
+            } catch (Exception $e) {
+                return redirect()->back()->withFlashMessage('Error Fetching marks!')->withType('danger');
+            }
+
+            return view('protected.standardUser.mark',compact('marks'));
+    }
+
     /**
      * Display the specified resource.
      *

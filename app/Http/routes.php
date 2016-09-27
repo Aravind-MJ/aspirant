@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth', 'redirectFaculty', 'redirectStandardUser'
 Route::group(['middleware' => ['auth', 'redirectStandardUser']], function () {
 
     # Routes to Mark Section.
-    Route::resource('mark', 'MarkDetailsController', ['only' => ['index', 'create', 'store', 'update', 'destroy']]);
+    Route::resource('mark', 'MarkDetailsController');
     Route::post('fetchStudents', ['uses' => 'MarkDetailsController@fetchStudents']);
     Route::post('fetchMark', ['uses' => 'MarkDetailsController@fetchMark']);
 

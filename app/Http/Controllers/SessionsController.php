@@ -35,12 +35,12 @@ class SessionsController extends Controller
                 $this->redirectWhenLoggedIn();
             }
 
-            return redirect()->back()->withInput()->withErrorMessage('Invalid credentials provided');
+            return redirect()->back()->withInput()->withFlashMessage('Invalid credentials provided')->withType('danger');
 
         } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-            return redirect()->back()->withInput()->withErrorMessage('User Not Activated.');
+            return redirect()->back()->withInput()->withFlashMessage('User Not Activated.')->withType('primary');
         } catch (\Cartalyst\Sentinel\Checkpoints\ThrottlingException $e) {
-            return redirect()->back()->withInput()->withErrorMessage($e->getMessage());
+            return redirect()->back()->withInput()->withFlashMessage($e->getMessage())->withType('primary');
         }
 
     }
