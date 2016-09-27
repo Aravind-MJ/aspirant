@@ -7,21 +7,24 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use App\Batch;
-use DB;
+use App\Notice;
 
 class NoticeController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
+    protected $notice, $batch;
+
+    public function __construct(Notice $notice, Batch $batch)
+    {
+        $this->notice = $notice;
+        $this->batch = $batch; 
+    }
+    
     public function index()
     {
 
         //Select all records from notice table    
-        $allNotice = DB::table('notice')
+        $allNotice = $this->notice
             ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
             ->select('notice.*', 'batch_details.batch')
             ->orderBy('notice.created_at','DESC')
@@ -39,7 +42,7 @@ class NoticeController extends Controller
     {
 
         //Redirecting to add_notice.blade.php 
-        $batch = \App\Batch::lists('batch', 'id');
+        $batch = Batch::lists('batch', 'id');
 
         return view('notice.add_notice', compact('id', 'batch'));
     }
@@ -53,10 +56,10 @@ class NoticeController extends Controller
     {
 
         //store notice in notice table
-        $student = new \App\Notice;
-        $student->batch_id = $requestData['batch_id'];
-        $student->message = $requestData['message'];
-        $student->save();
+        $notice = $this->notice;
+        $notice->batch_id = $requestData['batch_id'];
+        $notice->message = $requestData['message'];
+        $notice->save();
         return Redirect::back()
             ->withFlashMessage('Notice Added successfully!')
             ->withType('success');
@@ -82,13 +85,13 @@ class NoticeController extends Controller
     public function edit($id)
     {
 
-        $notice = DB::table('notice')
+        $notice = $this->notice
             ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
             ->select('notice.*', 'batch_details.batch')
             ->where('notice.id', $id)
             ->first();
 
-        $batch = \App\Batch::lists('batch', 'id');
+        $batch = Batch::lists('batch', 'id');
 
         return View('notice.edit_notice', compact('notice', 'batch', 'id'));
     }

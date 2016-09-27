@@ -250,7 +250,7 @@ class StudentController extends Controller {
 
         $search = Request::input('param2');
         $batch = Request::input('param1');
-        if (!empty($search) || $batch == 0) {
+
             // Returns an array of articles that have the query string located somewhere within 
 
             $query = DB::table('student_details')
@@ -275,9 +275,7 @@ class StudentController extends Controller {
             // returns a view and passes the view the list of articles and the original query.
 //        return route('Student.index');
             return View('student.list_student', compact('allStudents', 'batch', 'id'));
-        } else {
-            return redirect()->route('Student.index');
-        }
+
     }
 
 }
