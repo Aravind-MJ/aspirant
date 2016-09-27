@@ -4,12 +4,15 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container full_front_page">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-6 col-md-offset-3 new">
+			
                 <div class="panel panel-default">
+				
+				<center> <img src="images/aspirant-login-logo.png" class="img-rounded img-rounded1"  width="204" height="106"> </center>
                     <div class="panel-heading">
-                        <h3 class="panel-title">Login</h3>
+                        <h3 class="panel-title">LOGIN FORM</h3>
                     </div>
                     <div class="panel-body">
                         {!! Form::open(['route' => 'sessions.store']) !!}
@@ -40,14 +43,14 @@
 
                             <!-- Submit field -->
                             <div class="form-group">
-                                {!! Form::submit('Login', ['class' => 'btn btn btn-lg btn-success btn-block']) !!}
+                                {!! Form::submit('LOGIN', ['class' => 'btn btn btn1 btn-lg btn-success btn-block']) !!}
                             </div>
                         </fieldset>
                         {!! Form::close() !!}
                     </div>
                 </div>
                 <div style="text-align:center">
-                    <p><a href="{{ url('forgot_password') }}">Forgot Password?</a></p>
+                    <p class="user_pass"><a href="{{ url('forgot_password') }}">Forgot Password?</a></p>
                     
                     <p><strong>Super Admin User:</strong> superadmin@superadmin.com<br>
                     <strong>Super Admin Password:</strong> sentinelsuperadmin</p>

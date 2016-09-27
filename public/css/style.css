@@ -133,6 +133,12 @@ padding:10px 0px;
     padding: 5px;
 	background-color:none;
 }
+.img-rounded {
+    border:none !important;
+    padding: 5px;
+	background-color:none;
+}
+
 .join_profile{
 float:right;
 }
@@ -147,8 +153,6 @@ border-radius:50%
 font-size:18px;
 font-family: "Source Sans Pro",sans-serif;
 color:#fff;
-
-
 }
 .dob{
 padding:10px;
@@ -159,7 +163,9 @@ padding:35px 10px 0px 0px;
 .add{
 padding:10px 10px 0px 0px;
 }
-
+.user_pass a{
+color:#fff;
+}
 .roll_num{
 
 }
@@ -202,8 +208,33 @@ color:#fff;
 float:right;
 padding:0px;
 }
+.new {
+margin-top:130px !important;
+}
 
+body {
+ background:url(../images/aspirant-bg.jpg) !important;
+}
+.btn1{
+background-color:#ed008c !important;
+color:#fff !important;
+border:none !important;
+}
+.btn1:hover{
+background-color:#d2007c !important;
+color:#fff !important;
+}
+.panel-title{
+font-size:20px !important;
+font-weight:600;
+text-align:center;
+font-family:lato !important;
+}
+.panel-heading {
+background-color:#017dc7 !important;
+color:#fff !important;
 
+}
 /*~~~~Loading Screen On Ajx call~~~~*/
 .loading-screen {
     top: 0;
