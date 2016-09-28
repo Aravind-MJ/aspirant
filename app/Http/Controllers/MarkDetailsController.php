@@ -64,7 +64,7 @@ class MarkDetailsController extends Controller
                     ->select('users.id', 'users.first_name', 'users.last_name')
                     ->where(array(
                         'student_details.batch_id'=> $id,
-                        'deleted_at' => null
+                        'users.deleted_at' => null
                     ))
                     ->get();
 
@@ -126,10 +126,18 @@ class MarkDetailsController extends Controller
 
         try {
             $exams = $this->exam_details
+                ->limit(10)
                 ->get();
             foreach ($exams as $exam) {
                 $date = date_create($exam['exam_date']);
-                $data['exams'][Encrypt::encrypt($exam['id'])] = $exam['name'] . ' - ' . date_format($date, 'd/m/Y');
+                $name = DB::table('Exam_type')
+                    ->select('name')
+                    ->where('id',$exam['type_id'])
+                    ->first();
+                if(count($name)<=0){
+                    return back()->withFlashMessage('Exam data Corrupted..!')->withType('danger');
+                }
+                $data['exams'][Encrypt::encrypt($exam['id'])] = $name->name . ' - ' . date_format($date, 'd/m/Y');
             }
             $exams = $data['exams'];
         } catch (Exception $e) {
@@ -263,7 +271,14 @@ class MarkDetailsController extends Controller
                 ->get();
             foreach ($exams as $exam) {
                 $date = date_create($exam['exam_date']);
-                $data['exams'][Encrypt::encrypt($exam['id'])] = $exam['name'] . ' - ' . date_format($date, 'd/m/Y');
+                $name = DB::table('Exam_type')
+                    ->select('name')
+                    ->where('id',$exam['type_id'])
+                    ->first();
+                if(count($name)<=0){
+                    return back()->withFlashMessage('Exam data Corrupted..!')->withType('danger');
+                }
+                $data['exams'][Encrypt::encrypt($exam['id'])] = $name->name . ' - ' . date_format($date, 'd/m/Y');
             }
             $exams = $data['exams'];
         } catch (Exception $e) {
@@ -303,7 +318,7 @@ class MarkDetailsController extends Controller
                     ->select('users.id', 'users.first_name', 'users.last_name')
                     ->where(array(
                         'student_details.batch_id'=> $id,
-                        'deleted_at' => null
+                        'users.deleted_at' => null
                     ))
                     ->get();
 

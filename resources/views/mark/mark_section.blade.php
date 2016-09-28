@@ -9,6 +9,7 @@
 <input type="text" name="exam_id" value="" class="exam_id" hidden>
 <input type="text" name="batch_id" value="{{$batch_id}}" class="batch_id" hidden>
     <div class="btn btn-warning pull-right" id="edit_marks" style="width: 200px;"><span class="fa fa-edit"></span> Enable Mark Edit</div>
+    <br><br>
     <div class="btn btn-danger pull-right" id="delete_marks" style="clear: right; width: 200px;"><span class="fa fa-times"></span> Delete Mark</div>
     <script>
         $('#edit_marks').click(function(){
