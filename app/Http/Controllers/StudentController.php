@@ -258,12 +258,12 @@ class StudentController extends Controller {
                     ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
                     ->select('users.*', 'student_details.*', 'batch_details.batch')
                     ->where('student_details.deleted_at', NULL);
-            if ($batch != 0)
+            if ($batch != 0){
                 $query->where('student_details.batch_id', 'LIKE', '%' . $batch . '%');
-
-            if (!empty($search))
+            }
+            if (!empty($search)){
                 $query->where('users.first_name', 'LIKE', '%' . $search . '%');
-
+            }
             $allStudents = $query->get();
             foreach ($allStudents as $student) {
                 $student->enc_id = Encrypt::encrypt($student->id);
