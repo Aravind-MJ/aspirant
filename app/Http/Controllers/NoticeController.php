@@ -9,26 +9,23 @@ use Illuminate\Support\Facades\Redirect;
 use App\Batch;
 use App\Notice;
 
-class NoticeController extends Controller
-{
+class NoticeController extends Controller {
 
     protected $notice, $batch;
 
-    public function __construct(Notice $notice, Batch $batch)
-    {
+    public function __construct(Notice $notice, Batch $batch) {
         $this->notice = $notice;
-        $this->batch = $batch; 
+        $this->batch = $batch;
     }
-    
-    public function index()
-    {
+
+    public function index() {
 
         //Select all records from notice table    
         $allNotice = $this->notice
-            ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
-            ->select('notice.*', 'batch_details.batch')
-            ->orderBy('notice.created_at','DESC')
-            ->get();
+                ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
+                ->select('notice.*', 'batch_details.batch')
+                ->orderBy('notice.created_at', 'DESC')
+                ->get();
 
         return View('notice.list_notice', compact('allNotice'));
     }
@@ -38,11 +35,18 @@ class NoticeController extends Controller
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
 
+        //Fetch Batch Details
+        $batch =$this->batch
+                ->select('id', 'batch')
+                ->get();
+        $data = array();
+        foreach ($batch as $batch) {
+            $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
         //Redirecting to add_notice.blade.php 
-        $batch = Batch::lists('batch', 'id');
 
         return view('notice.add_notice', compact('id', 'batch'));
     }
@@ -52,8 +56,7 @@ class NoticeController extends Controller
      *
      * @return Response
      */
-    public function store(Requests\PublishNoticeRequest $requestData)
-    {
+    public function store(Requests\PublishNoticeRequest $requestData) {
 
         //store notice in notice table
         $notice = $this->notice;
@@ -61,8 +64,8 @@ class NoticeController extends Controller
         $notice->message = $requestData['message'];
         $notice->save();
         return Redirect::back()
-            ->withFlashMessage('Notice Added successfully!')
-            ->withType('success');
+                        ->withFlashMessage('Notice Added successfully!')
+                        ->withType('success');
     }
 
     /**
@@ -71,8 +74,7 @@ class NoticeController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -82,16 +84,23 @@ class NoticeController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
 
         $notice = $this->notice
-            ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
-            ->select('notice.*', 'batch_details.batch')
-            ->where('notice.id', $id)
-            ->first();
+                ->join('batch_details', 'batch_details.id', '=', 'notice.batch_id')
+                ->select('notice.*', 'batch_details.batch')
+                ->where('notice.id', $id)
+                ->first();
 
-        $batch = Batch::lists('batch', 'id');
+        //Fetch Batch Details
+        $batch = $this->batch
+                ->select('id', 'batch')
+                ->get();
+        $data = array();
+        foreach ($batch as $batch) {
+            $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
 
         return View('notice.edit_notice', compact('notice', 'batch', 'id'));
     }
@@ -102,8 +111,7 @@ class NoticeController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update($id, Requests\PublishNoticeRequest $requestData)
-    {
+    public function update($id, Requests\PublishNoticeRequest $requestData) {
         //update values in notice
 
         $notice = \App\Notice::find($id);
@@ -111,8 +119,8 @@ class NoticeController extends Controller
         $notice->message = $requestData['message'];
         $notice->save();
         return redirect()->route('Notice.index')
-            ->withFlashMessage('Notice Updated successfully!')
-            ->withType('success');
+                        ->withFlashMessage('Notice Updated successfully!')
+                        ->withType('success');
     }
 
     /**
@@ -121,8 +129,7 @@ class NoticeController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //find result by id and delete 
         \App\Notice::find($id)->delete();
 

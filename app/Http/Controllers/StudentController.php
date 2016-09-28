@@ -39,8 +39,16 @@ class StudentController extends Controller {
             $student->enc_userid = Encrypt::encrypt($student->user_id);
         }
         //Fetch Batch Details
-        $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
-
+        $batch = DB::table('batch_details')
+                ->select('id', 'batch')
+                ->orderBy('batch_details.created_at', 'ASC')
+                ->get();
+//        $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
+        $data = array();
+        foreach ($batch as $batch) {
+           $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
         return View('student.list_student', compact('allStudents', 'batch', 'id'));
     }
 
@@ -50,7 +58,15 @@ class StudentController extends Controller {
      * @return Response
      */
     public function create() {
-        $batch = Batch::lists('batch', 'id');
+        //Fetch Batch Details
+        $batch = DB::table('batch_details')
+                ->select('id', 'batch')              
+                ->get();
+        $data = array();
+        foreach ($batch as $batch) {
+           $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
 
         return view('student.add_student', compact('id', 'batch'));
     }
@@ -160,8 +176,15 @@ class StudentController extends Controller {
                 ->where('student_details.id', $id)
                 ->first();
 
-        //Fetch Batch Details
-        $batch = Batch::lists('batch', 'id');
+         //Fetch Batch Details
+        $batch = DB::table('batch_details')
+                ->select('id', 'batch')              
+                ->get();
+        $data = array();
+        foreach ($batch as $batch) {
+           $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
 
         //Fetch User Details
         $user = DB::table('users')
@@ -204,7 +227,7 @@ class StudentController extends Controller {
 
 //        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
 
-            $student->photo = $name;            
+            $student->photo = $name;
         }
         $student->save();
 
@@ -251,31 +274,37 @@ class StudentController extends Controller {
         $search = Request::input('param2');
         $batch = Request::input('param1');
 
-            // Returns an array of articles that have the query string located somewhere within 
+        // Returns an array of articles that have the query string located somewhere within 
 
-            $query = DB::table('student_details')
-                    ->join('users', 'users.id', '=', 'student_details.user_id')
-                    ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                    ->select('users.*', 'student_details.*', 'batch_details.batch')
-                    ->where('student_details.deleted_at', NULL);
-            if ($batch != 0){
-                $query->where('student_details.batch_id', 'LIKE', '%' . $batch . '%');
-            }
-            if (!empty($search)){
-                $query->where('users.first_name', 'LIKE', '%' . $search . '%');
-            }
-            $allStudents = $query->get();
-            foreach ($allStudents as $student) {
-                $student->enc_id = Encrypt::encrypt($student->id);
-                $student->enc_userid = Encrypt::encrypt($student->user_id);
-            }
-            //Fetch Batch Details
-            $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
+        $query = DB::table('student_details')
+                ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+                ->select('users.*', 'student_details.*', 'batch_details.batch')
+                ->where('student_details.deleted_at', NULL);
+        if ($batch != 0) {
+            $query->where('student_details.batch_id', 'LIKE', '%' . $batch . '%');
+        }
+        if (!empty($search)) {
+            $query->where('users.first_name', 'LIKE', '%' . $search . '%');
+        }
+        $allStudents = $query->get();
+        foreach ($allStudents as $student) {
+            $student->enc_id = Encrypt::encrypt($student->id);
+            $student->enc_userid = Encrypt::encrypt($student->user_id);
+        }
+        //Fetch Batch Details
+        $batch = DB::table('batch_details')
+                ->select('id', 'batch')              
+                ->get();
+        $data = array();
+        foreach ($batch as $batch) {
+           $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
 
-            // returns a view and passes the view the list of articles and the original query.
+        // returns a view and passes the view the list of articles and the original query.
 //        return route('Student.index');
-            return View('student.list_student', compact('allStudents', 'batch', 'id'));
-
+        return View('student.list_student', compact('allStudents', 'batch', 'id'));
     }
 
 }
