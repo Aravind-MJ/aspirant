@@ -6,6 +6,8 @@
 
     <div class="container full_front_page">
         <div class="row">
+		<!-- Back to home link -->
+		<div class="back_admin" > <button class="button1" style="vertical-align:middle"><span>Back to Home </span></button>	</div>
             <div class="col-md-6 col-md-offset-3 new">
 			
                 <div class="panel panel-default">
