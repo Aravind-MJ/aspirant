@@ -121,6 +121,8 @@
                 <ul class="treeview-menu">
                     <li><a href="{{URL::route('FeeTypes.create')}}"><i class="fa fa-circle-o"></i> Add FeeTypes</a></li>
                     <li><a href="{{URL::route('FeeTypes.index')}}"><i class="fa fa-circle-o"></i> ListFeeTypes</a></li>
+<!--                     <li><a href="{{URL::route('Feebybatch.index')}}"><i class="fa fa-circle-o"></i> jhjkd</a></li>-->
+                     <li><a href="{{ action("FeebybatchController@index") }}"><i class="fa fa-circle-o"></i> Fee By Batch</a></li>
                 </ul>
             </li>
 
