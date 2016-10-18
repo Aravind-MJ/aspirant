@@ -125,14 +125,10 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('discount', 'Discount') !!}
-                        {!! Form::text('discount',null, ['class'=>'form-control', 'placeholder'=>'Total_fee']) !!}
-                        {!! errors_for('discount', $errors) !!}
-                    </div>
-                     <div class="form-group">
-                        {!! Form::label('discount', 'Discount') !!}
                         {!! Form::text('discount',null, ['class'=>'form-control', 'placeholder'=>'Discount']) !!}
                         {!! errors_for('discount', $errors) !!}
                     </div>
+                    
                     <div class="form-group">
                         {!! Form::label('balance', 'Balance') !!}
                         {!! Form::text('balance',null, ['class'=>'form-control', 'placeholder'=>'Balance']) !!}

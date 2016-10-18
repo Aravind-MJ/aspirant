@@ -246,8 +246,8 @@ class FeebybatchController extends Controller {
         $query = DB::table('student_details')
                 ->join('users', 'users.id', '=', 'student_details.user_id')
                 ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                   ->join('fee_types','fee_types.id','=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*', 'batch_details.batch','fee_types.*')
+                ->join('fee_types','fee_types.id','=', 'student_details.id')
+                ->select('users.*', 'student_details.*','fee_types.*', 'batch_details.batch')
                 ->where('student_details.deleted_at', NULL);
         if ($batch != 0) {
             $query->where('student_details.batch_id', 'LIKE', '%' . $batch . '%');
@@ -281,3 +281,4 @@ class FeebybatchController extends Controller {
     }
 
 }
+

@@ -29,7 +29,7 @@
          </div>  
         </div>
 </div>
-    <div class="box box-primary
+    <div class="box box-primary">
          <div class="box-body">
        @if (count($allStudents) === 0)
         <h4><strong> No Students Found! </strong></h4>
@@ -56,8 +56,6 @@
                     <td>{{ $i }}</td>
                     <td>{{ $student->first_name }} {{ $student->last_name}}</td>
 <!--                    <td>{{ $student->batch }}</td>-->
-<!--                    <td>{{ $student->dob }}</td>
-                     <td>{{ $student->total_fee }}</td>-->
 
                     
                     <td class=center>                      
