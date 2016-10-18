@@ -45,6 +45,7 @@
             {!! Form::text('dob', null, ['class'=>'form-control', 'placeholder'=>'Date Of Birth', 'id'=>'datepicker']) !!}
             {!! errors_for('dob', $errors) !!}
         </div>
+       
 
         <div class="form-group">
             {!! Form::label('guardian', 'Guardian') !!}

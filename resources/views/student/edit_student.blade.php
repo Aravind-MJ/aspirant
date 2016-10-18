@@ -80,6 +80,7 @@
                         {!! Form::text('dob', null, ['class'=>'form-control', 'placeholder'=>'Date Of Birth', 'id'=>'datepicker']) !!}
                         {!! errors_for('dob', $errors) !!}
                     </div>
+                    
 
                     <div class="form-group">
                         {!! Form::label('guardian', 'Guardian') !!}
@@ -116,7 +117,6 @@
                         {!! Form::text('percentage', null, ['class'=>'form-control', 'placeholder'=>'Enter Percentage']) !!}
                         {!! errors_for('percentage', $errors) !!}
                     </div>
-
                     <img src="{{ asset('images/students/'. $student->photo) }}"  alt="photo" width="50" height="50"/>
                     <div class="form-group">
                         {!! Form::label('photo', 'Photo') !!}
