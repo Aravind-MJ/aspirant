@@ -6,25 +6,36 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use App\Feetypes;
+use App\Batch;
 use App\Encrypt;
 
 class FeeTypesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
+    protected $feetypes, $batch;
+
+    public function __construct(Feetypes $feetypes, Batch $batch) {
+        $this->feetypes = $feetypes;
+        $this->batch = $batch;
+    }
     public function index()
     {
-        $allFeetypes = \App\Feetypes::all();    //Eloquent ORM method to return all matching results
-        //Redirecting to list_faculty.blade.php with $allFaculties   
-               foreach( $allFeetypes as $Feetypes ){
-                   $Feetypes->enc_id = Encrypt::encrypt($Feetypes->id);
-               }
+        
+         $allFeetypes = $this->feetypes
+                ->join('batch_details', 'batch_details.id', '=', 'fee_types.batch_id')
+                ->select('fee_types.*', 'batch_details.batch')
+                ->orderBy('fee_types.created_at', 'DESC')
+                ->get();
+     foreach($allFeetypes as $feetypes){
+             $feetypes->enc_id = Encrypt::encrypt($feetypes->id);
+     }
         return View('Feetypes.list_Feetypes', compact('allFeetypes'));
     }
+
+   
+//        
+//    }
 
     /**
      * Show the form for creating a new resource.
@@ -33,7 +44,17 @@ class FeeTypesController extends Controller
      */
     public function create()
     {
-        return view('Feetypes.add_Feetypes')->with('message', 'Message sent!');
+       $batch =$this->batch
+                ->select('id', 'batch')
+                ->get();
+        $data = array();
+        foreach ($batch as $batch) {
+            $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
+        //Redirecting to add_notice.blade.php 
+
+        return view('Feetypes.add_Feetypes', compact('Feetypes','id', 'batch'));
     }
 
     /**
@@ -43,9 +64,11 @@ class FeeTypesController extends Controller
      */
     public function store(Requests\PublishFeetypesRequest $requestData)
     {
-          $Feetypes = new \App\Feetypes;
-          $Feetypes->name= $requestData['name'];//
-          $Feetypes->save();
+          $feetypes = new \App\Feetypes;
+             $feetypes->batch_id= $requestData['batch_id'];
+             $feetypes->total_fee = $requestData['total_fee'];
+         
+          $feetypes->save();
            return redirect()->route('FeeTypes.create')
                             ->withFlashMessage('Feetype Added successfully!')
                             ->withType('success');
@@ -58,13 +81,14 @@ class FeeTypesController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
-         $enc_id=$id;
-        $id = Encrypt::decrypt($id);
-        $Feetypes = Feetypes::find($id);
-
-        return view('Feetypes.list_Feetypes')->with('Feetypes', $Feetypes);
+    public function show($id){
+//           $allFeetypes = $this->feetypes
+//                ->join('batch_details', 'batch_details.id', '=', 'fee_types.batch_id')
+//                ->select('fee_types.*', 'batch_details.batch')
+//                ->orderBy('fee_types.created_at', 'DESC')
+//                ->get();
+//
+//       return View('Feetypes.list_Feetypes', compact('Feetypes'));
     }
 
     /**
@@ -76,11 +100,25 @@ class FeeTypesController extends Controller
     public function edit($id)
     {
          $enc_id=$id;
-        $id = Encrypt::decrypt($id);
-        $Feetypes = \App\Feetypes::find($id);
+         $id = Encrypt::decrypt($id);
+        
+        $Feetypes = $this->feetypes
+                ->join('batch_details', 'batch_details.id', '=', 'fee_types.batch_id')
+                 ->select('fee_types.*', 'batch_details.batch')
+                ->where('fee_types.id', $id)
+                ->first();
 
+        //Fetch Batch Details
+        $batch = $this->batch
+                ->select('id', 'batch')
+                ->get();
+        $data = array();
+        foreach ($batch as $batch) {
+            $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
 
-        return view('Feetypes.edit_Feetypes')->with('Feetypes', $Feetypes);
+        return View('Feetypes.edit_Feetypes', compact('Feetypes', 'batch', 'id'));
     }
 
     /**
@@ -91,14 +129,16 @@ class FeeTypesController extends Controller
      */
     public function update($id, Requests\PublishFeetypesRequest $requestData)
     {
-        $Feetypes = \App\Feetypes::find($id);
-        $Feetypes->name = $requestData['name'];
-        $Feetypes->save();
-
-        //Send control to index() method
+        
+        $feetypes = \App\Feetypes::find($id);
+         $feetypes ->batch_id= $requestData['batch_id'];
+          
+             $feetypes->total_fee = $requestData['total_fee'];
+          $feetypes ->save();
         return redirect()->route('FeeTypes.index')
-                         ->withFlashMessage('Feetype Updated successfully!')
-                         ->withType('success');
+                        ->withFlashMessage('fee Updated successfully!')
+                        ->withType('success');
+    
     }
 
     /**

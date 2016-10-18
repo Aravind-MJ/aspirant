@@ -16,12 +16,47 @@
     <div class="box-body">
 
         <!-- first_name Field -->
-        <div class="form-group">
+<!--        <div class="form-group">
             {!! Form::label('name', 'FeeTypes') !!}
             {!! Form::text('name', null, ['class' => 'form-control', 'placeholder'=>'Enter  Name']) !!}
             {!! errors_for('name', $errors) !!}
+        </div>-->
+       <div class="form-group">
+            {!! Form::Label('batch_id', 'Batch') !!}
+            {!! Form::select('batch_id', $batch, null, ['class' => 'form-control']) !!}
+            {!! errors_for('batch_id', $errors) !!}
+        </div>  
+        
+<!--        <div class="form-group">
+            {!! Form::label('first', 'First_Installment') !!}
+            {!! Form::text('first', null, ['class' => 'form-control', 'placeholder'=>'Enter First-Installment']) !!}
+            {!! errors_for('first', $errors) !!}
         </div>
-
+        <div class="form-group">
+            {!! Form::label('second', 'Second_Installment') !!}
+            {!! Form::text('second', null, ['class' => 'form-control', 'placeholder'=>'Enter Second-Installment']) !!}
+            {!! errors_for('second', $errors) !!}
+        </div>
+         <div class="form-group">
+            {!! Form::label('third', 'Third_Installment') !!}
+            {!! Form::text('third', null, ['class' => 'form-control', 'placeholder'=>'Enter Third-Installment']) !!}
+            {!! errors_for('third', $errors) !!}
+        </div>-->
+         <div class="form-group">
+            {!! Form::label('total fee', 'Total Fee') !!}
+            {!! Form::text('total fee', null, ['class' => 'form-control', 'placeholder'=>'Enter Total Fee']) !!}
+            {!! errors_for('totalfee', $errors) !!}
+        </div>
+<!--       <div class="form-group">
+            {!! Form::label('discount', 'Discount') !!}
+            {!! Form::text('discount', null, ['class' => 'form-control', 'placeholder'=>'Discount']) !!}
+            {!! errors_for('discount', $errors) !!}
+        </div>
+       <div class="form-group">
+            {!! Form::label('balance', 'Balance') !!}
+            {!! Form::text('balance', null, ['class' => 'form-control', 'placeholder'=>'Balance']) !!}
+            {!! errors_for('balance', $errors) !!}
+        </div>-->
         <br>
         <div class="form-group">
             {!! Form::submit( 'Submit', ['class'=>'btn btn-primary']) !!} 

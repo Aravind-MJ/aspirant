@@ -18,19 +18,25 @@
         <table id="example2" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th style="width: 50%">Name</th>
-                  
-                    <!--<th>Photo</th>-->
-                    <th  style="width: 5%">Edit</th>
-                    <th  style="width: 5%">Delete</th>
+<!--                    <th style="width: 50%">Fee Types</th>-->
+                   
+                     
+                     <th  style="width: 50%">Batch</th>
+                     <th  style="width: 50%">Total_fee</th>
+                    <th  style="width: 70%">Edit</th>
+                    <th  style="width: 70%">Delete</th>
+                
                 </tr>
             </thead>
             <tbody>
-                @foreach( $allFeetypes as $Feetypes )
+                @foreach($allFeetypes as $Feetypes )
                 <tr>
-                    <td>{{ $Feetypes->name }}</td>
-                     
-             
+
+               
+                        <td>{{ $Feetypes->batch }}</td>
+                        <td>{{ $Feetypes->total_fee }}</td>
+                       
+                  
 
                     <td class=center>
                         <a class="btn btn-primary btn-block" href="{{url('FeeTypes/'.$Feetypes->enc_id).'/edit'}}">Edit</a>

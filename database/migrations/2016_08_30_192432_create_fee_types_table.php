@@ -15,7 +15,10 @@ class CreateFeeTypesTable extends Migration
        
         Schema::create('fee_types', function (Blueprint $table) { 
          $table->increments('id');
-         $table->String('name');
+            $table-> integer('batch_id')->unsigned();
+            $table-> foreign('batch_id')->references('id')->on('batch_details');
+            $table-> String('total_fee');
+            
          $table->timestamps();
     
     });

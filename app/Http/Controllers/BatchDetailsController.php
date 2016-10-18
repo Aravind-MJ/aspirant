@@ -134,7 +134,7 @@ class BatchDetailsController extends Controller {
                 ->first();
     
     
-     $users = DB::table('users')
+         $users = DB::table('users')
                   ->join('faculty_details','faculty_details.user_id', '=','users.id')              
                   ->select('users.id','first_name','last_name')
                   ->get();

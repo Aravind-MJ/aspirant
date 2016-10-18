@@ -21,10 +21,45 @@ class PublishFeetypesRequest extends Request {
      * @return array
      */
     public function rules() {
-        return [
-            'name' => 'required|regex:/^[(a-zA-Z\s)]+$/u',
+        switch($this->method())
+    {
+        case 'GET':
+        case 'DELETE':
+        {
+            return [];
+        }
+        case 'POST':
+        {
+            return [
+            
+//            'batch_id' => 'required|exists:batch_id,total_fee',
+//            'first' => 'required|numeric',
+//            'second' => 'required|numeric',
+//            'third' => 'required|numeric',
+//            'total_fee' => 'required|numeric',
+//            'discount' => 'required|numeric',
+      //     'balance' => 'required|numeric'
             
         ];
+        }
+        case 'PUT':
+        case 'PATCH':
+        {
+             return [
+//            'batch_id' => 'required',
+//            'first' => 'required|numeric',
+//            'second' => 'required|numeric',
+//            'third' => 'required|numeric',
+//            'total_fee' => 'required|numeric',
+//            'discount' => 'required|numeric',
+      //     'balance' => 'required|numeric',
+            
+        
+        ];
+        }
+        default:break;
+    }
+        
     }
 
 }
