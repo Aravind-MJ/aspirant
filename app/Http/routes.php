@@ -36,12 +36,15 @@ Route::group(['middleware' => ['auth', 'redirectFaculty', 'redirectStandardUser'
 
     # Feetype crud Routes.
     Route::resource('FeeTypes', 'FeeTypesController');
+    #Feeby batch 
+    Route::resource('Feebybatch', 'FeebybatchController');
 
     # Notice crud Routes.
     Route::resource('Notice', 'NoticeController');
 
     # Batch crud Routes.
     Route::resource('BatchDetails', 'BatchDetailsController');
+    Route::get('feeSearch', ['as' => 'search.fees', 'uses' => 'FeebybatchController@search']);
 
     # Route to edit student profile.
     Route::post('edit/admin/student/{id}', ['as' => 'studentProfilen.update', 'uses' => 'SuperAdmin\RegistrationController@update']);
