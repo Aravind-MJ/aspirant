@@ -96,11 +96,11 @@ class FeebybatchController extends Controller {
 
         $student = new Student;
         $student->batch_id = $requestData['batch_id'];
-        $student->user_id = $user['id'];
-        $student->gender = $requestData['gender'];
-        $student->dob = date('Y-m-d', strtotime($requestData['dob']));
-        
-          $feetypes->total_fee= $requestData['total_fee'];
+//        $student->user_id = $user['id'];
+//        $student->gender = $requestData['gender'];
+//        $student->dob = date('Y-m-d', strtotime($requestData['dob']));
+//        
+//          $feetypes->total_fee= $requestData['total_fee'];
 
 //        $this->validate($requestData['photo'], [
 //
@@ -191,9 +191,9 @@ class FeebybatchController extends Controller {
         //update student_details data
         $student = Student::find($id);
         $student->batch_id = $requestData['batch_id'];
-        $student->gender = $requestData['gender'];
-        $student->dob = date('Y-m-d', strtotime($requestData['dob']));
-        $feetypes->total_fee= $requestData['total_fee'];
+//        $student->gender = $requestData['gender'];
+//        $student->dob = date('Y-m-d', strtotime($requestData['dob']));
+//        $feetypes->total_fee= $requestData['total_fee'];
 
         
         $student->save();
