@@ -15,12 +15,6 @@
 <div class="box box-primary">
     <div class="box-body">
 
-        <!-- first_name Field -->
-<!--        <div class="form-group">
-            {!! Form::label('name', 'FeeTypes') !!}
-            {!! Form::text('name', null, ['class' => 'form-control', 'placeholder'=>'Enter  Name']) !!}
-            {!! errors_for('name', $errors) !!}
-        </div>-->
        <div class="form-group">
             {!! Form::Label('batch_id', 'Batch') !!}
             {!! Form::select('batch_id', $batch, null, ['class' => 'form-control']) !!}
@@ -43,9 +37,9 @@
             {!! errors_for('third', $errors) !!}
         </div>-->
          <div class="form-group">
-            {!! Form::label('total fee', 'Total Fee') !!}
-            {!! Form::text('total fee', null, ['class' => 'form-control', 'placeholder'=>'Enter Total Fee']) !!}
-            {!! errors_for('totalfee', $errors) !!}
+            {!! Form::label('total_fee', 'Total Fee') !!}
+            {!! Form::text('total_fee', null, ['class' => 'form-control', 'placeholder'=>'Enter Total Fee']) !!}
+            {!! errors_for('total_fee', $errors) !!}
         </div>
 <!--       <div class="form-group">
             {!! Form::label('discount', 'Discount') !!}

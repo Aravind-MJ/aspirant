@@ -26,9 +26,10 @@ class FeebybatchController extends Controller {
         //select list of student
         $allStudents = DB::table('student_details')
                 ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->join('fee','fee.id','=','student_details.user_id')
                 ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
                  ->join('fee_types','fee_types.id','=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*','batch_details.batch','fee_types.*')
+                ->select('users.*', 'student_details.*','batch_details.*','fee_types.*','fee.*')
                 ->where('student_details.deleted_at', NULL)
                 ->orderBy('student_details.created_at', 'DESC')
                 ->get();
@@ -150,9 +151,12 @@ class FeebybatchController extends Controller {
         $id     = Encrypt::decrypt($id);
 //echo $id;
         //Fetch Student Details
-        $student = DB::table('student_details')
-                ->leftJoin('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                ->select('student_details.*', 'batch_details.batch')
+         $allStudents = DB::table('student_details')
+                ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->join('fee','fee.id','=','student_details.user_id')
+                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
+                 ->join('fee_types','fee_types.id','=', 'student_details.batch_id')
+                ->select('users.*', 'student_details.*','batch_details.*','fee_types.*','fee.*')
                 ->where('student_details.id', $id)
                 ->first();
         
@@ -244,17 +248,20 @@ class FeebybatchController extends Controller {
         // Returns an array of articles that have the query string located somewhere within 
 
         $query = DB::table('student_details')
-                ->join('users', 'users.id', '=', 'student_details.user_id')
-                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                ->join('fee_types','fee_types.id','=', 'student_details.id')
-                ->select('users.*', 'student_details.*','fee_types.*', 'batch_details.batch')
+                ->join('users', 'users.id', '=', 'student_details.user_id')  
+                 ->join('fee','fee.student_id','=','student_details.user_id')
+                ->join('fee_types','fee_types.batch_id','=', 'student_details.batch_id')
+                ->select('users.*', 'student_details.*','fee_types.*', 'fee.*')
                 ->where('student_details.deleted_at', NULL);
+        
+
         if ($batch != 0) {
-            $query->where('student_details.batch_id', 'LIKE', '%' . $batch . '%');
+            $query->where('student_details.batch_id', $batch);
         }
-        if (!empty($search)) {
-            $query->where('users.first_name', 'LIKE', '%' . $search . '%');
-        }
+        
+//        if (!empty($search)) {
+//            $query->where('users.first_name', 'LIKE', '%' . $search . '%');
+//        }
        
         $allStudents = $query->get();
         foreach ($allStudents as $student) {

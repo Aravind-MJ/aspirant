@@ -62,52 +62,11 @@
             </div>
                 <div class="box-body">
 
-                    {!! Form::model($student, ['method'=>'PATCH','route' => ['Student.update', $student->id],'enctype' => 'multipart/form-data']) !!}
+                    {!! Form::model($feedetails, ['method'=>'PATCH','route' => ['Feebybatch.update', $feedetails->id],'enctype' => 'multipart/form-data']) !!}
 
-                    <div class="form-group">
-                        {!! Form::Label('batch', 'Batch') !!}
-                        {!! Form::select('batch_id', $batch, null, ['class' => 'form-control']) !!}
-                    </div>
+                  
 
-<!--                    <div class="form-group">
-                        {!! Form::Label('gender', 'Gender') !!}<br>
-                        {!! Form::radio('gender', 'male') !!}{!! Form::Label('gender', 'Male') !!}
-                        {!! Form::radio('gender', 'female') !!}{!! Form::Label('gender', 'Female') !!}
-                    </div>-->
-
-<!--                    <div class="form-group">
-                        {!! Form::label('total_fee', 'Total_Fee') !!}
-                        {!! Form::text('total_fee',null, ['class'=>'form-control', 'placeholder'=>'Total_fee']) !!}
-                        {!! errors_for('total_fee', $errors) !!}
-                    </div>-->
-                 
-
-                    <br>
-
-                    <div class="form-group">
-                        {!! Form::submit( 'Edit Student', ['class'=>'btn btn-lg btn-primary btn-block']) !!} 
-                    </div>
-
-                    {!! Form::close() !!}
-                </div>
-
-        </div>
-    </div>
-    
-    <div class="col-md-6 col-md-offset-1">
-        <div class="box box-primary">
-            <div class="box-header">
-                <h3 class="box-title">Student-Fee-Details</h3>
-            </div>
-                <div class="box-body">
-    
-                    <div class="form-group">
-                        {!! Form::label('total_fee', 'Total_Fee') !!}
-                        {!! Form::text('total_fee',null, ['class'=>'form-control', 'placeholder'=>'Total_fee']) !!}
-                        {!! errors_for('total_fee', $errors) !!}
-                    </div>
-    
-                    <div class="form-group">
+                    </div>--><div class="form-group">
                         {!! Form::label('first', 'First_Installment') !!}
                         {!! Form::text('first',null, ['class'=>'form-control', 'placeholder'=>'First-Installment']) !!}
                         {!! errors_for('first', $errors) !!}
@@ -134,13 +93,21 @@
                         {!! Form::text('balance',null, ['class'=>'form-control', 'placeholder'=>'Balance']) !!}
                         {!! errors_for('balance', $errors) !!}
                     </div>
+                 
+
+                    <br>
+
                     <div class="form-group">
-                        {!! Form::submit( 'Submit', ['class'=>'btn btn-lg btn-primary btn-block']) !!} 
+                        {!! Form::submit( 'Edit Student', ['class'=>'btn btn-lg btn-primary btn-block']) !!} 
                     </div>
-    
+
+                    {!! Form::close() !!}
                 </div>
-             {!! Form::close() !!}
-</div>
+
+        </div>
+    </div>
+    
+    
 @stop
 
 @endsection

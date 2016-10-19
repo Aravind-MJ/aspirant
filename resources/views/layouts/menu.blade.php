@@ -125,6 +125,22 @@
                      <li><a href="{{ action("FeebybatchController@index") }}"><i class="fa fa-circle-o"></i> Fee By Batch</a></li>
                 </ul>
             </li>
+            
+             <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-twitch"></i>
+                    <span>FeeDetails</span>
+                    <span class="pull-right-container">
+                        <span class="fa fa-angle-left pull-right"></span>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{URL::route('Feedetails.create')}}"><i class="fa fa-circle-o"></i> Add FeeDetails</a></li>
+                    <li><a href="{{URL::route('Feedetails.index')}}"><i class="fa fa-circle-o"></i> ListFeeDetails</a></li>
+<!--                     <li><a href="{{URL::route('Feebybatch.index')}}"><i class="fa fa-circle-o"></i> jhjkd</a></li>-->
+                   
+                </ul>
+            </li>
 
             <li class="treeview">
                 <a href="#">

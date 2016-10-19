@@ -13,7 +13,7 @@
     <div class="box-body">
         <?php  $selbatch = isset($selbatch)? $selbatch : null;?>
          <div class="form-group">
-    {!! Form::open(array('route' => 'search.fees', 'method'=>'get')) !!}
+       {!! Form::open(array('route' => 'search.fees', 'method'=>'get')) !!}
         @if(isset($batch))
         @if(!empty($batch))
           </div>  
@@ -39,9 +39,12 @@
                 <tr>
                     <th>Sl.No</th>
                     <th>Full name</th>
-<!--                    <th>Batch</th>
-                    <th>DOB</th>    
-                    <th>Total_Fee</th>-->
+                    <th>TotalFee</th>
+                    <th>First_Installment</th>
+                   <th>Second_Installment</th>  
+                    <th>Third_Installment</th>  
+                    <th>Discount</th>
+                     <th>Balance</th>
 <!--                    <th>Discount</th>
                     <th>Balance</th>-->
 <!--                    <th>View more</th>-->
@@ -54,8 +57,14 @@
                 @foreach( $allStudents as $student )
                 <tr>
                     <td>{{ $i }}</td>
-                    <td>{{ $student->first_name }} {{ $student->last_name}}</td>
-<!--                    <td>{{ $student->batch }}</td>-->
+                    <td>{{ $student->first_name}} {{$student->last_name }} </td>
+                    <td class= btn btn-primary btn-block> {{ $student ->total_fee }}                     
+                                             </td>
+                   <td>{{ $student->first }}</td>
+                    <td>{{ $student->second }}</td>
+                     <td>{{ $student->third }}</td>
+                      <td>{{ $student->discount }}</td>
+                       <td>{{ $student->balance }}</td>
 
                     
                     <td class=center>                      

@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth', 'redirectFaculty', 'redirectStandardUser'
     Route::resource('FeeTypes', 'FeeTypesController');
     #Feeby batch 
     Route::resource('Feebybatch', 'FeebybatchController');
+    Route::resource('Feedetails', 'FeedetailsController');
 
     # Notice crud Routes.
     Route::resource('Notice', 'NoticeController');
