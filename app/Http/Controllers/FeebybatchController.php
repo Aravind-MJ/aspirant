@@ -10,6 +10,7 @@ use App\Batch;
 use App\Student;
 use App\User;
 use App\Feetypes;
+use App\Feedetails;
 use Input;
 use Validator;
 use Sentinel;
@@ -149,18 +150,20 @@ class FeebybatchController extends Controller {
         $data   = array();
         $enc_id = $id;
         $id     = Encrypt::decrypt($id);
+        
 //echo $id;
         //Fetch Student Details
-         $allStudents = DB::table('student_details')
-                ->join('users', 'users.id', '=', 'student_details.user_id')
-                ->join('fee','fee.id','=','student_details.user_id')
-                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-                 ->join('fee_types','fee_types.id','=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*','batch_details.*','fee_types.*','fee.*')
-                ->where('student_details.id', $id)
-                ->first();
-        
+         $students = DB::table('student_details')
+                 ->join('users', 'users.id', '=', 'student_details.user_id')  
+                 ->join('fee','fee.student_id','=','student_details.user_id')
+                 ->select('users.first_name', 'users.last_name', 'student_details.id as student_id', 'fee.first',
+                        'fee.second', 'fee.third', 'fee.discount', 'fee.balance')
+                 ->where('student_details.id', $id)
+                 ->first();
+         
          //Fetch Batch Details
+         
+         /*
         $batch = DB::table('batch_details')
                 ->select('id', 'batch')              
                 ->get();
@@ -170,19 +173,21 @@ class FeebybatchController extends Controller {
         }
         $batch = $data;
         
+          * 
+          */
         //echo $student->user_id;die;
         //Fetch User Details
-        $user = DB::table('users')
-                ->select('id', 'first_name', 'last_name', 'email')
-                ->where('id', $student->user_id)
-                ->first();
 
-                
-        $user->enc_id = Encrypt::encrypt($user->id);
+
+              
+        $studentEncrptId = Encrypt::encrypt($students->student_id);
         
 
         //Redirecting to edit_student.blade.php 
-        return View('Feetypes.edit_fee_by_batch', compact('user', 'batch', 'id', 'student'));
+        return View('Feetypes.edit_fee_by_batch', [
+            'students'         => $students,
+            'studentEncryptId' => $studentEncrptId
+        ]);
     }
 
     /**
@@ -191,24 +196,33 @@ class FeebybatchController extends Controller {
      * @param  int $id
      * @return Responser
      */
-    public function update($id, Requests\RegisterStudentRequest $requestData) {
-        //update student_details data
-        $student = Student::find($id);
-        $student->batch_id = $requestData['batch_id'];
-//        $student->gender = $requestData['gender'];
-//        $student->dob = date('Y-m-d', strtotime($requestData['dob']));
-//        $feetypes->total_fee= $requestData['total_fee'];
+    public function update($id, Requests\PublishFeedetailsRequest $requestData) {
+        //update student_details data 
+       
+        $id      =  Encrypt::decrypt($id);
+        $student = Feedetails::find($id);
+//        $student->first_name= $requestData['first_name'];
+//        
+//        $student->last_name= $requestData['last_name'];
+//        
+        $student->first = $requestData['first'];
+        
+        $student->second = $requestData['second'];
+        $student->third= $requestData['third'];
+        $student->discount= $requestData['discount'];
+        $student->balance= $requestData['balance'];
+     
 
         
         $student->save();
 
         if ($student->save()) {
             return redirect::back()
-                            ->withFlashMessage('Student Details Updated successfully!')
+                            ->withFlashMessage('Student Fee Details Updated successfully!')
                             ->withType('success');
         } else {
             return redirect::back()
-                            ->withFlashMessage('Student Details Update Failed!')
+                            ->withFlashMessage('Student  Fee Details Update Failed!')
                             ->withType('danger');
         }
     }
