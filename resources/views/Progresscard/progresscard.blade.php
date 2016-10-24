@@ -56,14 +56,17 @@
                      <td>{{ $student->exam_date }}</td>
                      <td>{{ $student->subject}}</td>
                      <td>{{ $student->mark }}</td>
+                  
                      
                  
                 </tr>
-                <?php $i++ ?>
-                @endforeach
+               
             </tbody>
         </table>
-        @endif
+         <p align="center"><button id="printPage">Print</button></p>
+           <?php $i++ ?>
+                @endforeach
+                @endif
     </div>
     </div>
 
@@ -71,9 +74,22 @@
 
 
 @section('confirmDelete')
-<script>
-    $(".delete").on("submit", function () {
-        return confirm("Do you want to delete this item?");
+<script lang='javascript'>
+    $(document).ready(function(){
+        $('#printPage').click(function(){
+            var data = '<input type="button" value="Print this page" onClick="window.print()">';
+            data += '<div id="div_print">';
+            data += $('#report').html();
+            data += '</div>';
+
+            myWindow=window.open('','','width=200,height=100');
+            myWindow.innerWidth = screen.width;
+            myWindow.innerHeight = screen.height;
+            myWindow.screenX = 0;
+            myWindow.screenY = 0;
+            myWindow.document.write(data);
+            myWindow.focus();
+        });
     });
 </script>
 @stop
