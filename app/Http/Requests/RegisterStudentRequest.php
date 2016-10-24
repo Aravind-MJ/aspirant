@@ -41,7 +41,7 @@ class RegisterStudentRequest extends Request {
             'phone' => 'required|regex:/[0-9]{10}/',
             'school' => 'required|regex:/^[A-Za-z. - ,]+$/',
             'cee_rank' => 'required|numeric',
-            'percentage' => 'required|numeric',   
+            'percentage' => 'required|numeric',
             'email' => 'required|email|unique:users,email',
              'photo' =>'required|mimes:jpeg,png,jpg|max:2000'
         ];
@@ -52,13 +52,14 @@ class RegisterStudentRequest extends Request {
             return [
             'batch_id' => 'required',
             'gender' => 'required',
-            'dob' => 'required',
+            'dob' => 'required',    
             'guardian' => 'required',
             'address' => 'required|min:5',
             'phone' => 'required|regex:/[0-9]{10}/',
             'school' => 'required|regex:/^[A-Za-z. - ,]+$/',
             'cee_rank' => 'required|numeric',
             'percentage' => 'required|numeric',
+           
             'photo' =>'mimes:jpeg,png,jpg|max:2000'
         
         ];

@@ -150,7 +150,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{URL::route('Faculty.create')}}"><i class="fa fa-circle-o"></i> Progresscard</a></li>
+                  <li><a href="{{ action("StudentprogresscardController@index") }}"><i class="fa fa-circle-o"></i> Progresscard</a></li>
                    
                 </ul>
             </li>

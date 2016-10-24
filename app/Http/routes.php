@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth', 'redirectFaculty', 'redirectStandardUser'
     #Feeby batch 
     Route::resource('Feebybatch', 'FeebybatchController');
     Route::resource('Feedetails', 'FeedetailsController');
+    Route::resource('Progresscard', 'StudentprogresscardController');
+    Route::get('ProgresscardSearch', ['as' => 'search.Progresscard', 'uses' => 'StudentprogresscardController@search']);
 
     # Notice crud Routes.
     Route::resource('Notice', 'NoticeController');

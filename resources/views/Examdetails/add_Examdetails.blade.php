@@ -21,6 +21,11 @@
             {!! Form::text('exam_date', null, ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
             {!! errors_for('exam_date', $errors) !!}
         </div>
+        <div class="form-group">
+            {!! Form::label('subject', 'Subject') !!}
+            {!! Form::text('subject', null, ['class' => 'form-control', 'placeholder'=>'Enter subject'])!!}
+            {!! errors_for('subject', $errors) !!}
+        </div>
         
            <div class="form-group">
             {!! Form::label('total_mark', 'TotalMark') !!}

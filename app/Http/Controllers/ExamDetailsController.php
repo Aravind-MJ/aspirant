@@ -62,6 +62,7 @@ class ExamDetailsController extends Controller
         $Examdetails = new \App\Examdetails;
         $Examdetails->type_id = $requestData['type_id'];
         $Examdetails->exam_date = date("Y/m/d", strtotime($requestData['exam_date']));
+        $Examdetails->subject = $requestData['subject'];
         $Examdetails->total_mark = $requestData['total_mark'];
         $Examdetails->save();
            return redirect()->route('ExamDetails.create')
@@ -119,6 +120,7 @@ class ExamDetailsController extends Controller
         $Examdetails = \App\Examdetails::find($id);
         $Examdetails->type_id = $requestData['type_id'];
         $Examdetails->exam_date = date("Y/m/d", strtotime($requestData['exam_date']));
+         $Examdetails->subject = $requestData['subject'];
         $Examdetails->total_mark = $requestData['total_mark'];
 
         $Examdetails->save();

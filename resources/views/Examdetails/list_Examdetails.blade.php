@@ -20,6 +20,7 @@
                 <tr>
                     <th>Exam_Type</th>
                     <th>Date</th>
+                    <th>Subject</th>
                     <th>TotalMark</th>
     
                     <!--<th>Photo</th>-->
@@ -32,7 +33,9 @@
                 <tr>
                     <td>{{ $Examdetails->name}}</td>
                      <td>{{ $Examdetails->exam_date }}</td>
+                     <td>{{ $Examdetails->subject}}</td>
                      <td>{{ $Examdetails->total_mark }}</td>
+                     
             
                     <td class=center>
                         <a class="btn btn-default btn-success" href="{{url('ExamDetails/'.$Examdetails->id).'/edit'}}">Edit</a>

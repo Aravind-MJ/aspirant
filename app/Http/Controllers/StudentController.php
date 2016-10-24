@@ -106,6 +106,8 @@ class StudentController extends Controller {
         $student->school = $requestData['school'];
         $student->cee_rank = $requestData['cee_rank'];
         $student->percentage = $requestData['percentage'];
+          
+        
 
 //        $this->validate($requestData['photo'], [
 //
@@ -169,13 +171,15 @@ class StudentController extends Controller {
 
         $enc_id = $id;
         $id = Encrypt::decrypt($id);
+
+        //echo "a";
         //Fetch Student Details
         $student = DB::table('student_details')
                 ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
                 ->select('student_details.*', 'batch_details.batch')
                 ->where('student_details.id', $id)
                 ->first();
-
+        
          //Fetch Batch Details
         $batch = DB::table('batch_details')
                 ->select('id', 'batch')              
@@ -215,8 +219,8 @@ class StudentController extends Controller {
         $student->school = $requestData['school'];
         $student->cee_rank = $requestData['cee_rank'];
         $student->percentage = $requestData['percentage'];
-
-
+       
+        
         if ($requestData->hasFile('photo')) {
 
             $file = $requestData->file('photo');
