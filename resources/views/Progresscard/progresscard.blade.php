@@ -8,6 +8,37 @@
 
 @section('body')
 @include('flash')
+
+
+<head>
+	<style>
+		
+		
+		table {
+			border: 1px solid #000;
+			width:100%;
+		}
+		
+		table tr {
+			width:300px;
+		}
+		
+		table tr th {
+			text-align:center;
+			font-size:20px;
+			height: 40px;
+			background-color:#fef1e9;
+			width:auto;
+		}
+		
+		table tr td {
+			background-color:fef1e1;
+			text-align:center;
+			height: 40px;
+			width:auto;
+		}
+	</style>
+</head>
 <div class='col-md-offset-1 col-md-9'>
 <div class="box box-primary">
     <div class="box-body">
@@ -29,48 +60,80 @@
          </div>  
         </div>
 </div>
-    
     <div class="box box-primary">
-         <div class="box-body">
-       @if (count($allStudents) === 0)
+         <div class="box-body" id='report'>
+       @if (false)
         <h4><strong> No Progresscard Found! </strong></h4>
-        @elseif (count($allStudents) >= 1)
+        @elseif (true)
         <table id="example2" class="table table-bordered table-hover">
             <thead>
-                <tr>
-                    
-                    <th>Full name</th>
-                    <th>Exam_Type</th>
-                    <th>Exam_Date</th>
-                    <th>Subjects</th>
-                    <th>TotalMark</th>
-                 
-                </tr>
-            </thead>
-            <tbody>
-                <?php $i=1 ?>
-                @foreach( $allStudents as $student )
-                <tr>
-                    <td>{{  $student->first_name}} {{$student->last_name }} </td>
-                     <td>{{ $student->name}}</td>
-                     <td>{{ $student->exam_date }}</td>
-                     <td>{{ $student->subject}}</td>
-                     <td>{{ $student->mark }}</td>
-                  
-                     
-                 
-                </tr>
+                
+                 <tbody> 
+                <div class="box-header">
+                <h2 class="box-title"><strong> Student Progresscard</strong></h2>
+            </div>
+                <td><img src="{{ asset('images/students/'. $student->photo) }}" alt="photo" width="50" height="50"/></td>    
+                    <tr><th>Full Name</th>
+                        <td>{{ $student ->first_name }} {{ $student->last_name }}</td>
+                   
+                        
+                       
+                       
+                   
+                
+                   </thead>
+                
+                     </table>
+         
+        
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Mark Details</h3>
+            </div>
+                <div class="box-body">
                
-            </tbody>
-        </table>
-         <p align="center"><button id="printPage">Print</button></p>
-           <?php $i++ ?>
-                @endforeach
-                @endif
-    </div>
-    </div>
+                    <table id="example2" class="table table-bordered table-hover"> 
+                         
+                        <tr>
+                            <th rowspan="2">Exam Type</th>
+                            <th colspan="{{count($subjects)}}">Subjects</th>
+                            <th rowspan="2">Total Mark</th>
+                        </tr>                   
+                        <tr>
+                            @foreach($subjects as $subject)
+				<th>{{$subject}}</th>
+                            @endforeach
+			</tr> 
+                        @foreach($marks as $mark)                      
+                        <tr>
+				<td>{{$mark['name']}}</td>
+                                @foreach($subjects as $subject)
+                                    @if(isset($mark['marks'][$subject]))
+                                    <td>{{$mark['marks'][$subject]->mark}}</td>
+                                    @else
+                                    <td>No Marks Found</td>
+                                    @endif
+                                @endforeach
+                                <td>{{$mark['total_mark']}}</td>
+			</tr>
+                        @endforeach
+               
+                </div>
+        </div>
 
+</table>
+                       <p align="center"><button id="printPage">Print</button></p>
+
+            
+          @endif     
+                
+                 
+    </div>
+    </div>
 </div>
+
+
+
 
 
 @section('confirmDelete')
@@ -82,7 +145,7 @@
             data += $('#report').html();
             data += '</div>';
 
-            myWindow=window.open('','','width=200,height=100');
+            myWindow=window.open('','','width=600,height=300');
             myWindow.innerWidth = screen.width;
             myWindow.innerHeight = screen.height;
             myWindow.screenX = 0;

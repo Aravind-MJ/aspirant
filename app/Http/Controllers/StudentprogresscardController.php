@@ -30,39 +30,63 @@ class StudentprogresscardController extends Controller
     public function index()
     {
         
-        //select list of student
-        $allStudents = DB::table('student_details')
-                ->join('users', 'users.id', '=', 'student_details.user_id')
-                ->join('mark_details','mark_details.user_id', '=', 'student_details.user_id')
-                ->join('exam_details','exam_details.id', '=', 'mark_details.exam_id')
-                 ->join('Exam_type','Exam_type.id', '=','exam_details.type_id')
-
-//                ->join('fee','fee.id','=','student_details.user_id')
-//                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-//                 ->join('fee_types','fee_types.id','=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*','mark_details.*','exam_details.*','Exam_type.*')
-                ->where('student_details.deleted_at', NULL)
-                ->orderBy('student_details.created_at', 'DESC')
-                ->get();
-        foreach ($allStudents as $student) {
-            $student->enc_id = Encrypt::encrypt($student->id);
-            $student->enc_userid = Encrypt::encrypt($student->user_id);
+        $user_id = Request::input('param2');
+        $selectedBatch = $batch = Request::input('param1');
         
+        $data = array();
+        $year=2016;
+
+        $student = DB::table('student_details')
+                ->join('users', 'users.id', '=', 'student_details.user_id')
+                ->join('batch_details','batch_details.id','=','student_details.batch_id')
+                
+                ->first();
+       
+       
+        $subjects = DB::table('exam_details')
+                ->select(DB::raw('DISTINCT subject'))
+                ->get();
+      
+        $marks = DB::table('mark_details')
+                ->join('exam_details','exam_details.id','=','mark_details.exam_id')
+                ->where('mark_details.user_id',$user_id)
+                ->get();
+
+        foreach($marks as $each_mark){
+            $data[$each_mark->type_id]['marks'][$each_mark->subject]=$each_mark;
         }
+        
+        foreach($data as $key=>$value){
+            $exam_data = DB::table('Exam_type')
+                    ->where('id',$key)
+                    ->first();
+            
+            $data[$key]['name']=$exam_data->name;
+        }
+        $marks = $data;
+        
         //Fetch Batch Details
         $batch = DB::table('batch_details')
-                ->select('id', 'batch')
-                ->orderBy('batch_details.created_at', 'ASC')
+                ->select('id', 'batch')              
                 ->get();
-//        $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
         $data = array();
         foreach ($batch as $batch) {
            $data[$batch->id] = $batch->batch;
         }
         $batch = $data;
-        return View('Progresscard.progresscard', compact('allStudents', 'batch', 'id'));
+        
+        // returns a view and passes the view the list of articles and the original query.
+//        return route('Student.index');
+       
+        return View('Progresscard.progresscard', 
+            ['batch' => $batch, 
+                'selbatch' => $selectedBatch,
+                'student' => $student,
+                'subjects' => $subjects,
+                'marks' => $marks
+                ]
+        );
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -121,38 +145,59 @@ class StudentprogresscardController extends Controller
 
         // Gets the query string and batch from our form submission 
 
-        $search = Request::input('param2');
+        $user_id = Request::input('param2');
         $selectedBatch = $batch = Request::input('param1');
+        $data = array();
 
-        // Returns an array of articles that have the query string located somewhere within 
+        $year=2016;
 
-        $query = DB::table('student_details')
+        $students = DB::table('student_details')
                 ->join('users', 'users.id', '=', 'student_details.user_id')
-               
-                ->join('mark_details','mark_details.user_id', '=', 'student_details.user_id')
-                ->join('exam_details','exam_details.id', '=', 'mark_details.exam_id')
-                ->join('Exam_type','Exam_type.id', '=','exam_details.type_id')
+                ->join('batch_details','batch_details.id','=','student_details.batch_id')
+                ->where([
+                    'users.id'=>$user_id,
+                    'users.deleted_at'=>null
+                        ])
+                ->first();
 
-//                 ->join('fee','fee.student_id','=','student_details.user_id')
-//                ->join('fee_types','fee_types.batch_id','=', 'student_details.batch_id')
-                ->select('users.*', 'student_details.*','mark_details.*','exam_details.*','Exam_type.*')
-                ->where('student_details.deleted_at', NULL);
         
-
-        if ($batch != 0) {
-            $query->where('student_details.batch_id', $batch);
+        $subjects = DB::table('exam_details')
+                ->select(DB::raw('DISTINCT subject'))
+                ->get();
+        foreach($subjects as $subject){
+            if($subject->subject!=''){
+                $data_subject []= ucwords($subject->subject);
+            }
+        }
+            $subjects = $data_subject;
+            
+        
+     
+        $marks = DB::table('mark_details')
+                ->join('exam_details','exam_details.id','=','mark_details.exam_id')
+                ->where('mark_details.user_id',$user_id)
+                ->get();
+        
+        
+        foreach($marks as $each_mark){
+            $data[$each_mark->type_id]['marks'][ucwords($each_mark->subject)]=$each_mark;
+            $data[$each_mark->type_id]['date'] = $each_mark->exam_date;
         }
         
-      if (!empty($search)) {
-          $query->where('users.first_name', 'LIKE', '%' . $search . '%');
-       }
-       
-        $allStudents = $query->get();
-        foreach ($allStudents as $student) {
-            $student->enc_id = Encrypt::encrypt($student->id);
-            $student->enc_userid = Encrypt::encrypt($student->user_id);
-                
+        foreach($data as $key=>$value){
+            $exam_data = DB::table('Exam_type')
+                    ->where('id',$key)
+                    ->first();
+            
+            $data[$key]['name']=$exam_data->name;
+            $total_mark = 0;
+            foreach($data[$key]['marks'] as $mark){
+                $total_mark += $mark->mark;
+            }
+            $data[$key]['total_mark'] = $total_mark;
         }
+        $marks = $data;
+        
         //Fetch Batch Details
         $batch = DB::table('batch_details')
                 ->select('id', 'batch')              
@@ -165,9 +210,14 @@ class StudentprogresscardController extends Controller
         
         // returns a view and passes the view the list of articles and the original query.
 //        return route('Student.index');
+       
         return View('Progresscard.progresscard', 
-            ['allStudents' => $allStudents, 
-            'batch' => $batch, 'selbatch' => $selectedBatch]
+            ['batch' => $batch, 
+                'selbatch' => $selectedBatch,
+                'student' => $students,
+                'subjects' => $subjects,
+                'marks' => $marks
+                ]
         );
     }
     /**
