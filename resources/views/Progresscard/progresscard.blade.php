@@ -62,10 +62,10 @@
 </div>
     <div class="box box-primary">
          <div class="box-body" id='report'>
-       @if (false)
+        @if(count($student)<=0)
         <h4><strong> No Progresscard Found! </strong></h4>
-        @elseif (true)
-        <table id="example2" class="table table-bordered table-hover">
+        @else
+        <table  id="example2" class="table table-bordered table-hover">
             <thead>
                 
                  <tbody> 
@@ -74,18 +74,12 @@
             </div>
                 <td><img src="{{ asset('images/students/'. $student->photo) }}" alt="photo" width="50" height="50"/></td>    
                     <tr><th>Full Name</th>
-                        <td>{{ $student ->first_name }} {{ $student->last_name }}</td>
-                   
-                        
-                       
-                       
-                   
-                
+                        <td>{{ $student ->first_name }} {{ $student->last_name }}</td></tr>
+                       <tr><th>Batch</th>
+                        <td>{{ $student->batch }}</td></tr>
                    </thead>
-                
                      </table>
          
-        
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Mark Details</h3>

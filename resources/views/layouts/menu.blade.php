@@ -110,6 +110,21 @@
                     <li><a href="{{URL::route('ExamDetails.index')}}"><i class="fa fa-circle-o"></i> List ExamDetails</a></li>
                 </ul>
             </li>
+            
+              
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>Subjects</span>
+                    <span class="pull-right-container">
+                        <span class="fa fa-angle-left pull-right"></span>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{URL::route('Subjects.create')}}"><i class="fa fa-circle-o"></i> Add Subjects</a></li>
+<!--                    <li><a href="{{URL::route('Subjects.index')}}"><i class="fa fa-circle-o"></i> List Subjects</a></li>-->
+                </ul>
+            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-twitch"></i>
@@ -150,7 +165,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                  <li><a href="{{ action("StudentprogresscardController@index") }}"><i class="fa fa-circle-o"></i> Progresscard</a></li>
+                  <li><a href="{{ action("StudentprogresscardController@search") }}"><i class="fa fa-circle-o"></i> Progresscard</a></li>
                    
                 </ul>
             </li>

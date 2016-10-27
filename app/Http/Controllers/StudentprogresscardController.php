@@ -151,7 +151,7 @@ class StudentprogresscardController extends Controller
 
         $year=2016;
 
-        $students = DB::table('student_details')
+        $student = DB::table('student_details')
                 ->join('users', 'users.id', '=', 'student_details.user_id')
                 ->join('batch_details','batch_details.id','=','student_details.batch_id')
                 ->where([
@@ -164,6 +164,7 @@ class StudentprogresscardController extends Controller
         $subjects = DB::table('exam_details')
                 ->select(DB::raw('DISTINCT subject'))
                 ->get();
+        
         foreach($subjects as $subject){
             if($subject->subject!=''){
                 $data_subject []= ucwords($subject->subject);
@@ -207,25 +208,18 @@ class StudentprogresscardController extends Controller
            $data[$batch->id] = $batch->batch;
         }
         $batch = $data;
-        
         // returns a view and passes the view the list of articles and the original query.
 //        return route('Student.index');
-       
         return View('Progresscard.progresscard', 
             ['batch' => $batch, 
                 'selbatch' => $selectedBatch,
-                'student' => $students,
+                'student' => $student,
                 'subjects' => $subjects,
                 'marks' => $marks
                 ]
         );
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
+   
     public function destroy($id)
     {
         //
