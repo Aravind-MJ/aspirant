@@ -117,8 +117,16 @@ class ExamDetailsController extends Controller
                 ->where('exam_details.id', $id)
                 ->select('Exam_type.name', 'exam_details.*','subjects')
                 ->first();
+        $subjects = DB::table('subjects')
+                ->select('id', 'subjects')              
+                ->get();
+        $data = array();
+        foreach ($subjects as $subjects) {
+           $data[$subjects->id] = $subjects->subjects;
+        }
+        $subjects = $data;
         $Examtype=  \App\Examtypes::lists('name','id');
-       return view('Examdetails.edit_Examdetails',compact('Examdetails','type_id','Examtype','id'));
+       return view('Examdetails.edit_Examdetails',compact('Examdetails','type_id','subjects','Examtype','id'));
  
     }
 
@@ -132,10 +140,8 @@ class ExamDetailsController extends Controller
     {
         $Examdetails = \App\Examdetails::find($id);
         $Examdetails->type_id = $requestData['type_id'];
-        $Examdetails->subjects= $requestData['subject_id'];
+        $Examdetails->subject_id= $requestData['subject_id'];
         $Examdetails->exam_date = date("Y/m/d", strtotime($requestData['exam_date']));
-         $Examdetails->subject = $requestData['subject'];
-        $Examdetails->total_mark = $requestData['total_mark'];
 
         $Examdetails->save();
        return redirect()->route('ExamDetails.index')

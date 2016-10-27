@@ -27,8 +27,7 @@
         <div class="form-group">
             {!! Form::label('subject_id', 'Subject') !!}
             {!! Form::select('subject_id',$subjects,null,['class' => 'form-control', 'placeholder'=>''])!!}
-            {!! errors_for('subject_id', $errors) !!}
-            <!--{!! errors_for('first_name', $errors) !!}-->
+    
         </div>
         <div class="form-group">
             {!! Form::label('exam_date', 'Exam_date') !!}
