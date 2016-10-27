@@ -71,10 +71,9 @@ class FeedetailsController extends Controller
         $Feedetails->second = $requestData['second'];
         $Feedetails->third = $requestData['third'];
         $Feedetails->discount = $requestData['discount'];
-        $Feedetails->balance = $requestData['balance'];
          $Feedetails->save();
            return redirect()->route('Feedetails.create')
-                            ->withFlashMessage('Examdetails Added successfully!')
+                            ->withFlashMessage('Feedetails Added successfully!')
                             ->withType('success');
     }
 
@@ -97,18 +96,49 @@ class FeedetailsController extends Controller
      */
     public function edit($id)
     {
-        //
-    }
+       {
+         $enc_id=$id;
+         $id = Encrypt::decrypt($id);
+        
+       $Feedetails = DB::table('fee')
+            ->join('users','users.id','=', 'fee.student_id')
+            ->join('student_details','student_details.user_id', '=','users.id') 
+            ->select('fee.*', 'users.*' ,'student_details.*')
+            ->first();
+         $users = DB::table('users')
+                  ->join('student_details','student_details.user_id', '=','users.id')              
+                  ->select('users.id','first_name','last_name')
+                  ->get();
+         $data=array();
+     
+        foreach($users as $each){
+            $data[$each->id]=$each->first_name.' '.$each->last_name;
+           
+        }
+        $users=$data;
+        //Fetch Batch Details
 
+        return View('Feedetails.edit_Feedetails', compact('Feedetails', 'users', 'id')); //
+    }
+    }
     /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update($id, Requests\PublishFeedetailsRequest $requestData)
     {
-        //
+        $Feedetails = \App\Feedetails::find($id);
+        $Feedetails->student_id= $requestData['student_name'];
+        $Feedetails->first =    $requestData['first'];
+        $Feedetails->second = $requestData['second'];
+        $Feedetails->third = $requestData['third'];
+        $Feedetails->discount = $requestData['discount'];
+         $Feedetails->save();
+        return redirect()->route('Feedetails.index')
+                        ->withFlashMessage('FeeDetails Updated successfully!')
+                        ->withType('success');
     }
 
     /**

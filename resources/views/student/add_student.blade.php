@@ -36,8 +36,8 @@
         
         <div class="form-group">
             {!! Form::Label('gender', 'Gender') !!}<br>
-            {!! Form::radio('gender', 'male') !!}{!! Form::Label('gender', 'Male') !!}
-            {!! Form::radio('gender', 'female') !!}{!! Form::Label('gender', 'Female') !!}
+            <div class="col-md-1" style="margin-left: 0px;">{!! Form::radio('gender', 'male') !!}{!! Form::Label('gender', 'Male') !!}</div>
+            <div class="col-md-11" style="float: left">{!! Form::radio('gender', 'female') !!}{!! Form::Label('gender', 'Female') !!}</div><br>
         </div>
 
         <div class="form-group">

@@ -181,7 +181,7 @@
 			</tr>
                         @endforeach
                     </table>
-                       <p align="center"><button id="printPage">Print</button></p>
+                       <p align="center"><button id="printPage" onclick="myprint()">Print</button></p>
           @endif               
     </div>
     </div>
@@ -195,22 +195,27 @@
 
 @section('confirmDelete')
 <script lang='javascript'>
-    $(document).ready(function(){
-        $('#printPage').click(function(){
-            var data = '<input type="button" value="Print this page" onClick="window.print()">';
-            data += '<div id="div_print">';
-            data += $('#report').html();
-            data += '</div>';
-
-            myWindow=window.open('','','width=600,height=300');
-            myWindow.innerWidth = screen.width;
-            myWindow.innerHeight = screen.height;
-            myWindow.screenX = 0;
-            myWindow.screenY = 0;
-            myWindow.document.write(data);
-            myWindow.focus();
-        });
-    });
+//    $(document).ready(function(){
+//        $('#printPage').click(function(){
+//            var data = '<input type="button" value="Print this page" onClick="window.print()">';
+//            data += '<div id="div_print">';
+//            data += $('#report').html();
+//            data += '</div>';
+//
+//            myWindow=window.open('','','width=600,height=300');
+//            myWindow.innerWidth = screen.width;
+//            myWindow.innerHeight = screen.height;
+//            myWindow.screenX = 0;
+//            myWindow.screenY = 0;
+//            myWindow.document.write(data);
+//            myWindow.focus();
+//        });
+//    });
+    
+    function myprint(){
+    window.print();
+    }
+    
 </script>
 @stop
 @section('dataTable')

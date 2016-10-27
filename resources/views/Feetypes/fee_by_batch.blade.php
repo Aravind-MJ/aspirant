@@ -55,7 +55,13 @@
             <tbody>
                 <?php $i=1 ?>
                 @foreach( $allStudents as $student )
-                <tr>
+                <?php $add=$student->first+$student->second+$student->third;
+                //echo $add;
+                //echo 'hi'; 
+                        $bal=$student->total_fee-$add ;
+                      //echo $bal;  die;
+                        ?>
+                <tr>                   
                     <td>{{ $i }}</td>
                     <td>{{ $student->first_name}} {{$student->last_name }} </td>
                     <td class= btn btn-primary btn-block> {{ $student ->total_fee }}                     
@@ -64,7 +70,7 @@
                     <td>{{ $student->second }}</td>
                      <td>{{ $student->third }}</td>
                       <td>{{ $student->discount }}</td>
-                       <td>{{ $student->balance }}</td>
+                       <td>{{ $bal }}</td>
 
                     
                     <td class=center>                      

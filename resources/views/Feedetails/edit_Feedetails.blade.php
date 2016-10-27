@@ -1,6 +1,7 @@
+
 @extends('layouts.layout')
 
-@section('title', 'Add Feedetails')
+@section('title', 'Edit Feedetails')
 
 <!--@section('content')
 
@@ -9,7 +10,7 @@
 @endif-->
 
 @section('body')
-{!! Form::open(['route' => 'Feedetails.store', 'method'=>'post','enctype' => 'multipart/form-data']) !!}
+{!! Form::model($Feedetails, ['method' => 'PATCH', 'route' => ['Feedetails.update',$Feedetails->id],'enctype' => 'multipart/form-data']) !!}
 @include('flash')
 <!--{!! Form::open() !!}-->
   <div class="col-md-6 col-md-offset-1">
@@ -43,8 +44,8 @@
                         {!! Form::text('discount',null, ['class'=>'form-control', 'placeholder'=>'Discount']) !!}
                         {!! errors_for('discount', $errors) !!}
                     </div>
-<!--                    
-                    <div class="form-group">
+                    
+<!--                    <div class="form-group">
                         {!! Form::label('balance', 'Balance') !!}
                         {!! Form::text('balance',null, ['class'=>'form-control', 'placeholder'=>'Balance']) !!}
                         {!! errors_for('balance', $errors) !!}

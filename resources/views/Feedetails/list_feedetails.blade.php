@@ -23,7 +23,7 @@
                     <th>Second_Installment</th>
                     <th>Third_Installment</th>
                     <th>Discount</th>   
-                    <th>Balance</th> 
+<!--                    <th>Balance</th> -->
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -36,7 +36,6 @@
                      <td>{{ $Feedetails->second}}</td>
                      <td>{{ $Feedetails->third}}</td>
                      <td>{{ $Feedetails->discount}}</td>
-                      <td>{{ $Feedetails->balance}}</td>
               
 
                     <td class=center>
