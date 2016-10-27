@@ -152,7 +152,7 @@
                 <ul class="treeview-menu">
                     <li><a href="{{URL::route('Feedetails.create')}}"><i class="fa fa-circle-o"></i> Add FeeDetails</a></li>
                     <li><a href="{{URL::route('Feedetails.index')}}"><i class="fa fa-circle-o"></i> ListFeeDetails</a></li>
-<!--                     <li><a href="{{URL::route('Feebybatch.index')}}"><i class="fa fa-circle-o"></i> jhjkd</a></li>-->
+
                    
                 </ul>
             </li>
