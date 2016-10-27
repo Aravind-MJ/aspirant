@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Examdetails;
 use App\Examtypes;
+use App\Subjects;
 use Input;
 use DB;
 use App\Encrypt;
@@ -28,7 +29,8 @@ class ExamDetailsController extends Controller
 
         $allExamdetails = DB::table('exam_details')
             ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
-            ->select('Exam_type.*', 'exam_details.*')
+            ->join('subjects','subjects.id', '=', 'exam_details.subject_id')
+            ->select('Exam_type.*', 'exam_details.*','subjects')
             ->get();
      foreach($allExamdetails as $Examdetails) {
      $Examdetails->id = Encrypt::encrypt($Examdetails->id);
@@ -46,8 +48,19 @@ class ExamDetailsController extends Controller
     public function create()
     {
         $Examtype = \App\Examtypes::lists('name', 'id');
-        return view('Examdetails.add_Examdetails', compact('type_id', 'Examtype', 'id'));
+        
+        
+        $subjects = DB::table('subjects')
+                ->select('id', 'subjects')              
+                ->get();
+        $data = array();
+        foreach ($subjects as $subjects) {
+           $data[$subjects->id] = $subjects->subjects;
+        }
+        $subjects = $data;
+        return view('Examdetails.add_Examdetails', compact('type_id', 'Examtype', 'subjects','id'));
     }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -61,9 +74,8 @@ class ExamDetailsController extends Controller
 
         $Examdetails = new \App\Examdetails;
         $Examdetails->type_id = $requestData['type_id'];
+         $Examdetails->subject_id = $requestData['subject_id'];
         $Examdetails->exam_date = date("Y/m/d", strtotime($requestData['exam_date']));
-        $Examdetails->subject = $requestData['subject'];
-        $Examdetails->total_mark = $requestData['total_mark'];
         $Examdetails->save();
            return redirect()->route('ExamDetails.create')
                             ->withFlashMessage('Examdetails Added successfully!')
@@ -101,8 +113,9 @@ class ExamDetailsController extends Controller
         $id = Encrypt::decrypt($id);
        $Examdetails = DB::table('exam_details')
                 ->join('Exam_type', 'Exam_type.id', '=', 'exam_details.type_id')
+                 ->join('subjects','subjects.id', '=', 'exam_details.subject_id')
                 ->where('exam_details.id', $id)
-                ->select('Exam_type.name', 'exam_details.*')
+                ->select('Exam_type.name', 'exam_details.*','subjects')
                 ->first();
         $Examtype=  \App\Examtypes::lists('name','id');
        return view('Examdetails.edit_Examdetails',compact('Examdetails','type_id','Examtype','id'));
@@ -119,6 +132,7 @@ class ExamDetailsController extends Controller
     {
         $Examdetails = \App\Examdetails::find($id);
         $Examdetails->type_id = $requestData['type_id'];
+        $Examdetails->subjects= $requestData['subject_id'];
         $Examdetails->exam_date = date("Y/m/d", strtotime($requestData['exam_date']));
          $Examdetails->subject = $requestData['subject'];
         $Examdetails->total_mark = $requestData['total_mark'];

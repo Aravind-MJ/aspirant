@@ -19,9 +19,10 @@
             <thead>
                 <tr>
                     <th>Exam_Type</th>
-                    <th>Date</th>
                     <th>Subject</th>
-                    <th>TotalMark</th>
+                    <th>Date</th>
+                   
+                   
     
                     <!--<th>Photo</th>-->
                     <th>Edit</th>
@@ -32,9 +33,11 @@
                 @foreach($allExamdetails as $Examdetails)
                 <tr>
                     <td>{{ $Examdetails->name}}</td>
+                    <td>{{ $Examdetails->subjects}}</td>
+                    
                      <td>{{ $Examdetails->exam_date }}</td>
-                     <td>{{ $Examdetails->subject}}</td>
-                     <td>{{ $Examdetails->total_mark }}</td>
+              
+                  
                      
             
                     <td class=center>

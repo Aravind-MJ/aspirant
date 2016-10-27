@@ -53,7 +53,7 @@ class StudentprogresscardController extends Controller
                 ->get();
 
         foreach($marks as $each_mark){
-            $data[$each_mark->type_id]['marks'][$each_mark->subject]=$each_mark;
+            $data[$each_mark->type_id]['marks'][$each_mark->subject_id]=$each_mark;
         }
         
         foreach($data as $key=>$value){
@@ -161,16 +161,14 @@ class StudentprogresscardController extends Controller
                 ->first();
 
         
-        $subjects = DB::table('exam_details')
-                ->select(DB::raw('DISTINCT subject'))
+        $subjects = DB::table('subjects')
                 ->get();
         
         foreach($subjects as $subject){
-            if($subject->subject!=''){
-                $data_subject []= ucwords($subject->subject);
-            }
+                $data_subject [$subject->id]= ucwords($subject->subjects);
         }
             $subjects = $data_subject;
+            $subjects[0] = 'Undefined';
             
         
      
@@ -181,7 +179,7 @@ class StudentprogresscardController extends Controller
         
         
         foreach($marks as $each_mark){
-            $data[$each_mark->type_id]['marks'][ucwords($each_mark->subject)]=$each_mark;
+            $data[$each_mark->type_id]['marks'][ucwords($subjects[$each_mark->subject_id])]=$each_mark;
             $data[$each_mark->type_id]['date'] = $each_mark->exam_date;
         }
         

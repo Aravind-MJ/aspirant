@@ -25,20 +25,18 @@
             <!--{!! errors_for('first_name', $errors) !!}-->
         </div>
         <div class="form-group">
+            {!! Form::label('subject_id', 'Subject') !!}
+            {!! Form::select('subject_id',$subjects,null,['class' => 'form-control', 'placeholder'=>''])!!}
+            {!! errors_for('subject_id', $errors) !!}
+            <!--{!! errors_for('first_name', $errors) !!}-->
+        </div>
+        <div class="form-group">
             {!! Form::label('exam_date', 'Exam_date') !!}
             {!! Form::text('exam_date', null, ['class' => 'form-control', 'placeholder'=>'','id' => 'datepicker1'])!!}
             {!! errors_for('exam_date', $errors) !!}
         </div>
-        <div class="form-group">
-            {!! Form::label('subject', 'Subject') !!}
-            {!! Form::text('subject', null, ['class' => 'form-control', 'placeholder'=>'Enter subject'])!!}
-            {!! errors_for('subject', $errors) !!}
-        </div>
-        <div class="form-group">
-            {!! Form::label('total_mark', 'TotalMark') !!}
-            {!! Form::text('total_mark',null, ['class' => 'form-control', 'placeholder'=>'TotalMark'])!!}
-            {!! errors_for('total_mark', $errors) !!}
-        </div>
+       
+        
 
 
         <br>

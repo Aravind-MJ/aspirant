@@ -29,8 +29,8 @@ public function rules() {
             return [
           'type_id' => 'required',
           'exam_date' => 'required',
-         'subject' => 'required',
-           'total_mark' => 'required|numeric|min:0|max:1000',
+         
+         
         ];
         }
         case 'PUT':
@@ -39,8 +39,7 @@ public function rules() {
             return [
              'type_id' => 'required',
              'exam_date' => 'required',
-              'subject' => 'required',
-             'total_mark' => 'required|numeric|min:0|max:1000',
+          
        ];
        }
        default:break;

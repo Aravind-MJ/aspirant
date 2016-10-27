@@ -80,7 +80,7 @@
   color: #000;
   padding-top: 5px;
   border: 1px solid #c1cdcd;
-}<
+}
                 
 	</style>
 </head>
