@@ -122,7 +122,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{URL::route('Subjects.create')}}"><i class="fa fa-circle-o"></i> Add Subjects</a></li>
-<!--                    <li><a href="{{URL::route('Subjects.index')}}"><i class="fa fa-circle-o"></i> List Subjects</a></li>-->
+                  <li><a href="{{URL::route('Subjects.index')}}"><i class="fa fa-circle-o"></i> List Subjects</a></li>-->
                 </ul>
             </li>
             <li class="treeview">
