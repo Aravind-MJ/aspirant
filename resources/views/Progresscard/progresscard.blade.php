@@ -123,6 +123,11 @@
                                 <h4>{{ $student->batch }}</h4>
                             </div>
                         </div>
+                         <div class="col-md-12 contentt">
+                            <b>Register Number</b><br><div class="col-md-12 batch">
+                                <h4>AS1000{{ $student->id }}</h4>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6 inner">
                         <b>photo</b><br><div class="col-md-12 photo">
