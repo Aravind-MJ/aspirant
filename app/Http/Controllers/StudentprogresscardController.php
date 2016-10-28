@@ -80,8 +80,6 @@ class StudentprogresscardController extends Controller
             $data[$key]['total_mark'] = $total_mark;
         }
         $marks = $data;
-        // returns a view and passes the view the list of articles and the original query.
-//        return route('Student.index');
         return View('Progresscard.progresscard', 
             ['batch' => $batch, 
                 'selbatch' => $selectedBatch,

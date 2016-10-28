@@ -124,7 +124,7 @@
                             </div>
                         </div>
                          <div class="col-md-12 contentt">
-                            <b>Register Number</b><br><div class="col-md-12 batch">
+                            <b>Register Number!</b><br><div class="col-md-12 batch">
                                 <h4>AS1000{{ $student->id }}</h4>
                             </div>
                         </div>
@@ -135,9 +135,8 @@
                         </div>
                     </div>
                 </div>
-            
-                    </tbody>
-               
+                     </tbody> 
+                    
             </table>
          
             <div class="box box-primary">
