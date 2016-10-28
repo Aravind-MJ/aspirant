@@ -88,27 +88,21 @@
     <div class="box box-primary">
         <div class="box-body">
         <?php  $selbatch = isset($selbatch)? $selbatch : null;?>
-         <div class="form-group">
-       {!! Form::open(array('route' => 'search.Progresscard', 'method'=>'get')) !!}
-        @if(isset($batch))
-        @if(!empty($batch))
-          </div>  
+        {!! Form::open(array('route' => 'search.Progresscard', 'method'=>'get')) !!}
         <div class="form-group">
-        {!! Form::select('param1', $batch,$selbatch, array('placeholder' => 'Please select batch','class' => 'form-control')) !!}
-           </div> 
-          <div class="form-group">
-  {!! Form::text('param2', null, array('class'=>'form-control', 'placeholder'=>'Search for student...')) !!}
-        {!! Form::submit('Search', array('class'=>'btn btn-default')) !!}
+        {!! Form::select('param1', $batch,$selbatch, array('placeholder' => 'Please select batch','class' => 'form-control','id'=>'param1')) !!}
+        </div>
+        <div class="form-group">
+        {!! Form::select('param2', array('0'=>"Select a Batch to Show it's students"),null, array('class'=>'form-control','id'=>'param2', 'placeholder'=>'Search for student...','disabled')) !!}
+        </div>
+        {!! Form::submit('Search', array('class'=>'btn btn-primary')) !!}
         {!! Form::close() !!}
-        @endif
-        @endif
-         </div>  
         </div>
     </div>
     <div class="box box-primary">
          <div class="box-body boxx" id='report'>
-            @if(count($student)<=0)
-                <h4><strong> No Progresscard Found! </strong></h4>
+            @if(isset($initial))
+                <h4><strong> Select a student to view Progress card! </strong></h4>
             @else
             <table  id="example2" class="table table-bordered table-hover">
                 
@@ -188,9 +182,21 @@
 </div>
     </div>
 </div>
-
-
-
+@section('pagescript')
+    <script>
+        $('#param1').change(function(){
+            var batch_id = $('#param1').val();
+            $.get('{{url('progressFetchStudents')}}?batch_id='+batch_id,
+            function(response){
+                if(response!=''){
+                    $('#param2').html(response).removeAttr('disabled');
+                }else{
+                    $('#param2').html('<option>No students found</option>').attr('disabled','disabled');
+                }
+            })
+        });
+    </script>
+@endsection
 
 
 @section('confirmDelete')
