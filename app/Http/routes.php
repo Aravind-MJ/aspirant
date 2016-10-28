@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth', 'redirectFaculty', 'redirectStandardUser'
     
     Route::resource('Progresscard', 'StudentprogresscardController');
     Route::get('ProgresscardSearch', ['as' => 'search.Progresscard', 'uses' => 'StudentprogresscardController@search']);
+    Route::get('progressFetchStudents','StudentProgresscardController@fetchStudents');
 
     # Notice crud Routes.
     Route::resource('Notice', 'NoticeController');
