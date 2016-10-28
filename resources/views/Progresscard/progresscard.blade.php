@@ -130,15 +130,7 @@
                         </div>
                     </div>
                 </div>
-<!--                        <td><img src="{{ asset('images/students/'. $student->photo) }}" alt="photo" width="50" height="50"/></td>    
-                        <tr>
-                            <th>Full Name</th>
-                            <td>{{ $student ->first_name }} {{ $student->last_name }}</td>
-                        </tr>
-                       <tr>
-                           <th>Batch</th>
-                            <td>{{ $student->batch }}</td>
-                       </tr>                       -->
+            
                     </tbody>
                
             </table>
