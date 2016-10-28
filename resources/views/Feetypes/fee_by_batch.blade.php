@@ -48,8 +48,7 @@
 <!--                    <th>Discount</th>
                     <th>Balance</th>-->
 <!--                    <th>View more</th>-->
-                    <th>Edit</th>
-                    <th>Delete</th>
+<!--                    <th>Edit</th>-->
                 </tr>
             </thead>
             <tbody>
@@ -73,17 +72,17 @@
                        <td>{{ $bal }}</td>
 
                     
-                    <td class=center>                      
+<!--                    <td class=center>                      
                         <a href='Feebybatch/{{ $student->enc_id }}/edit' class='btn btn-primary btn-block'>Payment details</a>
-                    </td> 
-                    <td class=center>
+                    </td> -->
+<!--                    <td class=center>
                         {!! Form::open(['action' => ['FeebybatchController@destroy', $student->enc_id], 'method' => 'POST', 'class' => 'delete']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$student->id}}">
                         <button type="submit" class="btn btn-danger btn-block">Delete</button>
                         {!! Form::close() !!}
-                    </td>
+                    </td>-->
                 </tr>
                 <?php $i++ ?>
                 @endforeach

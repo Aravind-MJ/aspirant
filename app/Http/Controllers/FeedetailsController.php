@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Feedetails;
+use App\Feedetails;
 use App\Http\Student;
 use App\User;
 use App\Encrypt;
@@ -149,6 +149,20 @@ class FeedetailsController extends Controller
      */
     public function destroy($id)
     {
-        //
+//         $enc_id = $id;
+//        $id = Encrypt::decrypt($id);
+//        $Feedetails = DB::table('fee')
+//                ->select('student_id')
+//                ->where('fee.id', $id)
+//                ->first();
+//
+//        $student_id = $Feedetails->student_id;
+//        $now = new DateTime();
+//        DB::table('users')->where('id', $user_id)->skip(1)->take(1)->update(['deleted_at' => $now]);
+//        //find result by id and delete 
+//        Feedetails::find($id)->delete();
+//
+//        //Redirecting to index() method
+//        return redirect()->route('Feedetails.index');
     }
 }

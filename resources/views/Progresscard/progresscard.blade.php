@@ -152,7 +152,7 @@
                     <table id="example2" class="table table-bordered table-hover"> 
                          
                         <tr>
-                            <th rowspan="2">Exam Type</th>
+                            <th rowspan="2">Exam</th>
                             <th colspan="{{count($subjects)}}">Subjects</th>
                             <th rowspan="2">Total Mark</th>
                         </tr>                   

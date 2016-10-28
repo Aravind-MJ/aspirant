@@ -25,7 +25,7 @@
                     <th>Discount</th>   
 <!--                    <th>Balance</th> -->
                     <th>Edit</th>
-                    <th>Delete</th>
+                  
                 </tr>
             </thead>
             <tbody>
@@ -41,14 +41,14 @@
                     <td class=center>
                         <a class="btn btn-default btn-success" href="{{url('Feedetails/'.$Feedetails->enc_id).'/edit'}}">Edit</a>
                     </td>
-                    <td class=center>
-                        {!! Form::open(['route' => ['Feedetails.destroy', $Feedetails->enc_id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()'])  !!}
+<!--                     <td class=center>
+                        {!! Form::open(['route' => ['Feedetails.destroy', $Feedetails->enc_id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()']) !!}
                         {!! csrf_field() !!}
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="id" value="{{$Feedetails->id}}">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-block">Delete</button>
                         {!! Form::close() !!}
-                    </td>
+                    </td>-->
                 </tr>
                 @endforeach
             </tbody>

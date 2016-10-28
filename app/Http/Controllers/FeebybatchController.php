@@ -123,20 +123,7 @@ class FeebybatchController extends Controller {
      * @return Response
      */
     public function show($id) {
-//        $enc_id = $id;
-//        $id = Encrypt::decrypt($id);
-//        //Get results by targeting id
-//        $student = DB::table('student_details')
-//                ->join('users', 'users.id', '=', 'student_details.user_id')
-//                ->join('batch_details', 'batch_details.id', '=', 'student_details.batch_id')
-//                ->select('users.*', 'student_details.*', 'batch_details.batch')
-//                ->where('student_details.id', $id)
-//                ->first();
-//        $student->enc_id = Encrypt::encrypt($student->id);
-//        $student->enc_userid = Encrypt::encrypt($student->user_id);
-////        return view('protected.admin.student_details')->with('student', $student);
-// //return View('Feetypes.fee_details', compact('student'));
-        
+//        
     }
 
     /**
@@ -234,22 +221,22 @@ class FeebybatchController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        $enc_id = $id;
-        $id = Encrypt::decrypt($id);
-        //find result by id and delete 
-       $student = DB::table('student_details')
-                ->select('user_id')
-                ->join('fee_types','fee_types.id','=', 'fee_types.id')
-                ->where('student_details.id','fee_types.*', $id)
-                ->first();
-
-        $user_id = $student->user_id;
-        $now = new DateTime();
-        DB::table('users')->where('id', $user_id)->skip(1)->take(1)->update(['deleted_at' => $now]);
-        Student::find($id)->delete();
-//        User::find($user_id)->delete();
-        //Redirecting to index() method
-        return Redirect::back();
+//        $enc_id = $id;
+//        $id = Encrypt::decrypt($id);
+//        //find result by id and delete 
+//       $student = DB::table('student_details')
+//                ->select('user_id')
+//                ->join('fee_types','fee_types.id','=', 'fee_types.id')
+//                ->where('student_details.id','fee_types.*', $id)
+//                ->first();
+//
+//        $user_id = $student->user_id;
+//        $now = new DateTime();
+//        DB::table('users')->where('id', $user_id)->skip(1)->take(1)->update(['deleted_at' => $now]);
+//        Student::find($id)->delete();
+////        User::find($user_id)->delete();
+//        //Redirecting to index() method
+//        return Redirect::back();
     }
 
     public function search() {
