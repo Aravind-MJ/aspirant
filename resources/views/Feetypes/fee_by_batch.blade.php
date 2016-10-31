@@ -72,9 +72,9 @@
                        <td>{{ $bal }}</td>
 
                     
-<!--                    <td class=center>                      
+                    <td class=center>                      
                         <a href='Feebybatch/{{ $student->enc_id }}/edit' class='btn btn-primary btn-block'>Payment details</a>
-                    </td> -->
+                    </td> 
 <!--                    <td class=center>
                         {!! Form::open(['action' => ['FeebybatchController@destroy', $student->enc_id], 'method' => 'POST', 'class' => 'delete']) !!}
                         {!! csrf_field() !!}

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Feedetails;
 use App\Http\Student;
 use App\User;
+use App\Batchdetails;
 use App\Encrypt;
 use DB;
 
@@ -51,7 +52,17 @@ class FeedetailsController extends Controller
            
         }
         $users=$data;
-       return view('Feedetails.add_feedetails', compact('student_id', 'Feedetails', 'users','id'));
+         $batch = DB::table('batch_details')
+                ->select('id', 'batch')
+                ->orderBy('batch_details.created_at', 'ASC')
+                ->get();
+//        $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
+        $data = array();
+        foreach ($batch as $batch) {
+           $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
+       return view('Feedetails.add_feedetails', compact('student_id', 'Feedetails','batch', 'users','id'));
     }
 
     /**
@@ -67,7 +78,8 @@ class FeedetailsController extends Controller
         
         $Feedetails = new \App\Feedetails;
         $Feedetails->student_id= $requestData['student_name'];
-        $Feedetails->first =    $requestData['first'];
+        $Feedetails->batch =    $requestData['batch'];
+       $Feedetails->first =    $requestData['first'];
         $Feedetails->second = $requestData['second'];
         $Feedetails->third = $requestData['third'];
         $Feedetails->discount = $requestData['discount'];
@@ -116,9 +128,19 @@ class FeedetailsController extends Controller
            
         }
         $users=$data;
+        $batch = DB::table('batch_details')
+                ->select('id', 'batch')
+                ->orderBy('batch_details.created_at', 'ASC')
+                ->get();
+//        $batch = Batch::lists('batch', 'id')->prepend('Select Batch', '');
+        $data = array();
+        foreach ($batch as $batch) {
+           $data[$batch->id] = $batch->batch;
+        }
+        $batch = $data;
         //Fetch Batch Details
 
-        return View('Feedetails.edit_Feedetails', compact('Feedetails', 'users', 'id')); //
+        return View('Feedetails.edit_Feedetails', compact('Feedetails', 'users', 'batch','id')); //
     }
     }
     /**
@@ -131,6 +153,7 @@ class FeedetailsController extends Controller
     {
         $Feedetails = \App\Feedetails::find($id);
         $Feedetails->student_id= $requestData['student_name'];
+        $Feedetails->batch =    $requestData['batch'];
         $Feedetails->first =    $requestData['first'];
         $Feedetails->second = $requestData['second'];
         $Feedetails->third = $requestData['third'];

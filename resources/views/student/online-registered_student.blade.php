@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'List Feedetails')
+@section('title', 'OnlineRegistered Students')
 
 <!--@section('content')
 
@@ -20,10 +20,16 @@
                 <tr>
                     <th>Student_name</th>
                     <th>Batch</th>
-                    <th>First_Insatallment</th>
-                    <th>Second_Installment</th>
-                    <th>Third_Installment</th>
-                    <th>Discount</th>   
+                    <th>Gender</th>
+                    <th>DOB</th>
+                    <th>Email</th>
+                    <th>Parent</th>   
+                    <th>Address</th>   
+                    <th>Contact</th>
+                     <th>School</th>   
+                     <th>Rank</th>   
+                     <th>Percentage</th> 
+                     <th>Photo</th>   
 <!--                    <th>Balance</th> -->
                     <th>Edit</th>
                   
@@ -32,12 +38,23 @@
             <tbody>
                 @foreach($allFeedetails as $Feedetails)
                 <tr>
-                     <td>{{ $Feedetails->first_name}} {{ $Feedetails->last_name }}</td>
-                     <td>{{ $Feedetails->batch}}</td>
-                     <td>{{ $Feedetails->first}}</td>
-                     <td>{{ $Feedetails->second}}</td>
-                     <td>{{ $Feedetails->third}}</td>
-                     <td>{{ $Feedetails->discount}}</td>
+                     <td>{{ $Feedetails->firstname}} {{ $Feedetails->lastname }}</td>
+                     <td>{{ $Feedetails->batch_id}}</td>
+                     <td>{{ $Feedetails->gender}}</td>
+                     <td>{{ $Feedetails->dob}}</td>
+                     <td>{{ $Feedetails->email}}</td>
+                     <td>{{ $Feedetails->parent}}</td>
+                     <td>{{ $Feedetails->address}}</td>
+                     <td>{{ $Feedetails->contact}}</td>
+                     <td>{{ $Feedetails->school}}</td>
+                     <td>{{ $Feedetails->rank}}</td>
+                     <td>{{ $Feedetails->percent}}</td>
+                     
+                      <td>
+                          <img src="{{ asset('images/students/'. $Feedetails->photo) }}"  alt="photo" width="50" height="50"/>
+                      </td>
+
+
               
 
                     <td class=center>

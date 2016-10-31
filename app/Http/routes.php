@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth', 'redirectStandardUser']], function () {
 
     # Student Registration crud Route.
     Route::resource('Student', 'StudentController');
+     Route::resource('Student', 'onlineController');
 
     # Search Student Route.
     Route::get('Search', ['as' => 'search.queries', 'uses' => 'StudentController@search']);

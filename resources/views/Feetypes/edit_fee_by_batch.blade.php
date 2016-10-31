@@ -28,12 +28,12 @@
                     
                      <div class="form-group">
                         {!! Form::label('first_name', 'First_Name') !!}
-                        {!! Form::text('first_name',null, ['class'=>'form-control', 'placeholder'=>'First-Installment']) !!}
+                        {!! Form::text('first_name',null, ['disabled' => '','class'=>'form-control', 'placeholder'=>'First-Installment']) !!}
                         {!! errors_for('first_name', $errors) !!}
                          </div>
                      <div class="form-group">
                         {!! Form::label('last_name', 'LastName') !!}
-                        {!! Form::text('last_name',null, ['class'=>'form-control', 'placeholder'=>'First-Installment']) !!}
+                        {!! Form::text('last_name',null, ['disabled' => '','class'=>'form-control', 'placeholder'=>'First-Installment']) !!}
                         {!! errors_for('last_name', $errors) !!}
                          </div>
                        <div class="form-group">
@@ -56,12 +56,7 @@
                         {!! Form::text('discount',null, ['class'=>'form-control', 'placeholder'=>'Discount']) !!}
                         {!! errors_for('discount', $errors) !!}
                     </div>
-                    
-                    <div class="form-group">
-                        {!! Form::label('balance', 'Balance') !!}
-                        {!! Form::text('balance',null, ['class'=>'form-control', 'placeholder'=>'Balance']) !!}
-                        {!! errors_for('balance', $errors) !!}
-                    </div>
+                   
                     </div>
         </div>
                  

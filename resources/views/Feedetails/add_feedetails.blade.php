@@ -20,6 +20,11 @@
                         {!! Form::label('student_name', 'StudentName') !!}
                         {!! Form::select('student_name',$users,null, ['class'=>'form-control', 'placeholder'=>'enter name']) !!}
                         {!! errors_for('student_name', $errors) !!}
+                  </div>
+                     <div class="form-group">
+                        {!! Form::label('batch', 'StudentName') !!}
+                        {!! Form::select('batch',$batch,null, ['class'=>'form-control', 'placeholder'=>'enter name']) !!}
+                        {!! errors_for('student_name', $errors) !!}
                     </div>
     
                     <div class="form-group">
