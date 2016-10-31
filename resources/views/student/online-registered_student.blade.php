@@ -12,7 +12,7 @@
 @include('flash')
 
 <div class="box box-primary">
-    <div class="box-body">
+    <div  style="overflow-y: scroll;" class="box-body">
 
 
         <table id="example2" class="table table-bordered table-hover">
