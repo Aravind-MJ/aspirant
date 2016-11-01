@@ -142,6 +142,15 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
+# Routes for RankList.
+
+        //Route::resource('RankList', 'RankListController');
+		Route::get('RankList/Common', 'RankListController@common');
+		Route::get('RankList/byBatch/{batch}', 'RankListController@byBatch');
+        Route::get('RankList/bySubject/{subject}', 'RankListController@bySubject');		
+		Route::post('ListSearch',['as'=>'search.ranklist','uses' => 'RankListController@search']);
+        //Route::get('RankList/byBatch/{batch}', 'RankListController@byBatch');
+
 # Faculty Routes
 Route::group(['middleware' => ['auth', 'faculty']], function () {
 

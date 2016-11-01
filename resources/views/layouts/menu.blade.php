@@ -158,6 +158,24 @@
                    
                 </ul>
             </li>
+			
+			
+			 <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i>
+                    <span>RankList</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+            <ul class="treeview-menu">
+                    <li><a href="{{url('RankList/Common')}}"><i clselectass="fa fa-circle-o"></i>Overall Ranklist</a></li>
+                    <li><a href="{{url('RankList/byBatch/select')}}"><i class="fa fa-circle-o"></i>  Ranklist By Batch</a></li>
+					<li><a href="{{url('RankList/bySubject/select')}}"><i class="fa fa-circle-o"></i>  Ranklist By Subject</a></li>
+                </ul>
+            </li>
+			
+			
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-user"></i>
