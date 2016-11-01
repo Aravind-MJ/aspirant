@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\online;
+use Illuminate\Support\Facades\Redirect;
+use App\online;    
 use DB;
+use App\Student;
 use App\Encrypt;
 use App\User;
 use Sentinel;
@@ -97,43 +99,27 @@ class onlineController extends Controller
         $student->user_id = $user->id;
         $student->gender = $register->gender;
         $student->dob = date('Y-m-d', strtotime($register->dob));
-        $student->guardian = $register->guardian;
+        $student->guardian = $register->parent;
         $student->address = $register->address;
-        $student->phone = $register->phone;
+        $student->phone = $register->contact;
         $student->school = $register->school;
-        $student->cee_rank = $register->cee_rank;
-        $student->percentage = $register->percentage;
-          
-        
-
-//        $this->validate($requestData['photo'], [
-//
-//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//        ]);
-
-        if ($register->hasFile('photo')) {
-
-            $file = $register->file('photo');
-
-            $name = time() . '-' . $file->getClientOriginalName();
-
-            $file = $file->move(public_path() . '/images/students', $name);
-
-//        $image      = Imag::make($file->getRealPath())->resize('320','240')->save($file);
-
-            $student->photo = $name;
-        }
+        $student->cee_rank = $register->rank;
+        $student->percentage = $register->percent;
+        $student->photo = $register->photo; 
 
         $student->save();
+        
         if ($student->save()) {
+            online::find($id)->delete();
             return Redirect::back()
-                            ->withFlashMessage('Student Added successfully!')
+                            ->withFlashMessage('Student Activated successfully!')
                             ->withType('success');
         } else {
             return Redirect::back()
-                            ->withFlashMessage('Failed!')
+                            ->withFlashMessage('Failed to activate! Please try again!')
                             ->withType('danger');
         }
+
 
     }
 
