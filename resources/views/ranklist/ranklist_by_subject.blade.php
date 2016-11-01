@@ -13,8 +13,8 @@
     <div class="box-body">
 	
 	<div class="form-group">
-            {!! Form::Label('subject_id', 'Examdetails') !!}
-            {!! Form::select('subject_id', $subject, $selectedSubject, ['class' => 'form-control']) !!}
+            {!! Form::Label('subject_id', 'select subject') !!}
+            {!! Form::select('subject_id', $subjects, $selectedSubject, ['class' => 'form-control']) !!}
             {!! errors_for('subject_id', $errors) !!}
 				
     </div>  
@@ -53,9 +53,9 @@
 </div>
 <script>
 function route(){
-	var subject = $('#subject_id').val();
+	var subjects = $('#subject_id').val();
 	//alert(subject);
-	var path = "{{url('RankList/bySubject')}}/"+subject;
+	var path = "{{url('RankList/bySubject')}}/"+subjects;
 	window.location.href=path;
 }
 </script>

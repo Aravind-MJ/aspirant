@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use App\User;
 use App\Batch;
-use App\Subject;
+use App\Subjects;
 use Input;
 use Validator;
 use Sentinel;
@@ -22,13 +22,13 @@ use DateTime;
 class RankListController extends Controller
 {
    protected $batch;
-	protected $subject;
+	protected $subjects;
 
-   public function __construct(Batch $batch,Subject $subject) {
+   public function __construct(Batch $batch,Subjects $subjects) {
  
  
         $this->batch = $batch;
-		 $this->subject = $subject;
+		 $this->subjects = $subjects;
    }
 	//public function __construct(faculty $faculty) {
  
@@ -130,25 +130,25 @@ class RankListController extends Controller
      * @return Response
      */
 	 
-	 public function bySubject($subject)
+	 public function bySubject($subjects)
     {
         $flag=true;
-		$selectedSubject=$subject;
+		$selectedSubject=$subjects;
 		$student = array();
 		/*Display Results*/
-		$subject = $this-> subject
-                ->select('id', 'subject')
+		$subjects = $this-> subjects
+                ->select('id', 'subjects')
                 ->get();
         $data = array();
-        foreach ($subject as $subject) {
-			if($selectedSubject==$subject->id){
+        foreach ($subjects as $subjects) {
+			if($selectedSubject==$subjects->id){
 				$flag=false;
 			}
-            $data[$subject->id] = $subject->subject;
+            $data[$subjects->id] = $subjects->subjects;
         }
-        $subject = $data;
+        $subjects = $data;
 		if($flag){
-			foreach($subject as $key=>$value){				
+			foreach($subjects as $key=>$value){				
 				$selectedSubject = $key;
 				break;
 			}
@@ -161,8 +161,8 @@ class RankListController extends Controller
   $all = DB::table('mark_details')
         
 		->join('student_details','student_details.user_id','=','mark_details.user_id')
-		->join('exam_details','exam_details.id', '=', 'student_details.id')
-		->join('subjects','subject.id','=', 'exam_details.subject_id')
+		->join('exam_details','exam_details.id', '=', 'mark_details.exam_id')
+		->join('subjects','subjects.id','=', 'exam_details.subject_id')
 		->select(DB::raw('mark_details.user_id,SUM(mark) as total_mark,subjects.subjects'))
 		->where('exam_details.subject_id',$selectedSubject)
 		->groupBy('mark_details.user_id')
@@ -185,7 +185,7 @@ class RankListController extends Controller
 		}	    
 			 
 		//dd($student);
-		return View('ranklist.ranklist_by_subject',['subject'=>$subject,'student'=>$student,'selectedSubject'=>$selectedSubject]);
+		return View('ranklist.ranklist_by_subject',['subjects'=>$subjects,'student'=>$student,'selectedSubject'=>$selectedSubject]);
 	}
     public function store()
     {
