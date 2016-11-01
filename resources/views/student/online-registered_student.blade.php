@@ -54,11 +54,8 @@
                           <img src="{{ asset('images/students/'. $Feedetails->photo) }}"  alt="photo" width="50" height="50"/>
                       </td>
 
-
-              
-
                     <td class=center>
-                        <a class="btn btn-default btn-success" href="{{url('Feedetails/'.$Feedetails->enc_id).'/edit'}}">Edit</a>
+                        <a class="btn btn-default btn-success" href="{{url('online/'.$Feedetails->enc_id).'/edit'}}">Activate</a>
                     </td>
 <!--                     <td class=center>
                         {!! Form::open(['route' => ['Feedetails.destroy', $Feedetails->enc_id], 'method' => 'POST','onsubmit' => 'return ConfirmDelete()']) !!}
