@@ -45,36 +45,36 @@
                     <th>Third_Installment</th>  
                     <th>Discount</th>
                      <th>Balance</th>
-<!--                    <th>Discount</th>
-                    <th>Balance</th>-->
-<!--                    <th>View more</th>-->
-<!--                    <th>Edit</th>-->
+                     <th>Payment</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $i=1 ?>
                 @foreach( $allStudents as $student )
-                <?php $add=$student->first+$student->second+$student->third;
-                //echo $add;
-                //echo 'hi'; 
-                        $bal=$student->total_fee-$add ;
-                      //echo $bal;  die;
-                        ?>
+                <?php $add=$student->first+$student->second+$student->third+$student->discount;
+                      $bal=$student->total_fee-$add ;
+                ?>
                 <tr>                   
                     <td>{{ $i }}</td>
                     <td>{{ $student->first_name}} {{$student->last_name }} </td>
                     <td class= btn btn-primary btn-block> {{ $student ->total_fee }}                     
                                              </td>
-                   <td>{{ $student->first }}</td>
+                    <td>{{ $student->first }}</td>
                     <td>{{ $student->second }}</td>
-                     <td>{{ $student->third }}</td>
-                      <td>{{ $student->discount }}</td>
-                       <td>{{ $bal }}</td>
-
-                    
+                    <td>{{ $student->third }}</td>
+                    <td>{{ $student->discount }}</td>
+                       <?php if($bal > 0){ ?>                      
+                    <td>{{ $bal}}</td>
                     <td class=center>                      
-                        <a href='Feebybatch/{{ $student->enc_id }}/edit' class='btn btn-primary btn-block'>Payment details</a>
-                    </td> 
+                        <a href='Feebybatch/{{ $student->enc_id }}/edit' class='btn btn-primary btn-block'>Pay Fee</a>
+                    </td>
+                    <?php }else{ ?>
+                    <td>0</td>
+                    <td class=center>                      
+                        <a href='#' class='btn btn-primary btn-block' disabled="">Payment Completed</a>
+                    </td>
+                    <?php } ?>
+                     
 <!--                    <td class=center>
                         {!! Form::open(['action' => ['FeebybatchController@destroy', $student->enc_id], 'method' => 'POST', 'class' => 'delete']) !!}
                         {!! csrf_field() !!}

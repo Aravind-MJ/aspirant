@@ -138,21 +138,22 @@
                     <li><a href="{{URL::route('FeeTypes.create')}}"><i class="fa fa-circle-o"></i> Add FeeTypes</a></li>
                     <li><a href="{{URL::route('FeeTypes.index')}}"><i class="fa fa-circle-o"></i> ListFeeTypes</a></li>
 <!--                     <li><a href="{{URL::route('Feebybatch.index')}}"><i class="fa fa-circle-o"></i> jhjkd</a></li>-->
-                     <li><a href="{{ action("FeebybatchController@index") }}"><i class="fa fa-circle-o"></i> Fee By Batch</a></li>
+                    
                 </ul>
             </li>
             
              <li class="treeview">
                 <a href="#">
                     <i class="fa fa-twitch"></i>
-                    <span>FeeDetails</span>
+                    <span>Fee Payment</span>
                     <span class="pull-right-container">
                         <span class="fa fa-angle-left pull-right"></span>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{URL::route('Feedetails.create')}}"><i class="fa fa-circle-o"></i> Add FeeDetails</a></li>
-                    <li><a href="{{URL::route('Feedetails.index')}}"><i class="fa fa-circle-o"></i> ListFeeDetails</a></li>
+                    <li><a href="{{URL::route('Feedetails.create')}}"><i class="fa fa-circle-o"></i>Pay Fee </a></li>
+                    <li><a href="{{URL::route('Feedetails.index')}}"><i class="fa fa-circle-o"></i> List Fee </a></li>
+                     <li><a href="{{ action("FeebybatchController@index") }}"><i class="fa fa-circle-o"></i> Fee By Batch</a></li>
 
                    
                 </ul>
