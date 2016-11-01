@@ -40,20 +40,20 @@
               .outer {
   border: 1px solid #8b8378;
   background-color: #ecf1ef;
-  height: 250px;
+  height: 240px;
   padding-top: 10px;
 }
 
 .inner {
   background-color: #ecf1ef;
-  height: 230px;
-  padding-top: 10px;
+  height: 215px;
+  padding-top: 5px;
 }
 
 .contentt {
   background-color: #ecf1ef;
-  height: 100px;
-  padding-top: 10px;
+  height: 60px;
+  padding-top: 5px;
 }
 
 .photo {
@@ -104,6 +104,7 @@
             @if(isset($initial))
                 <h4><strong> Select a student to view Progress card! </strong></h4>
             @else
+            <div id="mydiv">
             <table  id="example2" class="table table-bordered table-hover">
                 
                      <tbody> 
@@ -114,24 +115,24 @@
 
                     <div class="col-md-6 inner">
                         <div class="col-md-12 contentt">
-                            <b>Name</b><br><div class="col-md-12 name">
+                            <b>Name</b><br>
                                 <h4>{{ $student ->first_name }} {{ $student->last_name }}</h4>
-                            </div>
+                         
                         </div>
                         <div class="col-md-12 contentt">
-                            <b>Batch</b><br><div class="col-md-12 batch">
+                            <b>Batch</b><br>
                                 <h4>{{ $student->batch }}</h4>
-                            </div>
+                            
                         </div>
                          <div class="col-md-12 contentt">
-                            <b>Register Number!</b><br><div class="col-md-12 batch">
+                            <b>Register Number!</b><br>
                                 <h4>AS1000{{ $student->id }}</h4>
-                            </div>
+                           
                         </div>
                     </div>
                     <div class="col-md-6 inner">
                         <b>photo</b><br><div class="col-md-12 photo">
-                            <img src="{{ asset('images/students/'. $student->photo) }}" width="100%" height="100%">
+                            <img src="{{ asset('images/students/'. $student->photo) }}" width="200" height="200">
                         </div>
                     </div>
                 </div>
@@ -145,7 +146,7 @@
                 </div>
                 <div class="box-body">
                
-                    <table id="example2" class="table table-bordered table-hover"> 
+                    <table id="example2" class="table table-bordered table-hover" border="1 px"> 
                          
                         <tr>
                             <th rowspan="2">Exam</th>
@@ -171,10 +172,12 @@
 			</tr>
                         @endforeach
                     </table>
-                       <p align="center"><button id="printPage" onclick="myprint()">Print</button></p>
+                     
           @endif               
     </div>
     </div>
+    </div>
+    <p align="center"><button id="printPage" onclick="PrintElem('#mydiv')">Print</button></p>
 </div>
     </div>
 </div>
@@ -196,28 +199,31 @@
 
 
 @section('confirmDelete')
-<script lang='javascript'>
-//    $(document).ready(function(){
-//        $('#printPage').click(function(){
-//            var data = '<input type="button" value="Print this page" onClick="window.print()">';
-//            data += '<div id="div_print">';
-//            data += $('#report').html();
-//            data += '</div>';
-//
-//            myWindow=window.open('','','width=600,height=300');
-//            myWindow.innerWidth = screen.width;
-//            myWindow.innerHeight = screen.height;
-//            myWindow.screenX = 0;
-//            myWindow.screenY = 0;
-//            myWindow.document.write(data);
-//            myWindow.focus();
-//        });
-//    });
-    
-    function myprint(){
-    window.print();
+<script type="text/javascript">
+
+    function PrintElem(elem)
+    {
+        Popup($('#mydiv').html());
     }
-    
+
+    function Popup(data) 
+    {
+        var mywindow = window.open('', 'Progress Card', 'height=400,width=600');
+        mywindow.document.write('<html><head><title>Progress Card</title>');
+        /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(data);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
 </script>
 @stop
 @section('dataTable')

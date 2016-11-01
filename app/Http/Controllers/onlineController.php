@@ -24,7 +24,12 @@ class onlineController extends Controller
      */
     public function index()
     {
-         $allFeedetails = \App\online::all();    //Eloquent ORM method to return all matching results
+         $allFeedetails = DB::table('register')
+                ->join('batch_details', 'batch_details.id', '=', 'register.batch_id')
+                ->select('register.*','batch_details.batch')
+                ->orderBy('register.id', 'DESC')
+                ->get();
+         //$allFeedetails = \App\online::all();    //Eloquent ORM method to return all matching results
         //Redirecting to list_faculty.blade.php with $allFaculties  
          foreach( $allFeedetails as $Feedetails ){
              $Feedetails->enc_id = Encrypt::encrypt($Feedetails->id);

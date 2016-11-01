@@ -39,7 +39,7 @@
                 @foreach($allFeedetails as $Feedetails)
                 <tr>
                      <td>{{ $Feedetails->firstname}} {{ $Feedetails->lastname }}</td>
-                     <td>{{ $Feedetails->batch_id}}</td>
+                     <td>{{ $Feedetails->batch}}</td>
                      <td>{{ $Feedetails->gender}}</td>
                      <td>{{ $Feedetails->dob}}</td>
                      <td>{{ $Feedetails->email}}</td>
