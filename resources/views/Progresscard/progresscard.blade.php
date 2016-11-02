@@ -117,7 +117,7 @@
                         <div class="col-md-12 contentt">
                             <b>Name</b><br>
                                 <h4>{{ $student ->first_name }} {{ $student->last_name }}</h4>
-                         
+
                         </div>
                         <div class="col-md-12 contentt">
                             <b>Batch</b><br>
@@ -172,12 +172,13 @@
 			</tr>
                         @endforeach
                     </table>
-                     
+                    <div id="print">
+                  <p align="center"><button id="printPage" onclick="PrintElem('#mydiv')">Print</button></p> </div>  
           @endif               
     </div>
     </div>
     </div>
-    <p align="center"><button id="printPage" onclick="PrintElem('#mydiv')">Print</button></p>
+    
 </div>
     </div>
 </div>
@@ -203,7 +204,10 @@
 
     function PrintElem(elem)
     {
+      document.getElementById('printPage').style.visibility = 'hidden';
         Popup($('#mydiv').html());
+
+
     }
 
     function Popup(data) 
